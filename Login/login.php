@@ -9,7 +9,7 @@
 
         <!-- left part div -->
             <div class="leftdiv">
-                <img src="../sfiles/MMU_Logo.png" alt="MMU Logo" >
+                <img src="../files/MMU_Logo.png" alt="MMU Logo" >
             </div>
 
         <!-- right part div -->
