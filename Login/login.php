@@ -27,3 +27,21 @@
         </div>  
     </body>
 </html>
+
+<?php
+    if (isset($_GET["del"])) {
+
+        $usernameInput = $_POST["username"];
+        $passwordInput = $_POST["password"];
+        $sql = "select * from user where username='".$username."' And password = '".$passwordInput."'";
+        $result = mysqli_query($connect,"$sql");
+        if(mysql_num_rows($result) == 1){
+            echo "Login successfully";
+            exit();
+        }
+        else{
+            echo "Login Failed";
+            exit();
+        }
+    }
+?>
