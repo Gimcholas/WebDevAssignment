@@ -48,7 +48,7 @@ body {
 }
 
 .container {
-	background-color : #000000;
+	background-color : #d9f5d1;
 	border-radius: 35px;
     box-shadow : 5px 10px 18px #000000;
     position: absolute;
@@ -78,7 +78,6 @@ body {
 
 .leftdiv {
 	border-radius : 35px 0px 0px 35px;
-	background-color : #d9f5d1;
 	right: 50%;
 }
 
