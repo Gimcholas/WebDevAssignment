@@ -1,3 +1,5 @@
+<!-- just a simple one in order to test out in other function -->
+
 <?php include '../db_connect.php'; ?>
 <html>
     <head>
