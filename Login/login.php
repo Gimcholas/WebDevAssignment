@@ -1,4 +1,6 @@
-<?php include '../db_connect.php'; ?>
+<?php include '../db_connect.php'; 
+session_start()
+;?>
 <html>
     <head>
         <title>Login</title>
@@ -14,14 +16,14 @@
             </div>
 
         <!-- right part div -->
-            <form action="Form submission" method="post">
+            <form action="login.php" method="POST">
                 <div class = "rightdiv">            
                     <h2>Sign In</h2>
-                    <input type="text" name="username" placeholder = "Username">
+                    <input type="text" name="username" placeholder = "Username" required>
 
-                    <input type="password" name="password" placeholder = "Password">
+                    <input type="password" name="password" placeholder = "Password" required>
 
-                    <button name="LoginBtn">Login</button>
+                    <input type="submit" name="LoginBtn">
                 </div>
             </form>    
         </div>  
@@ -29,19 +31,27 @@
 </html>
 
 <?php
-    if (isset($_GET["del"])) {
+    if (isset($_POST["LoginBtn"])) {
 
         $usernameInput = $_POST["username"];
         $passwordInput = $_POST["password"];
-        $sql = "select * from user where username='".$username."' And password = '".$passwordInput."'";
-        $result = mysqli_query($connect,"$sql");
-        if(mysql_num_rows($result) == 1){
+        echo $usernameInput.$passwordInput;
+        $sql = "select * from user where username='$usernameInput'";
+        $result = mysqli_query($connect,$sql); 
+
+        $row = mysqli_fetch_assoc($result);
+        
+        if(password_verify($passwordInput,$row["password_hash"])) {
             echo "Login successfully";
-            exit();
+            $_SESSION["username"] = $row["username"];
+            $_SESSION["usertype"] = $row["usertype"];
+            if($row["usertype"] == "Admin") { // Redirect user to admin page
+                header("Location: ../admin/dashboard.php");
+            }
+            //else if () // Redirect to Student
         }
-        else{
+        else {
             echo "Login Failed";
-            exit();
         }
-    }
+    }    
 ?>
