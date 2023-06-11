@@ -24,13 +24,16 @@
         </div>  
         <div class="input-box">
             <label>Usertype: </label>
-            <select name="usertype">
+            <select name="usertype" id="usertype">
+                <option value="">Select a usertype</option>
                 <option value="Admin">Admin</option>
                 <option value="Instructor">Instructor</option>
                 <option value="Student">Student</option>
                 <option value="Provider">Training Provider</option>
             </select><br><br>
         </div>
+        <div id="additionalFields"></div>
+        <br><br>
         <input type="submit" name="submit" value="Create Account"><br><br>
     </form>
     </div>
@@ -67,7 +70,27 @@ if(isset($_POST["submit"])) {
     else 
         echo 'Successful created a new account';
     
+    if ($usertype != "Admin") {
+        if ($usertype == "Student") {
+            $sql2 = "INSERT INTO student(username) values ('$username');";
+        }
+        else if ($usertype == "Instructor") {
+            $sql2 = "INSERT INTO instructor(username) values ('$username');";
+        }
+        else if ($usertype == "Provider") {
+            $sql2 = "INSERT INTO training_provider(username) values ('$username');";
+        }
+        
+        $abc2 = mysqli_query($connect,$sql2);
+    
+        if(!$abc2)
+            die('Cannot enter data'.mysqli_error($connect));
+        else 
+            echo 'Successful created a new account';
+    }     
+    
     ?>
+
         <script type="text/javascript">
             alert("Successful created a new account");
         </script>
