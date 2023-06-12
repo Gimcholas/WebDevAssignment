@@ -33,17 +33,17 @@
                 ">
                 <div class="classContainer">
                     <img src = "
-                    <?php
-                        echo $each_class["course_image_path"];
-                    ?>
+                        <?php
+                            echo $each_class["course_image_path"];
+                        ?>
                     " alt = "
-                    <?php
-                        echo $each_class["course_title"];
-                    ?>
+                        <?php
+                            echo $each_class["course_title"];
+                        ?>
                     ">
                     <h1>
                         <?php
-
+                            echo $each_class["course_title"];
                         ?>
                     </h1>
                 </div>
