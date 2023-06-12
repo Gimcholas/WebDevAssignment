@@ -14,13 +14,10 @@
 
     <div class="banner">
         <?php
-            $course_section_id = $_GET['course_section_id'];
-            $course_section_sql = "SELECT * FROM course_section WHERE course_id = $course_section_id";
-            $course_section = mysqli_fetch_assoc(mysqli_query($connect,$course_section_sql));
-
-            $course_id = $course_section["course_id"];
+            $course_section_id = $_GET['section'];
+            $course_id = $_GET['course'];
             $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
-            $course = mysqli_fetch_assoc(mysqli_query($connect,$course_section_sql));
+            $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
         ?>
         <img src="
         <?php
