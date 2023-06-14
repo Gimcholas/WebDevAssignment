@@ -31,7 +31,7 @@
         </h1>
         <p>
             <?php
-                echo $course["startdate"];
+                echo $course["start_date"];
                 echo $course["end_date"];
             ?>
         </p>
@@ -56,13 +56,14 @@
         <div class="eachAnnouncement">
             <img src="
             <?php
-                $profile_image_sql = "SELECT profileImagePath FROM user WHERE username='".$announcement_result['username']."'";
+                echo "occurs";
+                $profile_image_sql = "SELECT profileImagePath FROM user WHERE username='".$row['username']."'";
                 $profile_image = mysqli_fetch_assoc(mysqli_query($connect,$profile_image_sql));
                 echo $profile_image_path;
             ?>" alt="Author picture">
             <h3>
             <?php
-                $author_name_sql = "SELECT * FROM instructor WHERE username='".$announcement_result['username']."'";
+                $author_name_sql = "SELECT * FROM instructor WHERE username='".$row['username']."'";
                 $author_name = mysqli_fetch_assoc(mysqli_query($connect,$author_name_sql));
                 echo $author_name['first_name'];
                 echo $author_name['last_name'];
@@ -70,17 +71,17 @@
 
             <h3>
                 <?php
-                    echo $announcement_result['upload_date_time'];
+                    echo $row['upload_date_time'];
                 ?>
             </h3>
             <h3>
                 <?php
-                    echo $announcement_result['title'];
+                    echo $row['title'];
                 ?> 
             </h3>
             <p>
                 <?php
-                    echo $announcement_result['content'];
+                    echo $row['content'];
                 ?> 
             </p>
         </div>
