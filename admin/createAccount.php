@@ -2,6 +2,7 @@
     // if($_SESSION["usertype"] != 'Admin') {
     //     header("Location: ../Login/login.php");
     // }
+    
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,8 +28,6 @@
             <select name="usertype" id="usertype" onchange="updateForm()" required>
                 <option hidden disabled selected value>Select a usertype</option>
                 <option value="Admin">Admin</option>
-                <option value="Instructor">Instructor</option>
-                <option value="Student">Student</option>
                 <option value="Provider">Training Provider</option>
             </select><br><br>
         </div>
@@ -55,23 +54,21 @@ if(isset($_POST["submit"])) {
         die("Usertype is required"); 
     }
 
-    if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
-        if(empty($_POST["firstName"])) 
-            die("First name is required");
-        if(empty($_POST["lastName"])) 
-            die("Last name is required");
-    }
-
-    if($_POST["usertype"] == "Student") {
-        if(empty($_POST["dateOfBirth"])) 
-            die("Date of birth is required");
-        if(empty($_POST["academicProgram"])) 
-            die("Academic program is required");
-    }
-            
+    $contactNumber = NULL;
+    $email = NULL;            
     if($_POST["usertype"] == "Provider") {
         if(empty($_POST["providerName"])) 
             die("Provider name is required");
+        if(!empty($_POST["contactNumber"])) {
+           $contactNumber = $_POST["contactNumber"];
+        }
+        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            echo "Invalid email";
+        }
+        else {
+            $email = $_POST["email"];
+        } 
+            
     }
         
 
@@ -89,34 +86,21 @@ if(isset($_POST["submit"])) {
     if(!$abc)
         die('Cannot enter data'.mysqli_error($connect));
     else 
-        echo 'Successful created a new account';
+        //echo 'Successful created a new account';
     
     
-    if ($usertype != "Admin") {
-        if ($usertype == "Student") {
-            $firstName = $_POST["firstName"];
-            $lastName = $_POST["lastName"];
-            $dateOfBirth = $_POST["dateOfBirth"];
-            $academicProgram = $_POST["academicProgram"];
-            $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram');";
-        }
-        else if ($usertype == "Instructor") {
-            $firstName = $_POST["firstName"];
-            $lastName = $_POST["lastName"];
-            $sql2 = "INSERT INTO instructor(username,first_name,last_name) values ('$username','$firstName','$lastName');";
-        }
-        else if ($usertype == "Provider") {
+    if ($usertype == "Provider") {
             $providerName = $_POST["providerName"];
-            $sql2 = "INSERT INTO training_provider(username,provider_name) values ('$username','$providerName');";
-        }
-        
-        $abc2 = mysqli_query($connect,$sql2);
-    
-        if(!$abc2)
-            die('Cannot enter data'.mysqli_error($connect));
-        else 
-            echo 'Successful created a new account';
+            $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
     }
+        
+    $abc2 = mysqli_query($connect,$sql2);
+
+    if(!$abc2)
+        die('Cannot enter data'.mysqli_error($connect));
+    else 
+        //echo 'Successful created a new account';
+    
     
     
     ?>
@@ -136,45 +120,20 @@ if(isset($_POST["submit"])) {
         
         const additionalForm = document.getElementById("additionalFields");
         additionalForm.innerHTML = "";
-        if(usertypeSelected == "Instructor") {
-            const html = 
-            `<div class="input-box">
-            <label>First Name</label>
-            <input type="text" name="firstName" placeholder="First Name" required><br><br>
-            </div>
-            <div class="input-box">
-            <label>Last Name</label>
-            <input type="text" name="lastName" placeholder="Last Name" required><br><br>
-            </div>
-            `;
-            additionalForm.innerHTML = html;
-        }
-        else if (usertypeSelected == "Student") {
-            const html = 
-            `<div class="input-box">
-            <label>First Name</label>
-            <input type="text" name="firstName" placeholder="First Name" required><br><br>
-            </div>
-            <div class="input-box">
-            <label>Last Name</label>
-            <input type="text" name="lastName" placeholder="Last Name" required><br><br>
-            </div>
-            <div class="input-box">
-            <label>Date Of Birth</label>
-            <input type="date" name="dateOfBirth" required><br><br>
-            </div>
-            <div class="input-box">
-            <label>Academic Program</label>
-            <input type="text" name="academicProgram" placeholder="Academic Program" required><br><br>
-            </div>
-            `;
-            additionalForm.innerHTML = html;
-        }
-        else if (usertypeSelected == "Provider") {
+        
+        if (usertypeSelected == "Provider") {
             const html = 
             `<div class="input-box">
             <label>Provider Name</label>
             <input type="text" name="providerName" placeholder="Provider Name" required><br><br>
+            </div>
+            <div class="input-box">
+            <label>Contact Number</label>
+            <input type="tel" name="contactNumber" placeholder="Contact Number"><br><br>
+            </div>
+            <div class="input-box">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Contact Email"><br><br>
             </div>`;
             additionalForm.innerHTML = html;
         }
