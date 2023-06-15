@@ -34,6 +34,9 @@
                 echo $course["end_date"];
             ?>
         </p>
+        <form action="enrollCourse.php" method="post" >
+            <button type='submit' name = "Enroll" value="<?php echo $course_id?>">Enroll</button>
+        </form>
     </div>
 
     <div class='container'>
