@@ -65,7 +65,7 @@
                     ?>
                 </h3>
                 <form action='enrollConfirmation.php' method='post'>
-                    <button type='submit' name='enrollConfirmation' value=<?php echo $each_section['course_section_id']?>>Enroll</button>
+                    <button type='submit' name='Enroll' value=<?php echo $each_section['course_section_id']?>>Enroll</button>
                 </form>
             </div>
 
