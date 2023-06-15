@@ -2,7 +2,8 @@
     // if($_SESSION["usertype"] != 'Admin') {
     //     header("Location: ../Login/login.php");
     // }
-    
+    session_start();
+    $_SESSION['username'] = "Huawei";
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,12 +24,13 @@
             <label>Password</label>
             <input type="password" name="password" placeholder="Password" required><br><br>
         </div>  
+
         <div class="input-box">
             <label>Usertype: </label>
             <select name="usertype" id="usertype" onchange="updateForm()" required>
                 <option hidden disabled selected value>Select a usertype</option>
-                <option value="Admin">Admin</option>
-                <option value="Provider">Training Provider</option>
+                <option value="Instructor">Instructor</option>
+                <option value="Student">Student</option>
             </select><br><br>
         </div>
         <div id="additionalFields"></div>
@@ -54,22 +56,20 @@ if(isset($_POST["submit"])) {
         die("Usertype is required"); 
     }
 
-    $contactNumber = NULL;
-    $email = NULL;            
-    if($_POST["usertype"] == "Provider") {
-        if(empty($_POST["providerName"])) 
-            die("Provider name is required");
-        if(!empty($_POST["contactNumber"])) {
-           $contactNumber = $_POST["contactNumber"];
-        }
-        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-            echo "Invalid email";
-        }
-        else {
-            $email = $_POST["email"];
-        } 
-            
+    if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
+        if(empty($_POST["firstName"])) 
+            die("First name is required");
+        if(empty($_POST["lastName"])) 
+            die("Last name is required");
     }
+
+    if($_POST["usertype"] == "Student") {
+        if(empty($_POST["dateOfBirth"])) 
+            die("Date of birth is required");
+        if(empty($_POST["academicProgram"])) 
+            die("Academic program is required");
+    }
+
         
 
         
@@ -85,29 +85,40 @@ if(isset($_POST["submit"])) {
     $abc = mysqli_query($connect,$sql);
     if(!$abc)
         die('Cannot enter data'.mysqli_error($connect));
-    else 
-        //echo 'Successful created a new account';
+    // else 
+    //     echo 'Successful created a new account';
     
-    
-    if ($usertype == "Provider") {
-            $providerName = $_POST["providerName"];
-            $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
+
+    if ($usertype == "Student") {
+        $firstName = $_POST["firstName"];
+        $lastName = $_POST["lastName"];
+        $dateOfBirth = $_POST["dateOfBirth"];
+        $academicProgram = $_POST["academicProgram"];
+        $provider_username = $_SESSION["username"];
+        $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$provider_username');";
     }
-        
+    else if ($usertype == "Instructor") {
+        $firstName = $_POST["firstName"];
+        $lastName = $_POST["lastName"];
+        $provider_username = $_SESSION["username"];
+        $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username) values ('$username','$firstName','$lastName','$provider_username');";
+    }
+
+    
     $abc2 = mysqli_query($connect,$sql2);
 
     if(!$abc2)
         die('Cannot enter data'.mysqli_error($connect));
-    else 
-        //echo 'Successful created a new account';
-    
-    
+    // else 
+    //     echo 'Successful created a new account';
+        
     
     ?>
 
-        <script type="text/javascript">
-            alert("Successful created a new account");
-        </script>
+    <script type="text/javascript">
+        alert("Successful created a new account");
+    </script>
+
     <?php
 
 }
@@ -120,14 +131,16 @@ if(isset($_POST["submit"])) {
         
         const additionalForm = document.getElementById("additionalFields");
         additionalForm.innerHTML = "";
-        
-        if (usertypeSelected == "Provider") {
-            const html = 
-            `<div class="input-box">
-            <label>Provider Name</label>
-            <input type="text" name="providerName" placeholder="Provider Name" required><br><br>
+        const commonHtml1 = `<div class="input-box">
+            <label>First Name</label>
+            <input type="text" name="firstName" placeholder="First Name" required><br><br>
             </div>
             <div class="input-box">
+            <label>Last Name</label>
+            <input type="text" name="lastName" placeholder="Last Name" required><br><br>
+            </div>`;
+            
+        const commonHtml2 = `<div class="input-box">
             <label>Contact Number</label>
             <input type="tel" name="contactNumber" placeholder="Contact Number"><br><br>
             </div>
@@ -135,7 +148,22 @@ if(isset($_POST["submit"])) {
             <label>Email</label>
             <input type="email" name="email" placeholder="Contact Email"><br><br>
             </div>`;
-            additionalForm.innerHTML = html;
+
+        if(usertypeSelected == "Instructor") {           
+            additionalForm.innerHTML = commonHtml1 + commonHtml2;
+        }
+        else if (usertypeSelected == "Student") {
+            const html = 
+            `<div class="input-box">
+            <label>Date Of Birth</label>
+            <input type="date" name="dateOfBirth" required><br><br>
+            </div>
+            <div class="input-box">
+            <label>Academic Program</label>
+            <input type="text" name="academicProgram" placeholder="Academic Program" required><br><br>
+            </div>
+            `;
+            additionalForm.innerHTML = commonHtml1 + html + commonHtml2;
         }
         
     }

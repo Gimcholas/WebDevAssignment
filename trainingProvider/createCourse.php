@@ -1,5 +1,6 @@
 <?php include "../db_connect.php";
-
+    session_start();
+    $_SESSION["username"] = "Huawei";
 ?>
 
 <!DOCTYPE html>
@@ -10,52 +11,77 @@
     <script text="text/javascript" src="script.js"></script>
 </head> 
 <body>
-    <form action="test.php" method="post" id="courseForm">
+    <form action="createCourse.php" method="post" id="courseForm" enctype="multipart/form-data">
         <div class="input-box">
         <label for="courseName">Course Name</label>
-        <input type="text" name="courseName"> 
+        <input type="text" name="courseName" required> 
         </div><br>
 
         <div class="input-box">
         <label for="startDate">Start Date</label>
-        <input type="date" name="startDate"> 
+        <input type="date" name="startDate" required> 
         </div><br>
 
         <div class="input-box">
         <label for="endDate">End Date</label>
-        <input type="date" name="endDate"> 
+        <input type="date" name="endDate" required> 
         </div><br>
 
         <div class="input-box">
         <label for="courseIntro">Course Introduction</label>
-        <input type="text" name="courseIntro"> 
+        <input type="text" name="courseIntro" required> 
+        </div><br>
+
+        <div class="input-box">
+        <label for="Course Image">Upload course image</label><br>
+        <input type="file" name="photo">
         </div><br>
 
         <hr><br>
-        <div class="courseSection">
+        <div id="courseSection">            
             <div class="input-box">
             <label for="sectionName">Section Name</label>
-            <input type="text" name="sectionName">
+            <input type="text" name="sectionName[]" required>
             </div><br>
+
 
             <div class="input-box">
             <label for="instructorUsername">Instructor Username</label>
-            <input type="text" name="instructorUsername">
+            <!-- <input type="text" name="instructorUsername[]" list="instructors" autocomplete="off" required/> -->
+            <select name="instructorUsername[]" id="originalSelector" required >
+            <?php 
+                    $sql = "SELECT * FROM instructor where provider_username" . "= '" . $_SESSION['username'] . "';";
+                    $result = mysqli_query($connect,$sql);
+                    $count = mysqli_num_rows($result);
+                    if ($count == 0) {
+                        echo $count;
+                        ?>
+                        <option disabled selected value>No Available Instructors Found</option>
+
+                    <?php
+                    }
+                    while($row = mysqli_fetch_array($result)) {
+                        ?>
+                        <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
+                        . $row["first_name"] . " " . $row["last_name"]?></option> 
+                    <?php } 
+                ?>
+            </select>
             </div><br>
 
             <div class="input-box">
             <label for="startTime">Start Time</label>
-            <input type="time" name="startTime">
-            <div><br>
+            <input type="time" name="startTime[]" required>
+            </div><br>
 
             <div class="input-box">
             <label for="endTime">End Time</label>
-            <input type="time" name="endTime">
-            <div><br>
+            <input type="time" name="endTime[]" required>
+            </div><br>
 
             <div class="input-box">
             <label for="day">Day</label>
-            <select name="day">
+            <select name="day[]" required>
                 <option value="">Choose a day</option>
                 <option value="Sunday">Sunday</option>
                 <option value="Monday">Monday</option>
@@ -65,10 +91,11 @@
                 <option value="Friday">Friday</option>
                 <option value="Saturday">Saturday</option>
             </select>    
-            <div><br>
+            </div><br>
+
             <div class="input-box">
                 <label for="maxStudentNum">Maximum Student Allowed</label>
-                <input type="number" name="maxStudentNum">
+                <input type="number" name="maxStudentNum[]" required>
             </div><br>
         </div>
         <hr><br>
@@ -80,7 +107,133 @@
         </div>
 
         <div class="submit">
-        <input type="submit" value="Create Course">
+        <input type="submit" value="Create Course" name="submit">
         </div>
     </form>
 </body>
+
+<?php 
+    if(isset($_POST['submit'])) {
+        if(empty($_POST['courseName'])) {
+            die("Course name is required"); 
+        }
+        
+        if(empty($_POST['courseIntro'])) {
+            die("Course Introduction is required"); 
+        }
+        if(empty($_POST['startDate'])) {
+            die("Start date is required"); 
+        }
+        if(empty($_POST['endDate'])) {
+            die("End date is required"); 
+        }
+        
+        echo $_POST['courseName']; 
+        echo "<br>";
+        echo $_POST['startDate'];
+        echo "<br>";
+        echo $_POST['endDate'];
+        echo "<br>";
+        echo $_POST['courseIntro'];
+        echo "<br><br>";
+
+        $imagePath = NULL;
+        // Upload image
+        if(isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0){
+            // Directory where the images are stored
+            $imageFolderPath = "../files/";
+            
+
+            $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "png" => "image/png");
+            $filename = $_FILES["photo"]["name"];
+            $filetype = $_FILES["photo"]["type"];
+            $filesize = $_FILES["photo"]["size"];
+        
+            // Verify file extension
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            if(!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
+        
+            // Verify file size - 5MB maximum
+            $maxsize = 5 * 1024 * 1024;
+            if($filesize > $maxsize) die("Error: File size is larger than the allowed limit.");
+        
+            // Verify MYME type of the file
+            if(in_array($filetype, $allowed)){
+                echo "Old filename: " . $filename;
+                $newFileName = uniqid();
+                if ($filetype == "image/jpg") {
+                    $newFileName .= ".jpg";
+                }
+                else if ($filetype == "image/jpeg") {
+                    $newFileName .= ".jpeg";
+                }
+                else if ($filetype == "image/png") {
+                    $newFileName .= ".png";
+                }
+
+                if(file_exists($imageFolderPath . $filename)){
+                    echo $filename . " is already exists.";  
+                }
+                else {
+                    $imagePath = $imageFolderPath . $newFileName;
+                    move_uploaded_file($_FILES["photo"]["tmp_name"], $imagePath);
+                    
+
+                }
+                 
+            } else{
+                echo "Error: There was a problem uploading your file. Please try again."; 
+            }
+        }
+
+        $sql1 = "INSERT into course(provider_username, course_title, course_description, start_date, end_date,course_image_path) values ('" . $_SESSION['username'] . "', '" . $_POST['courseName'] . "', '" . $_POST['courseIntro'] . "', '" . $_POST['startDate'] . "', '" . $_POST['endDate'] . "', '" . $imagePath ."');";
+        
+        
+        $result = mysqli_query($connect,$sql1);
+        if(!$result) {
+            die('Cannot enter data'.mysqli_error($connect));
+        }
+        
+        $courseID = mysqli_insert_id($connect); // Get the course_ID from the last query
+        
+        for($i=0; $i<count($_POST['sectionName']); $i++) {
+            echo count($_POST['sectionName']);
+            if(empty($_POST['instructorUsername'][$i])) {
+                die("Instructor username is required"); 
+            }
+            if(empty($_POST['sectionName'][$i])) {
+                die("Section name is required"); 
+            }
+            if(empty($_POST['startTime'][$i])) {
+                die("Start time is required"); 
+            }
+            if(empty($_POST['endTime'][$i])) {
+                die("End time is required"); 
+            }
+            if(empty($_POST['day'][$i])) {
+                die("Day is required"); 
+            }
+            if(empty($_POST['maxStudentNum'][$i])) {
+                die("Maximum Student Number is required"); 
+            }
+        
+            $sql2 = "INSERT into course_section(course_id, username, course_section_name, start_time, end_time, day, status, max_student_num)
+                 values (" . $courseID . ", '" . $_POST['instructorUsername'][$i] . "', '" . $_POST['sectionName'][$i] . "', '" . $_POST['startTime'][$i] . "', '" . $_POST['endTime'][$i] . "', '" . $_POST['day'][$i] . "', " . "'Open'," .$_POST['maxStudentNum'][$i] . ");";
+        
+            $result = mysqli_query($connect,$sql2);
+            if(!$result) {
+                die('Cannot enter data'.mysqli_error($connect));
+            }
+            echo "sectionName" . $i . ":" . $_POST['sectionName'][$i] . "<br>";
+            echo "instructorUsername" . $i . ":" . $_POST['instructorUsername'][$i] . "<br>";
+            echo "startTime" . $i . ":" . $_POST['startTime'][$i] . "<br>";
+            echo "endTime" . $i . ":" . $_POST['endTime'][$i] . "<br>";
+            echo "day" . $i . ":" . $_POST['day'][$i] . "<br>";
+            echo "maxStudentNum" .  $i . ":" . $_POST['maxStudentNum'][$i] . "<br><br>";
+            
+        }
+
+        
+    }
+    
+?>
