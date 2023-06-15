@@ -3,12 +3,12 @@
 <html>
 
 <head>
-    <title>Registered Courses</title>
-    <link type="text/css" rel="stylesheet" href="dashboard.css">
+    <title>My Courses</title>
+    <link type="text/css" rel="stylesheet" href="myCourseDashboard.css">
 </head>
 
 <body>
-    <h1>Registered Courses</h1>
+    <h1>My Courses</h1>
     <div class="container">
     <?php
             $_SESSION["username"] = "student1";
