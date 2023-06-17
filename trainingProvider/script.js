@@ -29,27 +29,6 @@ function addSection() {
     </select>\
     </div><br>\
     <div class="input-box">\
-    <label for="startTime">Start Time</label>\
-    <input type="time" name="startTime[]" required>\
-    </div><br>\
-    <div class="input-box">\
-    <label for="endTime">End Time</label>\
-    <input type="time" name="endTime[]" required>\
-    </div><br>\
-    <div class="input-box">\
-    <label for="day">Day</label>\
-    <select name="day[]" required>\
-        <option value="">Choose a day</option>\
-        <option value="Sunday">Sunday</option>\
-        <option value="Monday">Monday</option>\
-        <option value="Tuesday">Tuesday</option>\
-        <option value="Wednesday">Wednesday</option>\
-        <option value="Thursday">Thursday</option>\
-        <option value="Friday">Friday</option>\
-        <option value="Saturday">Saturday</option>\
-    </select>\
-    </div><br>\
-    <div class="input-box">\
         <label for="maxStudentNum">Maximum Student Allowed</label>\
         <input type="number" name="maxStudentNum[]" required>\
     </div><br>\
