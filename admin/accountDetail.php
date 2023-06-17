@@ -35,7 +35,7 @@
 		    echo $row["joined_date"]; 
 
             if($row["usertype"] == "Instructor") {
-                $sql = "SELECT * FROM instructor where username='$username';";
+                $sql = "SELECT * FROM instructor JOIN training_provider ON instructor.provider_username = training_provider.username where instructor.username='$username';";
                 $result = mysqli_query($connect,$sql);
                 $row = mysqli_fetch_assoc($result);
 
@@ -45,13 +45,15 @@
 		        echo $row["last_name"]; 
                 echo "<br><b>Training Provider Username</b><br>";
 		        echo $row["provider_username"]; 
+                echo "<br><b>Training Provider Name</b><br>";
+		        echo $row["provider_name"]; 
                 echo "<br><b>Contact Number</b><br>";
 		        echo $row["contact_number"]; 
                 echo "<br><b>Email</b><br>";
 		        echo $row["email"]; 
             }
             else if($row["usertype"] == "Student") {
-                $sql = "SELECT * FROM student where username='$username';";
+                $sql = "SELECT * FROM student JOIN training_provider ON student.provider_username = training_provider.username where student.username='$username';";
                 $result = mysqli_query($connect,$sql);
                 $row = mysqli_fetch_assoc($result);
 
@@ -64,7 +66,9 @@
                 echo "<br><b>Academic Program</b><br>";
 		        echo $row["academic_program"]; 
                 echo "<br><b>Training Provider Username</b><br>";
-		        echo $row["provider_username"]; 
+		        echo $row["provider_username"];
+                echo "<br><b>Training Provider Name</b><br>";
+		        echo $row["provider_name"];  
                 echo "<br><b>Contact Number</b><br>";
 		        echo $row["contact_number"]; 
                 echo "<br><b>Email</b><br>";
@@ -77,6 +81,10 @@
 
                 echo "<br><b>Training Provider Name</b><br>";
 		        echo $row["provider_name"]; 
+                echo "<br><b>Contact Number</b><br>";
+		        echo $row["contact_number"]; 
+                echo "<br><b>Email</b><br>";
+		        echo $row["email"]; 
             }
         }
     ?>
