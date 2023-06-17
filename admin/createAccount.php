@@ -28,12 +28,15 @@
             <select name="usertype" id="usertype" onchange="updateForm()" required>
                 <option hidden disabled selected value>Select a usertype</option>
                 <option value="Admin">Admin</option>
+                <option value="Instructor">Instructor</option>
                 <option value="Provider">Training Provider</option>
+                <option value="Student">Student</option>
             </select><br><br>
         </div>
         <div id="additionalFields"></div>
     
         <input type="submit" name="submit" value="Create Account"><br><br>
+        <a href="dashboard.php"><input type="button" value = "Back"></a><br><br>
     </form>
     </div>
 </body>
@@ -44,6 +47,14 @@ if(isset($_POST["submit"])) {
     if(empty($_POST["username"])) {
         die("Username is required"); 
     }
+
+    $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";
+    $result = mysqli_query($connect,$sql);
+    $count = mysqli_num_rows($result);
+    if($count > 0) {
+        die("Username not available");
+    }
+
     if(strlen($_POST["password"]) < 8) {
         die("Password must be at least 8 characters"); 
     }
@@ -62,13 +73,37 @@ if(isset($_POST["submit"])) {
         if(!empty($_POST["contactNumber"])) {
            $contactNumber = $_POST["contactNumber"];
         }
-        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-            echo "Invalid email";
+        if(strlen($_POST['email']) > 0) {
+            if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+                echo "Invalid email";
+            }
+            else {
+                $email = $_POST["email"];
+            } 
+        }            
+    }
+    if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
+        if(empty($_POST["provider"])) // Check the provider username is empty
+            die("Provider is required");
+        
+        // Check if the provider username is valid
+        $sql = "SELECT * FROM training_provider where username='" . $_POST["provider"] . "';";
+        $result = mysqli_query($connect,$sql);
+        $count = mysqli_num_rows($result);
+        if($count == 0) {
+            die("Provider Username not found");
         }
-        else {
-            $email = $_POST["email"];
-        } 
-            
+        if(empty($_POST["firstName"])) 
+            die("First name is required");
+        if(empty($_POST["lastName"])) 
+            die("Last name is required");
+    }
+
+    if($_POST["usertype"] == "Student") {
+        if(empty($_POST["dateOfBirth"])) 
+            die("Date of birth is required");
+        if(empty($_POST["academicProgram"])) 
+            die("Academic program is required");
     }
         
 
@@ -85,22 +120,44 @@ if(isset($_POST["submit"])) {
     $abc = mysqli_query($connect,$sql);
     if(!$abc)
         die('Cannot enter data'.mysqli_error($connect));
-    else 
+    //else 
         //echo 'Successful created a new account';
     
-    
-    if ($usertype == "Provider") {
-            $providerName = $_POST["providerName"];
-            $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
-    }
-        
-    $abc2 = mysqli_query($connect,$sql2);
+    if ($usertype != "Admin") {
+        if ($usertype == "Provider") {
+                $providerName = $_POST["providerName"];
+                $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
+                $abc2 = mysqli_query($connect,$sql2);
+                if(!$abc2)
+                    die('Cannot enter data'.mysqli_error($connect));
+                //else 
+                //echo 'Successful created a new account';
+        } 
+        else if ($usertype == "Student") {
+            $firstName = $_POST["firstName"];
+            $lastName = $_POST["lastName"];
+            $dateOfBirth = $_POST["dateOfBirth"];
+            $academicProgram = $_POST["academicProgram"];
+            $providerUsername = $_POST["provider"];
+            $contactNumber = $_POST["contactNumber"];
+            $email = $_POST["email"];
+            $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$providerUsername','$contactNumber','$email');";
+        }
+        else if ($usertype == "Instructor") {
+            $firstName = $_POST["firstName"];
+            $lastName = $_POST["lastName"];
+            $providerUsername = $_POST["provider"];
+            $contactNumber = $_POST["contactNumber"];
+            $email = $_POST["email"];
+            $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$providerUsername','$contactNumber','$email');";
+        }
 
-    if(!$abc2)
-        die('Cannot enter data'.mysqli_error($connect));
-    else 
-        //echo 'Successful created a new account';
     
+        $abc2 = mysqli_query($connect,$sql2);
+
+        if(!$abc2)
+            die('Cannot enter data'.mysqli_error($connect));
+    }
     
     
     ?>
@@ -121,13 +178,41 @@ if(isset($_POST["submit"])) {
         const additionalForm = document.getElementById("additionalFields");
         additionalForm.innerHTML = "";
         
-        if (usertypeSelected == "Provider") {
-            const html = 
+        const selectProviderHtml = 
             `<div class="input-box">
             <label>Provider Name</label>
-            <input type="text" name="providerName" placeholder="Provider Name" required><br><br>
+            <select name="provider" required>
+            <option disabled selected value>Select the training provider</option>
+            <?php 
+                    $sql = "SELECT * FROM training_provider;";
+                    $result = mysqli_query($connect,$sql);
+                    $count = mysqli_num_rows($result);
+                    if ($count == 0) {
+                        echo $count;
+                        ?>
+                        <option disabled selected value>No Training Provider Found</option>
+
+                    <?php
+                    }
+                    while($row = mysqli_fetch_array($result)) {
+                        ?>
+                        <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
+                        . $row["provider_name"]?></option> 
+                    <?php } 
+                ?>
+            </select><br><br>
+            </div>`;
+
+        const nameInputHtml = `<div class="input-box">
+            <label>First Name</label>
+            <input type="text" name="firstName" placeholder="First Name" required><br><br>
             </div>
             <div class="input-box">
+            <label>Last Name</label>
+            <input type="text" name="lastName" placeholder="Last Name" required><br><br>
+            </div>`;
+            
+        const contactInputHtml = `<div class="input-box">
             <label>Contact Number</label>
             <input type="tel" name="contactNumber" placeholder="Contact Number"><br><br>
             </div>
@@ -135,7 +220,33 @@ if(isset($_POST["submit"])) {
             <label>Email</label>
             <input type="email" name="email" placeholder="Contact Email"><br><br>
             </div>`;
-            additionalForm.innerHTML = html;
+
+        if (usertypeSelected == "Provider") {
+            const html = 
+            `<div class="input-box">
+            <label>Provider Name</label>
+            <input type="text" name="providerName" placeholder="Provider Name" required><br><br>
+            </div>`;
+            additionalForm.innerHTML = html + contactInputHtml;
+        }
+        else if (usertypeSelected == "Instructor") {
+            additionalForm.innerHTML = selectProviderHtml + nameInputHtml + contactInputHtml;
+        }
+        else if (usertypeSelected == "Student") {
+            const html = 
+            `<div class="input-box">
+            <label>Date Of Birth</label>
+            <input type="date" name="dateOfBirth" required><br><br>
+            </div>
+            <div class="input-box">
+            <label>Academic Program</label>
+            <input type="text" name="academicProgram" placeholder="Academic Program" required><br><br>
+            </div>
+            `;
+            additionalForm.innerHTML = selectProviderHtml + nameInputHtml + html + contactInputHtml;
+        }
+        else if (usertypeSelected == "Admin") {
+            // Do nothing
         }
         
     }
