@@ -69,7 +69,7 @@
             </select>
             </div><br>
 
-            <div class="input-box">
+            <!-- <div class="input-box">
             <label for="startTime">Start Time</label>
             <input type="time" name="startTime[]" required>
             </div><br>
@@ -91,7 +91,7 @@
                 <option value="Friday">Friday</option>
                 <option value="Saturday">Saturday</option>
             </select>    
-            </div><br>
+            </div><br> -->
 
             <div class="input-box">
                 <label for="maxStudentNum">Maximum Student Allowed</label>
@@ -108,6 +108,10 @@
 
         <div class="submit">
         <input type="submit" value="Create Course" name="submit">
+        </div>
+
+        <div class='back'>
+            <a href="courses.php"><input type="button" value = "Back"></a><br><br>
         </div>
     </form>
 </body>
@@ -204,21 +208,12 @@
             if(empty($_POST['sectionName'][$i])) {
                 die("Section name is required"); 
             }
-            if(empty($_POST['startTime'][$i])) {
-                die("Start time is required"); 
-            }
-            if(empty($_POST['endTime'][$i])) {
-                die("End time is required"); 
-            }
-            if(empty($_POST['day'][$i])) {
-                die("Day is required"); 
-            }
             if(empty($_POST['maxStudentNum'][$i])) {
                 die("Maximum Student Number is required"); 
             }
         
-            $sql2 = "INSERT into course_section(course_id, username, course_section_name, start_time, end_time, day, status, max_student_num)
-                 values (" . $courseID . ", '" . $_POST['instructorUsername'][$i] . "', '" . $_POST['sectionName'][$i] . "', '" . $_POST['startTime'][$i] . "', '" . $_POST['endTime'][$i] . "', '" . $_POST['day'][$i] . "', " . "'Open'," .$_POST['maxStudentNum'][$i] . ");";
+            $sql2 = "INSERT into course_section(course_id, username, course_section_name, status, max_student_num)
+                 values (" . $courseID . ", '" . $_POST['instructorUsername'][$i] . "', '" . $_POST['sectionName'][$i] . "', " . "'Open'," .$_POST['maxStudentNum'][$i] . ");";
         
             $result = mysqli_query($connect,$sql2);
             if(!$result) {
@@ -226,9 +221,6 @@
             }
             echo "sectionName" . $i . ":" . $_POST['sectionName'][$i] . "<br>";
             echo "instructorUsername" . $i . ":" . $_POST['instructorUsername'][$i] . "<br>";
-            echo "startTime" . $i . ":" . $_POST['startTime'][$i] . "<br>";
-            echo "endTime" . $i . ":" . $_POST['endTime'][$i] . "<br>";
-            echo "day" . $i . ":" . $_POST['day'][$i] . "<br>";
             echo "maxStudentNum" .  $i . ":" . $_POST['maxStudentNum'][$i] . "<br><br>";
             
         }
