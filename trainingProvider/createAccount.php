@@ -36,6 +36,7 @@
         <div id="additionalFields"></div>
     
         <input type="submit" name="submit" value="Create Account"><br><br>
+        <a href="accountDashboard.php"><input type="button" value = "Back"></a><br><br>
     </form>
     </div>
 </body>
@@ -46,6 +47,14 @@ if(isset($_POST["submit"])) {
     if(empty($_POST["username"])) {
         die("Username is required"); 
     }
+
+    $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";
+    $result = mysqli_query($connect,$sql);
+    $count = mysqli_num_rows($result);
+    if($count > 0) {
+        die("Username not available");
+    }
+    
     if(strlen($_POST["password"]) < 8) {
         die("Password must be at least 8 characters"); 
     }
@@ -94,14 +103,18 @@ if(isset($_POST["submit"])) {
         $lastName = $_POST["lastName"];
         $dateOfBirth = $_POST["dateOfBirth"];
         $academicProgram = $_POST["academicProgram"];
-        $provider_username = $_SESSION["username"];
-        $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$provider_username');";
+        $providerUsername = $_SESSION["username"];
+        $contactNumber = $_POST["contactNumber"];
+        $email = $_POST["email"];
+        $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$providerUsername','$contactNumber','$email');";
     }
     else if ($usertype == "Instructor") {
         $firstName = $_POST["firstName"];
         $lastName = $_POST["lastName"];
-        $provider_username = $_SESSION["username"];
-        $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username) values ('$username','$firstName','$lastName','$provider_username');";
+        $providerUsername = $_SESSION["username"];
+        $contactNumber = $_POST["contactNumber"];
+        $email = $_POST["email"];
+        $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$providerUsername','$contactNumber','$email');";
     }
 
     
