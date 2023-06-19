@@ -7,7 +7,9 @@
 ?>
 
 <html>
-<head><title>Courses</title>
+<head>
+    <title>Courses</title>
+    <link rel="stylesheet" type="text/css" href = "courses.css">
 </head>
 <body>
     <div class="ongoing-course">
