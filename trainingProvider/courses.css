@@ -19,7 +19,6 @@ header.header-bar{
     padding-left: 20px;
 }
 
-
 h2 {
     color: #666;
     font-size: 20px;
@@ -59,6 +58,12 @@ button:hover {
     margin: 30px 15px;
     padding: 30px;
     color: black;
+    transition: transform 0.3s ease;
+}
+
+.display-course:hover{
+    background-color: rgb(239, 239, 239);
+    transform: scale(1.01);
 }
 
 .course-id {
