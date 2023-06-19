@@ -12,8 +12,8 @@
 <html>
 
 <head>
-    <title></title>
-    <link rel="stylesheet" type ="text.css" href="registerCourse.css">
+    <title>Register Course</title>
+    <link type="text/css" rel="stylesheet" href="registerCourse.css">
 </head>
 
 <body>
@@ -23,20 +23,24 @@
             echo $course["course_image_path"];
         ?>
         " alt="Course img">
-        <h1>
-            <?php
-                echo $course["course_title"];
-            ?>
-        </h1>
-        <p>
-            <?php
-                echo $course["start_date"];
-                echo $course["end_date"];
-            ?>
-        </p>
-        <form action="enrollCourse.php" method="post" >
-            <button type='submit' name = "Enroll" value="<?php echo $course_id?>">Enroll</button>
-        </form>
+             <div class="right-panel">
+                <h1>
+                    <?php
+                        echo $course["course_title"];
+                    ?>
+                </h1>
+                <p>
+                    <?php
+                        echo $course["start_date"]." - ".$course["end_date"];
+                    ?>
+                </p>
+            </div>
+            <div class="rightmost">
+                    <form action="enrollCourse.php" method="post" >
+                        <button type='submit' name = "Enroll" value="<?php echo $course_id?>">Enroll</button>
+                    </form>
+            </div>
+        </div>
     </div>
 
     <div class='container'>

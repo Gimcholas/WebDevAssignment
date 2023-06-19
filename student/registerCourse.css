@@ -1,0 +1,54 @@
+:root {
+    --text--theme--main   : Helvetica, Arial, Verdana;
+    --colour--theme--main : #a3d698;
+    --colour--theme--sub  : #9AD9B3;
+}
+
+* {
+    margin : 0;
+    padding : 0;
+    display: block;
+    font-family : var(--text-theme--main);
+}
+
+.banner {
+    width : 100%;
+    background-color: var(--colour--theme--main);
+    display : flex;
+    align-items : center;
+    justify-content : left;
+    flex-wrap : wrap;
+}
+
+.banner img {
+    padding: 2rem;
+    width : 15rem;
+    height : 10rem;
+}
+
+.banner .right-panel{
+    color : white;
+    padding-left: 2rem;
+}
+
+.banner .rightmost{
+
+}
+
+.banner .rightmost button{
+    border-radius : 3px;
+}
+
+
+.container {
+    clear  : both;
+    padding:5%;
+}
+
+.container p {
+    margin-bottom : 3em;
+}
+
+.container h2 {
+    margin-bottom : 0.3em;
+}

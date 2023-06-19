@@ -48,7 +48,9 @@ session_start()
             if($row["usertype"] == "Admin") { // Redirect user to admin page
                 header("Location: ../admin/dashboard.php");
             }
-            //else if () // Redirect to Student
+            else if ($row["usertype"] == "Student"){
+                header("Location: ../student/courseDashboard.php");
+            }
         }
         else {
             echo "Login Failed";
