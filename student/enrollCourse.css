@@ -1,0 +1,37 @@
+:root {
+    --text--theme--main   : Helvetica, Arial, Verdana;
+    --colour--theme--main : #a3d698;
+    --colour--theme--sub  : #9AD9B3;
+}
+
+* {
+    margin : 0;
+    padding : 0;
+    font-family: var(--text--theme--main);
+}
+
+body { 
+    margin : 2rem 3rem;
+}
+body .instructor-list{ 
+    margin-top: 2rem;
+    display: flex;
+    justify-content: left;
+    align-items : center;
+    flex-wrap : wrap;
+}
+
+body .instructor-list h3,button{ 
+    margin-left: 3rem;
+}
+
+body .instructor-list img{ 
+    width : 100px;
+    height : 100px;
+    border-radius: 200px;
+}
+
+body .instructor-list form button, body .instructor-list form h3{ 
+    width : 100px;
+    height : 30px;
+}
