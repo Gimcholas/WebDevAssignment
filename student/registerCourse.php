@@ -13,33 +13,38 @@
 
 <head>
     <title>Register Course</title>
-    <link type="text/css" rel="stylesheet" href="registerCourse.css">
+    <link rel="stylesheet" type="text/css" href="registerCourse.css">
 </head>
 
 <body>
     <div class="banner">
-        <img src="
-        <?php
-            echo $course["course_image_path"];
-        ?>
-        " alt="Course img">
-             <div class="right-panel">
-                <h1>
-                    <?php
-                        echo $course["course_title"];
-                    ?>
-                </h1>
-                <p>
-                    <?php
-                        echo $course["start_date"]." - ".$course["end_date"];
-                    ?>
-                </p>
-            </div>
-            <div class="rightmost">
-                    <form action="enrollCourse.php" method="post" >
-                        <button type='submit' name = "Enroll" value="<?php echo $course_id?>">Enroll</button>
-                    </form>
-            </div>
+        
+        <div class="image-container">
+            <img src="
+                <?php
+                    echo $course["course_image_path"];
+                ?>
+                " alt="Course img"
+            />
+        </div>
+
+        <div class="right-panel">
+            <h1>
+                <?php
+                    echo $course["course_title"];
+                ?>
+            </h1>
+            <p>
+                <?php
+                    echo $course["start_date"]." - ".$course["end_date"];
+                ?>
+            </p>
+        </div>
+
+        <div class="rightmost">
+            <form action="enrollCourse.php" method="post" >
+                <button type='submit' name = "Enroll" value="<?php echo $course_id?>">Enroll</button>
+            </form>
         </div>
     </div>
 

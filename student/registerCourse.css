@@ -13,17 +13,21 @@
 
 .banner {
     width : 100%;
+    padding : 1rem 2rem 1rem 4rem;
     background-color: var(--colour--theme--main);
     display : flex;
+    justify-content: left;
     align-items : center;
-    justify-content : left;
     flex-wrap : wrap;
 }
 
+.banner .image-container {
+    max-height: 10rem;
+}
+
 .banner img {
-    padding: 2rem;
-    width : 15rem;
-    height : 10rem;
+    width : 100%;
+    max-height: 10rem;
 }
 
 .banner .right-panel{
@@ -42,7 +46,7 @@
 
 .container {
     clear  : both;
-    padding:5%;
+    padding: min(5%,3rem);
 }
 
 .container p {
@@ -51,4 +55,21 @@
 
 .container h2 {
     margin-bottom : 0.3em;
+}
+
+.container .instructor {
+    display : flex;
+    justify-content: middle;
+    align-items : center;
+    flex-wrap : wrap;
+}
+
+.container .instructor p {
+    margin-left : 1rem;
+    margin-top: 3rem;
+}
+
+.container .instructor img {
+    height : 5rem;
+    border-radius: 1000px;
 }
