@@ -27,6 +27,9 @@
                     echo "My Course";
                 }
             }
+            else if ($_SESSION["usertype"]  == "Instructor"){
+                echo "My Course";
+            }
         ?>
     </title>
     <link type="text/css" rel="stylesheet" href="courseDashboard.css">
@@ -51,6 +54,11 @@
                     $result = mysqli_query($connect,$registered_course_sql);
                 }
             }
+            else if ($_SESSION["usertype"]  == "Instructor"){
+                echo "My Course";
+                $instructor_course_sql = "SELECT * FROM course_section WHERE username = '{$_SESSION['username']}'";
+                $result = mysqli_query($connect,$instructor_course_sql);
+            }
         ?>
     </h1>
     <div class="class-container">
@@ -62,7 +70,7 @@
                     <?php
                         if ($_SESSION["usertype"]  == "Student"){
                             if($_SESSION["redirectTo"] == "registerCourse"){
-                                echo "registerCourse.php?course=".$row['course_id'];
+                                echo "../student/registerCourse.php?course=".$row['course_id'];
                             }
             
                             else if($_SESSION["redirectTo"] == "myCourse"){
@@ -71,8 +79,13 @@
             
                                 $each_class_sql = "SELECT * FROM course WHERE course_id =".$course_section['course_id'];
                                 $each_class = mysqli_fetch_assoc(mysqli_query($connect,$each_class_sql));
-                                echo "../courseDetail/courseDetail.php?course=".$course_section['course_id']."&section=".$course_section["course_section_id"];
+                                echo "courseDetail.php?course=".$course_section['course_id']."&section=".$course_section["course_section_id"];
                             }
+                        }
+                        else if ($_SESSION["usertype"]  == "Instructor"){
+                            $each_class_sql = "SELECT * FROM course WHERE course_id =".$row['course_id'];
+                            $each_class = mysqli_fetch_assoc(mysqli_query($connect,$each_class_sql));
+                            echo "courseDetail.php?course=".$row['course_id']."&section=".$row["course_section_id"];
                         }
                     ?>
                 ">
@@ -88,6 +101,9 @@
                                     echo $each_class["course_image_path"];
                                 }
                             }
+                            else if ($_SESSION["usertype"]  == "Instructor"){
+                                echo $each_class["course_image_path"];
+                            }
                         ?>
                     " alt = "
                         <?php
@@ -100,6 +116,9 @@
                             else if($_SESSION["redirectTo"] == "myCourse"){
                                 echo $each_class["course_title"];
                             }
+                        }
+                        else if ($_SESSION["usertype"]  == "Instructor"){
+                            echo $each_class["course_title"];
                         }
                         ?>
                     "/>
@@ -114,6 +133,9 @@
                             else if($_SESSION["redirectTo"] == "myCourse"){
                                 echo $each_class["course_title"];
                             }
+                        }
+                        else if ($_SESSION["usertype"]  == "Instructor"){
+                            echo $each_class["course_title"];
                         }
                         ?>
                     </h2>
