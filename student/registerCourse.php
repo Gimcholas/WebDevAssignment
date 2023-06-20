@@ -19,29 +19,31 @@
 <body>
     <div class="banner">
         
-        <div class="image-container">
-            <img src="
-                <?php
-                    echo $course["course_image_path"];
-                ?>
-                " alt="Course img"
-            />
+        <div class="left-panel">
+            <div class="image-container">
+                <img src="
+                    <?php
+                        echo $course["course_image_path"];
+                    ?>
+                    " alt="Course img"
+                />
+            </div>
+
+            <div class="left-right-panel">
+                <h1>
+                    <?php
+                        echo $course["course_title"];
+                    ?>
+                </h1>
+                <p>
+                    <?php
+                        echo $course["start_date"]." - ".$course["end_date"];
+                    ?>
+                </p>
+            </div>
         </div>
 
         <div class="right-panel">
-            <h1>
-                <?php
-                    echo $course["course_title"];
-                ?>
-            </h1>
-            <p>
-                <?php
-                    echo $course["start_date"]." - ".$course["end_date"];
-                ?>
-            </p>
-        </div>
-
-        <div class="rightmost">
             <form action="enrollCourse.php" method="post" >
                 <button type='submit' name = "Enroll" value="<?php echo $course_id?>">Enroll</button>
             </form>
