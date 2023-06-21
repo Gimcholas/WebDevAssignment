@@ -1,0 +1,39 @@
+:root {
+    --text--theme--main   : Helvetica, Arial, Verdana;
+    --colour--theme--main : #a3d698;
+    --colour--theme--sub  : #9AD9B3;
+    --colour--theme--grey : #dddddd;
+}
+
+.announcement {
+    padding : 1rem 2rem 1rem 4rem;
+}
+
+.announcement h1{
+    margin-bottom: 2rem;
+}
+
+.each-announcement {
+    background-color: var(--colour--theme--grey);
+    margin-bottom: 1.5rem;
+    border-radius: 11px;
+    padding : 0.5rem 2rem;
+}
+
+.each-announcement .upper, .each-announcement .upper-left {
+    display: flex;
+    flex-wrap : wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.each-announcement .upper{
+    margin-bottom : 1rem;
+}
+
+.each-announcement img{
+    width : 1.8rem;
+    height : 1.8rem;
+    border-radius: 300rem;
+    margin-right : 1.5rem;
+}

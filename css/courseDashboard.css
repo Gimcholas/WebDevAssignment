@@ -2,13 +2,7 @@
     --text--theme--main   : Helvetica, Arial, Verdana;
     --colour--theme--main : #a3d698;
     --colour--theme--sub  : #9AD9B3;
-}
-
-* {
-    box-sizing: border-box;
-    margin:0;
-    padding:0;
-    font-family: var(--text--theme--main);
+    --colour--theme--grey : #dddddd;
 }
 
 body{

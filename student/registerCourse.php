@@ -13,7 +13,9 @@
 
 <head>
     <title>Register Course</title>
-    <link rel="stylesheet" type="text/css" href="registerCourse.css">
+    <
+    <link rel="stylesheet" type="text/css" href="../css/registerCourse.css">
+    <link rel="stylesheet" type="text/css" href = "../css/courseBanner.css">
 </head>
 
 <body>

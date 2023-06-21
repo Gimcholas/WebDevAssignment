@@ -1,9 +1,15 @@
 <!-- for testing purposes -->
 
 <?php
-    $_SESSION['usertype'] = 'Student';
-    $_SESSION["username"] = "student1";
-    $_SESSION['redirectTo'] = 'myCourse';
+    // $_SESSION['usertype'] = 'Student';
+    // $_SESSION["username"] = "student1";
+    // $_SESSION['redirectTo'] = 'registerCourse';
+
+    // $_SESSION['usertype'] = 'Student';
+    // $_SESSION["username"] = "student1";
+
+    $_SESSION['usertype'] = 'Instructor';
+    $_SESSION["username"] = "Tan";
     $_SESSION['redirectTo'] = 'registerCourse';
 ?>
 
@@ -32,7 +38,8 @@
             }
         ?>
     </title>
-    <link type="text/css" rel="stylesheet" href="courseDashboard.css">
+    <link type="text/css" rel="stylesheet" href="../css/universal.css">
+    <link type="text/css" rel="stylesheet" href="../css/courseDashboard.css">
 </head>
 
 <body>

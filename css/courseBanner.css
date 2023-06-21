@@ -2,13 +2,11 @@
     --text--theme--main   : Helvetica, Arial, Verdana;
     --colour--theme--main : #a3d698;
     --colour--theme--sub  : #9AD9B3;
+    --colour--theme--grey : #dddddd;
 }
 
-* {
-    margin : 0;
-    padding : 0;
+body {
     display: block;
-    font-family : var(--text-theme--main);
 }
 
 .banner {
@@ -40,45 +38,15 @@
 
 .banner .left-right-panel{
     color : white;
+
 }
 
 .banner .right-panel{
-    padding : 1rem 2rem 1rem 4rem;
+    padding : 0.5rem 4rem;
 }
 
 .banner .right-panel button{
     border-radius : 5px;
     width : 5rem;
     height : 2.5rem;
-}
-
-
-.container {
-    clear  : both;
-    padding: min(5%,3rem);
-}
-
-.container p {
-    margin-bottom : 3em;
-}
-
-.container h2 {
-    margin-bottom : 0.3em;
-}
-
-.container .instructor {
-    display : flex;
-    justify-content: middle;
-    align-items : center;
-    flex-wrap : wrap;
-}
-
-.container .instructor p {
-    margin-left : 1rem;
-    margin-top: 3rem;
-}
-
-.container .instructor img {
-    height : 5rem;
-    border-radius: 1000px;
 }

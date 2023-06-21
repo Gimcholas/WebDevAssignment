@@ -1,0 +1,36 @@
+:root {
+    --text--theme--main   : Helvetica, Arial, Verdana;
+    --colour--theme--main : #a3d698;
+    --colour--theme--sub  : #9AD9B3;
+    --colour--theme--grey : #dddddd;
+}
+
+.container {
+    clear  : both;
+    padding: min(5%,3rem);
+}
+
+.container p {
+    margin-bottom : 3em;
+}
+
+.container h2 {
+    margin-bottom : 0.3em;
+}
+
+.container .instructor {
+    display : flex;
+    justify-content: middle;
+    align-items : center;
+    flex-wrap : wrap;
+}
+
+.container .instructor p {
+    margin-left : 1rem;
+    margin-top: 3rem;
+}
+
+.container .instructor img {
+    height : 5rem;
+    border-radius: 1000px;
+}
