@@ -13,7 +13,7 @@
 <html>
     <head>
         <title>Enroll</title>
-        <link rel="stylesheet" href="enrollCourse.css">
+        <link rel="stylesheet" href="../css/enrollCourse.css">
     </head>
 
     <body>
@@ -85,9 +85,6 @@
         ?>
 
         </div>
-
-        
-
         
         </div>
 
