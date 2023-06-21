@@ -42,58 +42,125 @@
             ?>
             ">
 
-        <h3>
+            <h3>
+                <?php
+                    echo $instructor_profile['first_name']." ".$instructor_profile['last_name'];
+                ?>
+            </h3>
+
+            <h3>   
+                <?php
+                    echo $each_section['course_section_name'];
+                ?>
+            </h3>
+            <h3>   
+                <?php
+                    echo $each_section['day'];
+                ?>
+            </h3>
+            <h3>   
+                <?php
+                    echo $each_section['start_time']." - ".$each_section['end_time'];
+                ?>
+            </h3>
+
             <?php
-                echo $instructor_profile['first_name']." ".$instructor_profile['last_name'];
+                if($each_section["status"] == "Open"){
             ?>
-        </h3>
+                <button open-modal>Enroll</button>
+                <dialog dialog-modal class = "dialog-container">
+                    <form>
+                        <p>
+                            Course : 
+                            <?php
+                                echo $course['course_title'];
+                            ?>
+                        </p>
 
-        <h3>   
+                        <p>
+                            Section : 
+                            <?php
+                                echo $each_section['course_section_name'];
+                            ?>
+                        </p>
+
+                        <p>
+                            Lecturer : 
+                            <?php
+                                echo $instructor_profile['first_name']." ".$instructor_profile['last_name'];
+                            ?>
+                        </p>
+
+                        <p>
+                            Duration : 
+                            <?php
+                                echo $course['start_date']." - ".$course['end_date'];
+                            ?>
+                        </p>
+
+                        <p>
+                            Date : 
+                            <?php
+                                echo $each_section['day'];
+                            ?>
+                        </p>
+
+                        <p>
+                            Time : 
+                            <?php
+                                echo $each_section['start_time']." - ".$each_section['end_time'];
+                            ?>
+                        </p>
+
+                        <p> </p>
+
+                        <p>
+                            Do you really want to enroll this course?
+                        </p>
+
+                        <button type="submit" formmethod="dialog">Cancel </button>
+                        <button type="submit" method = "POST" name='confirmation' value= <?php echo $each_section['course_section_id']?>>Confirm</button>
+                    </form>
+                </dialog>
             <?php
-                echo $each_section['course_section_name'];
+                }
             ?>
-        </h3>
-        <h3>   
+
             <?php
-                echo $each_section['day'];
+                if($each_section["status"] == "Close"){
             ?>
-        </h3>
-        <h3>   
+                <h3> Closed </h3>
             <?php
-                echo $each_section['start_time']." - ".$each_section['end_time'];
+                }
             ?>
-        </h3>
-
-        <?php
-            if($each_section["status"] == "Open"){
-        ?>
-            <form action='enrollConfirmation.php' method='post'>
-                <button type='submit' name='Enroll' value=<?php echo $each_section['course_section_id']?>>Enroll</button>
-            </form>
-
-        <?php
-            }
-        ?>
-
-        <?php
-            if($each_section["status"] == "Close"){
-
-        ?>
-            <h3> Closed </h3>
-        <?php
-            }
-        ?>
 
         </div>
-        
-        </div>
-
-
 
         <?php
             }
         ?>
 
+        <script>
+            const dialogModal = document.querySelector("[dialog-modal]")
+            const openModal = document.querySelector('[open-modal]')
+            const closeModal = document.querySelector('[close-modal]')
+            openModal.addEventListener("click", () =>{
+                dialogModal.showModal()
+            })
 
+            closeModal.addEventListener("click", () =>{
+                dialogModal.close()
+            })
+
+        </script>
     </body>
 </html>
+
+<?php
+    if(isset($_POST['confirmation'])){
+        $disable_foreign_key_check_sql = "SET FOREIGN_KEY_CHECKS=0";
+        mysqli_query($connect,$disable_foreign_key_check_sql);
+        $insert_sql = "INSERT INTO course_student (course_section_id, username, course_completed) VALUES ('$course_section_id', '".$_SESSION["username"]."', '0')";
+        mysqli_query($connect,$insert_sql);
+    }
+?>
