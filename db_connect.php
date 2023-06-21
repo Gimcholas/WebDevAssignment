@@ -2,6 +2,6 @@
     $connect= mysqli_connect("localhost","root","","assignment");
     if(!$connect)
         die('Could not connect to database:'.mysqli_error($connect));
-    else
-        echo "Connected to database"
+    // else
+    //     echo "Connected to database"
 ?>

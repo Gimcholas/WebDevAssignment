@@ -1,5 +1,8 @@
 <?php include '../db_connect.php'; ?>
 <?php
+session_start();
+?>
+<?php
     $course_section_id = $_GET['section'];
     $course_id = $_GET['course'];
     $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
@@ -43,10 +46,30 @@
         </div>
 
         <div class="right-panel">
-            <form action="enrollCourse.php" method="post" >
-                <button type='submit' name = "Enroll" value="<?php echo $course_id?>">Enroll</button>
-            </form>
+            <div>
+                <button id="toggleDetail">View Course Detail</button>
+            </div>
+                <?php
+                    if ($_SESSION["usertype"]  == "Instructor"){
+                ?>
+                    <div>
+                        <button type='submit' name = "viewStudentList" value="<?php echo $course_section_id?>">View Student List</button>
+                    </div>
+                    <?php
+                    }
+                    ?>
         </div>
+    </div>
+
+    <div id = "hiddenDetail"  style="display: none;">
+        <h3>
+            Course Description
+        </h3>
+        <p>
+            <?php
+                echo $course["course_description"]; 
+            ?>
+        </p> 
     </div>
 
     <div class="announcement">
@@ -61,6 +84,7 @@
             <p> No announcement found </p>
         <?php
             }
+
             else{
                 while($row = mysqli_fetch_assoc($announcement_result)){
         ?>
@@ -83,6 +107,7 @@
                             echo $row['upload_date_time'];
                         ?>
                     </h3>
+
                 </div>
 
                 <div class="bottom">
@@ -104,6 +129,21 @@
             }
         ?>
     </div>
+
+    
+    <script>
+        const toggleButton = document.getElementById("toggleDetail")
+        const courseDetail = document.getElementById("hiddenDetail")
+
+        toggleButton.addEventListener("click", function(e) {
+            if(courseDetail.style.display == "none"){
+                courseDetail.style.display = "block"
+            }
+            else {
+                courseDetail.style.display = "none"
+            }
+        })
+    </script>
 </body>
 
 </html>

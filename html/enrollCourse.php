@@ -161,6 +161,9 @@
         $disable_foreign_key_check_sql = "SET FOREIGN_KEY_CHECKS=0";
         mysqli_query($connect,$disable_foreign_key_check_sql);
         $insert_sql = "INSERT INTO course_student (course_section_id, username, course_completed) VALUES ('$course_section_id', '".$_SESSION["username"]."', '0')";
-        mysqli_query($connect,$insert_sql);
+        $output = mysqli_query($connect,$insert_sql);
+        if($output){
+            header("Location: ../html/courseDashboard.php");
+        }
     }
 ?>

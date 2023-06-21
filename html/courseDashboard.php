@@ -1,15 +1,15 @@
 <!-- for testing purposes -->
 
 <?php
-    $_SESSION['usertype'] = 'Student';
-    $_SESSION["username"] = "student1";
-    $_SESSION['redirectTo'] = 'registerCourse';
+    // $_SESSION['usertype'] = 'Student';
+    // $_SESSION["username"] = "student1";
+    // $_SESSION['redirectTo'] = 'registerCourse';
 
     // $_SESSION['usertype'] = 'Student';
     // $_SESSION["username"] = "student1";
-
-    // $_SESSION['usertype'] = 'Instructor';
-    // $_SESSION["username"] = "Tan";
+    session_start();
+    $_SESSION['usertype'] = 'Instructor';
+    $_SESSION["username"] = "Tan";
 ?>
 
 <?php include '../db_connect.php'; ?>
@@ -76,7 +76,7 @@
                     <?php
                         if ($_SESSION["usertype"]  == "Student"){
                             if($_SESSION["redirectTo"] == "registerCourse"){
-                                echo "../student/registerCourse.php?course=".$row['course_id'];
+                                echo "registerCourse.php?course=".$row['course_id'];
                             }
             
                             else if($_SESSION["redirectTo"] == "myCourse"){
