@@ -74,7 +74,21 @@ session_start();
 
     <div class="announcement">
         <h1> Announcements </h1>
+
+        <?php 
+            if($_SESSION["usertype"] == "Instructor"){
+        ?>
+            <input id="newAnnouncementInput" placeholder="New announcement"> </input>
+
+            <form id="newAnnouncementForm" style="display: none;">
+                <input type="text" name="title" placeholder="Title"></input>
+                <input type="text" name="content" placeholder="Content"></input>
+                <button type="submit">Submit</button>
+            </form>
+
+        
         <?php
+            }
             $announcement_sql = "SELECT * FROM announcement WHERE course_section_id = {$course_section_id}";
             $announcement_result = mysqli_query($connect, $announcement_sql);	
             $count = mysqli_num_rows($announcement_result);
@@ -134,6 +148,8 @@ session_start();
     <script>
         const toggleButton = document.getElementById("toggleDetail")
         const courseDetail = document.getElementById("hiddenDetail")
+        const newAnnouncementInput = document.getElementById("newAnnouncementInput")
+        const newAnnouncementForm = document.getElementById("newAnnouncementForm")
 
         toggleButton.addEventListener("click", function(e) {
             if(courseDetail.style.display == "none"){
@@ -143,6 +159,17 @@ session_start();
                 courseDetail.style.display = "none"
             }
         })
+
+        newAnnouncementInput.addEventListener("click", function(e){
+            if(newAnnouncementForm.style.display == "none"){
+                newAnnouncementForm.style.display = "block"
+            }
+            else {
+                newAnnouncementForm.style.display = "none"
+            }
+        })
+
+
     </script>
 </body>
 
