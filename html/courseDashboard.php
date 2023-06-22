@@ -2,15 +2,15 @@
 
 <?php
     session_start();
-    $_SESSION['usertype'] = 'Student';
-    $_SESSION["username"] = "Student1";
-    $_SESSION['redirectTo'] = 'registerCourse';
+    // $_SESSION['usertype'] = 'Student';
+    // $_SESSION["username"] = "Student1";
+    // $_SESSION['redirectTo'] = 'registerCourse';
 
     // $_SESSION['usertype'] = 'Student';
     // $_SESSION["username"] = "student1";
 
-    // $_SESSION['usertype'] = 'Instructor';
-    // $_SESSION["username"] = "Tan";
+    $_SESSION['usertype'] = 'Instructor';
+    $_SESSION["username"] = "Tan";
 ?>
 
 <?php include '../db_connect.php'; ?>
@@ -51,7 +51,7 @@
                     // rules is set that only course that student have not register will be displayed and the course (any section in the course) must be open in order to be  display
                     // for session testing
                     $all_unregistered_course_sql = "SELECT DISTINCT * FROM course WHERE course_id IN (SELECT course_id FROM course_section WHERE status = 'Open' 
-                                                    AND (course_section_id NOT IN (SELECT course_section_id FROM course_student WHERE username = '{$_SESSION['username']}')))";
+                                                    AND (course_section_id NOT IN (SELECT course_section_id FROM course_student WHERE username = '{$_SESSION['username']}'))) ORDER BY course_title";
                     $result = mysqli_query($connect,$all_unregistered_course_sql);
                 }
 

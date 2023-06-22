@@ -179,7 +179,7 @@
         $insert_sql = "INSERT INTO course_student (course_section_id, username) VALUES ('$course_section_id', '".$_SESSION["username"]."');";
         $output = mysqli_query($connect,$insert_sql);
         if($output){
-            header("Location: ../html/courseDashboard.php");
+            header("Location: courseDashboard.php");
         }
     }
 ?>
