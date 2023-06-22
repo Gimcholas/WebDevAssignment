@@ -6,11 +6,11 @@
     --colour--theme--grey--light : #eeeeee;
 }
 
-.announcement {
+.announcement, #hiddenStudentList {
     padding : 1rem 2rem 1rem 4rem;
 }
 
-.announcement h1{
+.announcement h1,#hiddenStudentList h1{
     margin-bottom: 0.2rem;
 }
 
@@ -21,7 +21,7 @@
     padding : 0.5rem 2rem;
 }
 
-.each-announcement .upper, .each-announcement .upper-left {
+.each-announcement .upper, .each-announcement .upper-left{
     display: flex;
     flex-wrap : wrap;
     justify-content: space-between;
@@ -66,4 +66,26 @@
     width : 8rem;
     height : 2rem;
     border-radius: 5px;
+}
+
+#hiddenStudentList .each-student {
+    display: flex;
+    flex-wrap : wrap;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+
+#hiddenStudentList .each-student img {
+    width : 2.5rem;
+    height : 2.5rem;
+    border-radius: 300rem;
+    margin-right : 1.5rem;
+}
+
+#hiddenStudentList .each-student p {
+    margin : 0;
+    padding : 0;
+    font-size: 1rem;
 }
