@@ -1,14 +1,8 @@
-<?php include '../db_connect.php' ?>
-<?php
-    if(isset($_POST["Enroll"])){
-        $course_id = $_POST['Enroll'];
-        $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
-        $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
-
-        $course_section_sql = "SELECT * FROM course_section WHERE course_id = $course_id";
-        $course_section_query = mysqli_query($connect,$course_section_sql);
-    }
+<?php 
+    include '../db_connect.php' ;
+    session_start();
 ?>
+
 
 <html>
     <head>
@@ -17,6 +11,17 @@
     </head>
 
     <body>
+
+        <?php
+        if(isset($_POST["Enroll"])){
+            $course_id = $_POST['Enroll'];
+            $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
+            $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
+
+            $course_section_sql = "SELECT * FROM course_section WHERE course_id = $course_id";
+            $course_section_query = mysqli_query($connect,$course_section_sql);
+            ?>
+
         <h1>
             <?php
                 echo $course['course_title'];
@@ -67,9 +72,10 @@
             <?php
                 if($each_section["status"] == "Open"){
             ?>
-                <button open-modal>Enroll</button>
-                <dialog dialog-modal class = "dialog-container">
-                    <form>
+                <button open-modal="<?php echo $each_section['course_section_id']; ?>">Enroll</button>
+
+                <dialog dialog-modal class="dialog-container dialog-<?php echo $each_section['course_section_id']; ?>">
+                    <form method="post" action="">
                         <p>
                             Course : 
                             <?php
@@ -119,7 +125,7 @@
                         </p>
 
                         <button type="submit" formmethod="dialog">Cancel </button>
-                        <button type="submit" method = "POST" name='confirmation' value= <?php echo $each_section['course_section_id']?>>Confirm</button>
+                        <button type="submit" method = "post" name='confirmation' value= <?php echo $each_section['course_section_id']?>>Confirm</button>
                     </form>
                 </dialog>
             <?php
@@ -141,29 +147,39 @@
         ?>
 
         <script>
-            const dialogModal = document.querySelector("[dialog-modal]")
-            const openModal = document.querySelector('[open-modal]')
-            const closeModal = document.querySelector('[close-modal]')
-            openModal.addEventListener("click", () =>{
-                dialogModal.showModal()
-            })
 
-            closeModal.addEventListener("click", () =>{
-                dialogModal.close()
-            })
+            const dialogModals = document.querySelectorAll("[dialog-modal]");
+            const openButtons = document.querySelectorAll('[open-modal]');
+
+            openButtons.forEach((openButton) => {
+                openButton.addEventListener("click", () => {
+                    const sectionId = openButton.getAttribute("open-modal");
+                    const dialogModal = document.querySelector(`.dialog-${sectionId}`);
+                    dialogModal.showModal();
+                });
+            });
+
+            dialogModals.forEach((dialogModal) => {
+                const closeModal = dialogModal.querySelector('[close-modal]');
+                closeModal.addEventListener("click", () => {
+                    dialogModal.close();
+                });
+            });
 
         </script>
+        <?php
+            }
+        ?>
     </body>
 </html>
 
 <?php
     if(isset($_POST['confirmation'])){
-        $disable_foreign_key_check_sql = "SET FOREIGN_KEY_CHECKS=0";
-        mysqli_query($connect,$disable_foreign_key_check_sql);
-        $insert_sql = "INSERT INTO course_student (course_section_id, username, course_completed) VALUES ('$course_section_id', '".$_SESSION["username"]."', '0')";
+        $course_section_id = $_POST["confirmation"];
+        $insert_sql = "INSERT INTO course_student (course_section_id, username) VALUES ('$course_section_id', '".$_SESSION["username"]."');";
         $output = mysqli_query($connect,$insert_sql);
         if($output){
-            header("Location: ../html/courseDashboard.php");
+            header("Location: courseDashboard.php");
         }
     }
 ?>

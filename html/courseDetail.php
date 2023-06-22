@@ -1,15 +1,14 @@
-<?php include '../db_connect.php'; ?>
+<html>
+
 <?php
-session_start();
-?>
-<?php
+    include '../db_connect.php';
+    ob_start();
+    session_start();
     $course_section_id = $_GET['section'];
     $course_id = $_GET['course'];
     $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
     $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
 ?>
-
-<html>
 
 <head>
     <title>Course Details</title>
@@ -75,21 +74,25 @@ session_start();
     <div class="announcement">
         <h1> Announcements </h1>
 
+        <div id ="new-announcement-container">
         <?php 
             if($_SESSION["usertype"] == "Instructor"){
         ?>
-            <input id="newAnnouncementInput" placeholder="New announcement"> </input>
-
-            <form id="newAnnouncementForm" style="display: none;">
-                <input type="text" name="title" placeholder="Title"></input>
-                <input type="text" name="content" placeholder="Content"></input>
-                <button type="submit">Submit</button>
+            <form id = "newAnnouncementForm" method="POST" action="">
+                <input id="newAnnouncementInput" placeholder="New announcement Title" name= "title" required> </input>
+                <input class="hiddenAttributeNewAnnouncement" style="display: none;" name="content" placeholder="New announcement Content" required></input>
+                <div class="hiddenAttributeNewAnnouncement" style="display: none;" >
+                    <div id="hidden-right-left">
+                        <button type="button" id =  "cancelAnnouncement">Cancel</button>
+                        <button type="submit" name = "makeAnnouncement">Submit</button>
+                    </div>  
+                </div>
             </form>
 
-        
+        </div>
         <?php
             }
-            $announcement_sql = "SELECT * FROM announcement WHERE course_section_id = {$course_section_id}";
+            $announcement_sql = "SELECT * FROM announcement WHERE course_section_id = {$course_section_id} ORDER BY upload_date_time DESC";
             $announcement_result = mysqli_query($connect, $announcement_sql);	
             $count = mysqli_num_rows($announcement_result);
 
@@ -149,6 +152,9 @@ session_start();
         const toggleButton = document.getElementById("toggleDetail")
         const courseDetail = document.getElementById("hiddenDetail")
         const newAnnouncementInput = document.getElementById("newAnnouncementInput")
+        const hiddenAttributeNewAnnouncement = document.querySelectorAll(".hiddenAttributeNewAnnouncement")
+        const cancelAnnouncementButton = document.getElementById("cancelAnnouncement")
+        // const newannouncementContainer = document.getElementById("new-announcement-container")
         const newAnnouncementForm = document.getElementById("newAnnouncementForm")
 
         toggleButton.addEventListener("click", function(e) {
@@ -160,17 +166,47 @@ session_start();
             }
         })
 
-        newAnnouncementInput.addEventListener("click", function(e){
-            if(newAnnouncementForm.style.display == "none"){
-                newAnnouncementForm.style.display = "block"
-            }
-            else {
-                newAnnouncementForm.style.display = "none"
-            }
-        })
+        cancelAnnouncementButton.addEventListener("click", function(e) {
+            Array.from(hiddenAttributeNewAnnouncement).forEach(function(f) {
+                newAnnouncementForm.reset();
+                f.style.display = "none";
+            });
+        });
+
+        newAnnouncementInput.addEventListener("click", function(e) {
+            Array.from(hiddenAttributeNewAnnouncement).forEach(function(f) {
+                if (f.style.display === "none") {
+                    f.style.display = "block";
+                } 
+                // else {
+                //     f.style.display = "none";
+                // }
+            });
+        });
+
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
 
 
     </script>
 </body>
 
+
 </html>
+
+<?php
+    if(isset($_POST['makeAnnouncement'])){
+        $datetime = new Datetime();
+        $formattedDateTime = $datetime->format('Y-m-d H:i:s');
+
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $username = $_SESSION['username'];
+        $sql = "INSERT INTO announcement (course_section_id,username,title,content,upload_date_time) VALUES ('$course_section_id','$username','$title','$content','$formattedDateTime')";
+        mysqli_query($connect,$sql);
+        header("Refresh:0");
+        exit;
+    }
+    ob_end_flush();
+?>
