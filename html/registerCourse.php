@@ -13,14 +13,12 @@
 
 <head>
     <title>Register Course</title>
-    <
     <link rel="stylesheet" type="text/css" href="../css/registerCourse.css">
     <link rel="stylesheet" type="text/css" href = "../css/courseBanner.css">
 </head>
 
 <body>
     <div class="banner">
-        
         <div class="left-panel">
             <div class="image-container">
                 <img src="
@@ -59,8 +57,11 @@
                 echo $course["course_description"];
             ?>
         </p>
+    </div>
 
-        <h2>Course Instructor</h2>
+
+    <div class= "instructor-list">
+    <h2>Course Instructor</h2>
         <?php
             while($section = mysqli_fetch_assoc($course_section)){
         ?>

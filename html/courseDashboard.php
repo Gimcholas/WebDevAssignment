@@ -1,15 +1,16 @@
 <!-- for testing purposes -->
 
 <?php
-    // $_SESSION['usertype'] = 'Student';
-    // $_SESSION["username"] = "student1";
-    // $_SESSION['redirectTo'] = 'registerCourse';
+    session_start();
+    $_SESSION['usertype'] = 'Student';
+    $_SESSION["username"] = "Student1";
+    $_SESSION['redirectTo'] = 'registerCourse';
 
     // $_SESSION['usertype'] = 'Student';
     // $_SESSION["username"] = "student1";
-    session_start();
-    $_SESSION['usertype'] = 'Instructor';
-    $_SESSION["username"] = "Tan";
+
+    // $_SESSION['usertype'] = 'Instructor';
+    // $_SESSION["username"] = "Tan";
 ?>
 
 <?php include '../db_connect.php'; ?>

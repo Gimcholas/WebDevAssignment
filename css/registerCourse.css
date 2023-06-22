@@ -5,9 +5,8 @@
     --colour--theme--grey : #dddddd;
 }
 
-.container {
-    clear  : both;
-    padding: min(5%,3rem);
+.container,.instructor-list {
+    padding: 0 min(5%,3rem);
 }
 
 .container p {
@@ -18,19 +17,33 @@
     margin-bottom : 0.3em;
 }
 
-.container .instructor {
+.instructor-list {
     display : flex;
     justify-content: middle;
     align-items : center;
     flex-wrap : wrap;
 }
 
-.container .instructor p {
-    margin-left : 1rem;
-    margin-top: 3rem;
+.instructor-list h2{
+    width : 100%;
+    padding-bottom : 0.3em;
 }
 
-.container .instructor img {
+.instructor-list .instructor {
+    display : flex;
+    justify-content: middle;
+    align-items : center;
+    flex-wrap : wrap;
+    width :50%;
+    margin-bottom: 2rem;
+}
+
+.instructor-list .instructor p {
+    margin-left : 1rem;
+    margin-right : 6rem;
+}
+
+.instructor-list .instructor img {
     height : 5rem;
     border-radius: 1000px;
 }
