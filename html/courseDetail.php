@@ -1,14 +1,28 @@
-<html>
-
 <?php
     include '../db_connect.php';
-    ob_start();
     session_start();
     $course_section_id = $_GET['section'];
     $course_id = $_GET['course'];
     $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
     $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
 ?>
+
+<?php
+    if(isset($_POST['makeAnnouncement'])){
+        $datetime = new Datetime();
+        $formattedDateTime = $datetime->format('Y-m-d H:i:s');
+
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $username = $_SESSION['username'];
+        $sql = "INSERT INTO announcement (course_section_id,username,title,content,upload_date_time) VALUES ('$course_section_id','$username','$title','$content','$formattedDateTime')";
+        mysqli_query($connect,$sql);
+        header("Refresh:0");
+        exit;
+    }
+?>
+
+<html>
 
 <head>
     <title>Course Details</title>
@@ -46,13 +60,13 @@
 
         <div class="right-panel">
             <div>
-                <button id="toggleDetail">View Course Detail</button>
+                <button id="toggleDetail">Course Description</button>
             </div>
                 <?php
                     if ($_SESSION["usertype"]  == "Instructor"){
                 ?>
                     <div>
-                        <button type='submit' name = "viewStudentList" value="<?php echo $course_section_id?>">View Student List</button>
+                        <button type='submit' id="toggleStudentList" > Student List</button>
                     </div>
                     <?php
                     }
@@ -60,6 +74,7 @@
         </div>
     </div>
 
+    <!-- Hidden Course Description (to be open only when user click view) -->
     <div id = "hiddenDetail"  style="display: none;">
         <h3>
             Course Description
@@ -71,7 +86,52 @@
         </p> 
     </div>
 
-    <div class="announcement">
+
+    <div id="hiddenStudentList" style="display:none;">
+        <h1> Students <h1>
+        <?php
+            $student_list_sql = "   SELECT * FROM course_student as a 
+                                    JOIN student as s ON a.username = s.username 
+                                    JOIN user as u ON a.username = u.username 
+                                    WHERE course_section_id = $course_section_id 
+                                    ORDER BY s.last_name, s.first_name";
+            $student_list = mysqli_query($connect,$student_list_sql);
+            $student_count = mysqli_num_rows($student_list);
+
+            if($student_count == 0){
+                ?>
+                <p>No student found</p>
+
+            <?php
+                }
+            else {
+                while($each_student = mysqli_fetch_array($student_list)){
+            ?>
+            <div class="each-student">
+                <img src="
+                <?php
+                    echo $each_student['profile_image_path']
+                ?>
+                " alt = "
+                <?php
+                    echo $each_student["first_name"]." ".$each_student["last_name"];
+                ?> "/>
+
+                <p>
+                    <?php
+                    echo $each_student["first_name"]." ".$each_student["last_name"];
+                   ?> 
+                </p>
+
+            </div>
+
+            <?php
+                }
+            }
+        ?>
+    </div>
+
+    <div class="announcement" style="display: block;"  id="hiddenAnnouncement">
         <h1> Announcements </h1>
 
         <div id ="new-announcement-container">
@@ -149,20 +209,38 @@
 
     
     <script>
-        const toggleButton = document.getElementById("toggleDetail")
-        const courseDetail = document.getElementById("hiddenDetail")
-        const newAnnouncementInput = document.getElementById("newAnnouncementInput")
-        const hiddenAttributeNewAnnouncement = document.querySelectorAll(".hiddenAttributeNewAnnouncement")
-        const cancelAnnouncementButton = document.getElementById("cancelAnnouncement")
-        // const newannouncementContainer = document.getElementById("new-announcement-container")
-        const newAnnouncementForm = document.getElementById("newAnnouncementForm")
+        const toggleDetail = document.getElementById("toggleDetail");
+        const toggleStudentList = document.getElementById("toggleStudentList");
+        const hiddenStudentList = document.getElementById("hiddenStudentList");
+        const hiddenAnnouncement = document.getElementById("hiddenAnnouncement");
+        const courseDetail = document.getElementById("hiddenDetail");
+        const newAnnouncementInput = document.getElementById("newAnnouncementInput");
+        const hiddenAttributeNewAnnouncement = document.querySelectorAll(".hiddenAttributeNewAnnouncement");
+        const cancelAnnouncementButton = document.getElementById("cancelAnnouncement");
+        // const newannouncementContainer = document.getElementById("new-announcement-container");
+        const newAnnouncementForm = document.getElementById("newAnnouncementForm");
 
-        toggleButton.addEventListener("click", function(e) {
+        toggleDetail.addEventListener("click", function(e) {
             if(courseDetail.style.display == "none"){
-                courseDetail.style.display = "block"
+                courseDetail.style.display = "block";
+                toggleDetail.innerHTML = "Hide Description";
             }
             else {
-                courseDetail.style.display = "none"
+                courseDetail.style.display = "none";
+                toggleDetail.innerHTML = "Course Description";
+            }
+        })
+
+        toggleStudentList.addEventListener("click", function(e) {
+            if(hiddenStudentList.style.display == "none"){
+                hiddenStudentList.style.display = "block";
+                hiddenAnnouncement.style.display = "none";
+                toggleStudentList.innerHTML = "Announcement";
+            }
+            else {
+                hiddenStudentList.style.display = "none";
+                hiddenAnnouncement.style.display = "block";
+                toggleStudentList.innerHTML = "Student List";
             }
         })
 
@@ -194,19 +272,3 @@
 
 
 </html>
-
-<?php
-    if(isset($_POST['makeAnnouncement'])){
-        $datetime = new Datetime();
-        $formattedDateTime = $datetime->format('Y-m-d H:i:s');
-
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $username = $_SESSION['username'];
-        $sql = "INSERT INTO announcement (course_section_id,username,title,content,upload_date_time) VALUES ('$course_section_id','$username','$title','$content','$formattedDateTime')";
-        mysqli_query($connect,$sql);
-        header("Refresh:0");
-        exit;
-    }
-    ob_end_flush();
-?>
