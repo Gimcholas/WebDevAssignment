@@ -4,7 +4,7 @@ session_start()
 <html>
     <head>
         <title>Login</title>
-        <link rel="stylesheet" type="text/css" href = "login.css">
+        <link rel="stylesheet" type="text/css" href = "../css/login.css">
     </head>
 
     <body>
@@ -49,7 +49,7 @@ session_start()
                 header("Location: ../admin/dashboard.php");
             }
             else if ($row["usertype"] == "Student"){
-                header("Location: ../student/courseDashboard.php");
+                header("Location: courseDashboard.php");
             }
         }
         else {
