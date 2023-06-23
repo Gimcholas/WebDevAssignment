@@ -2,9 +2,9 @@
 
 This is a web-based Training Provider Management System
 
-## Implemented using
+## Developed using
 
-This project is implemented using:
+This project is developed using:
 
 - PHP
 - HTML
