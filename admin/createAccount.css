@@ -1,7 +1,6 @@
 body {
     margin: 0;
     padding: 0 0;
-
 }
 
 header{
@@ -39,52 +38,42 @@ h2{
     font-weight: bolder;
 }
 
-input{
-    padding: 20px 250px 20px 0px;
+input, select{
+    padding: 20px 0px 20px 60px;
     border: 1px solid #ccc;
     border-radius: 3px;
     position: relative;
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    background-size: 20px;
+    width: 360px;
 }
 
-select {
-    padding: 20px 290px 20px 0px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+.input-box-user img, .input-box-pw img{
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 8px;
+    width: 40px;
+    z-index: 2;
 }
 
-.input-box select{
-    padding: 20px 230px 20px 0px;
-    margin-bottom: 0px;
+.operations-button{
+    display: flex;
+    justify-content: center;
 }
-
 .operations-button input{
-    font-size: 25px;
-    background-color: lightgray;
-    border: none;
+    font-size: 20px;
+    background-color: lightgreen;
+    border: 1px solid black;
     margin: 0px;
     margin-left: 30px;
     margin-bottom: 20px;
     margin-top: 30px;
     padding: 20px;
     font-weight: bold;
+    width: fit-content;
 }
 
 .operations-button input:hover{
     cursor: pointer;
     background-color: rgb(154, 150, 150);
-}
-
-.input-box-user input {
-
-    background-image: url('../files/defaultProfileImage.jpg');
-}
-
-.input-box-pw input {
-    background-image: url('../files/password_icon.png');
 }
 
 /*box shadow on focus (effect)*/

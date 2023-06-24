@@ -9,7 +9,6 @@
 <head> 
     <title>Create New Account</title>
     <link rel="stylesheet" type="text/css" href = "createAccount.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -22,12 +21,14 @@
     <form action="createAccount.php" method="POST">
         <h2>Create New Account</h2>
         <div class="input-box-user">
-            <input type="text" name="username" placeholder="" required><br><br>
+            <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
+            <input type="text" name="username" placeholder="Username" required><br><br>
         </div>
         <div class="input-box-pw">
-            <input type="password" name="password" placeholder="" required><br><br>
+            <img src="../files/password_icon.png" alt="PwIcon">
+            <input type="password" name="password" placeholder="Password" required><br><br>
         </div>  
-        <div>
+        <div class="input-box">
             <select name="usertype" id="usertype" onchange="updateForm()" required>
                 <option hidden disabled selected value>Select a usertype</option>
                 <option value="Admin">Admin</option>
@@ -37,11 +38,10 @@
             </select>
         </div>
         <div id="additionalFields"></div>
-        <div class = "operations-button">
-            <a href="dashboard.php"><input type="button" value = "Back" class = "back-button"></a>
-            <input type="submit" name="submit" value="Create Account" class = "create-button">
+        <div  class="operations-button">
+            <a href="dashboard.php"><input type="button" value = "Back"></a><br><br>
+            <input type="submit" name="submit" value="Create Account"><br><br>
         </div>
-
     </form>
     </div>
 </body>
