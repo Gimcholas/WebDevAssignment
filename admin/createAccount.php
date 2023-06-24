@@ -8,23 +8,22 @@
 <html>
 <head> 
     <title>Create New Account</title>
-    <link rel='stylesheet' type="text/css" href=style.css>
+    <link rel="stylesheet" type="text/css" href = "createAccount.css">
 </head>
 
 <body>
     <div class="create-account-form">
     <form action="createAccount.php" method="POST">
         <h2>Create New Account</h2>
-        <div class="input-box">
-            <label>Username</label>
+        <div class="input-box-user">
+            <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
             <input type="text" name="username" placeholder="Username" required><br><br>
         </div>
-        <div class="input-box">
-            <label>Password</label>
+        <div class="input-box-pw">
+            <img src="../files/password_icon.png" alt="PwIcon">
             <input type="password" name="password" placeholder="Password" required><br><br>
         </div>  
         <div class="input-box">
-            <label>Usertype: </label>
             <select name="usertype" id="usertype" onchange="updateForm()" required>
                 <option hidden disabled selected value>Select a usertype</option>
                 <option value="Admin">Admin</option>
@@ -34,9 +33,10 @@
             </select><br><br>
         </div>
         <div id="additionalFields"></div>
-    
-        <input type="submit" name="submit" value="Create Account"><br><br>
-        <a href="dashboard.php"><input type="button" value = "Back"></a><br><br>
+        <div  class="operations-button">
+            <a href="dashboard.php"><input type="button" value = "Back"></a><br><br>
+            <input type="submit" name="submit" value="Create Account"><br><br>
+        </div>
     </form>
     </div>
 </body>
@@ -180,7 +180,6 @@ if(isset($_POST["submit"])) {
         
         const selectProviderHtml = 
             `<div class="input-box">
-            <label>Provider Name</label>
             <select name="provider" required>
             <option disabled selected value>Select the training provider</option>
             <?php 
@@ -204,27 +203,22 @@ if(isset($_POST["submit"])) {
             </div>`;
 
         const nameInputHtml = `<div class="input-box">
-            <label>First Name</label>
             <input type="text" name="firstName" placeholder="First Name" required><br><br>
             </div>
             <div class="input-box">
-            <label>Last Name</label>
             <input type="text" name="lastName" placeholder="Last Name" required><br><br>
             </div>`;
             
         const contactInputHtml = `<div class="input-box">
-            <label>Contact Number</label>
             <input type="tel" name="contactNumber" placeholder="Contact Number"><br><br>
             </div>
             <div class="input-box">
-            <label>Email</label>
             <input type="email" name="email" placeholder="Contact Email"><br><br>
             </div>`;
 
         if (usertypeSelected == "Provider") {
             const html = 
             `<div class="input-box">
-            <label>Provider Name</label>
             <input type="text" name="providerName" placeholder="Provider Name" required><br><br>
             </div>`;
             additionalForm.innerHTML = html + contactInputHtml;
@@ -235,11 +229,9 @@ if(isset($_POST["submit"])) {
         else if (usertypeSelected == "Student") {
             const html = 
             `<div class="input-box">
-            <label>Date Of Birth</label>
             <input type="date" name="dateOfBirth" required><br><br>
             </div>
             <div class="input-box">
-            <label>Academic Program</label>
             <input type="text" name="academicProgram" placeholder="Academic Program" required><br><br>
             </div>
             `;

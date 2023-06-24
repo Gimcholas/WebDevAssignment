@@ -1,0 +1,84 @@
+body {
+    margin: 0;
+    padding: 0 0;
+}
+
+header{
+    font-family: 'Montserrat', sans-serif;
+    background: #a3d698;
+    color: white;
+    padding: 1px 20px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+*{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.create-account-form{
+    text-align: center;
+}
+
+form{
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    display: block;
+    border-radius: 10px;
+}
+
+h2{
+    font-size: 45px;
+    padding-top: 30px;
+    font-weight: bolder;
+}
+
+input, select{
+    padding: 20px 0px 20px 60px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    position: relative;
+    width: 360px;
+}
+
+.input-box-user img, .input-box-pw img{
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 8px;
+    width: 40px;
+    z-index: 2;
+}
+
+.operations-button{
+    display: flex;
+    justify-content: center;
+}
+.operations-button input{
+    font-size: 20px;
+    background-color: lightgreen;
+    border: 1px solid black;
+    margin: 0px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    padding: 20px;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.operations-button input:hover{
+    cursor: pointer;
+    background-color: rgb(154, 150, 150);
+}
+
+/*box shadow on focus (effect)*/
+input:focus , select:focus{
+    outline: none;
+    border-color: #aaa;
+    box-shadow: 0 0 5px #aaa;
+}
