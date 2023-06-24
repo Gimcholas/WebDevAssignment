@@ -41,46 +41,46 @@
     
     <?php
     if(isset($_GET['course'])) {
-        // $sql = "SELECT * FROM course where course_id=" . $_GET['course'] . ";";
-        // $result = mysqli_query($connect,$sql);
-        // $row = mysqli_fetch_assoc($result);
+        $sql = "SELECT * FROM course where course_id=" . $_GET['course'] . ";";
+        $result = mysqli_query($connect,$sql);
+        $row = mysqli_fetch_assoc($result);
         $row = getCourse($_GET['course'],$connect);
         ?>
         <div class='course-details'>
             <h2>Course Details</h2>
             <?php 
                 echo "<a href='courseDetail.php?view&course=". $_GET['course'] . "'><button>View More Details</button></a>";
-                // echo "<p>Course ID: ". $row['course_id']."</p>";
-                // echo "<p>Course Title: ". $row['course_title']."</p>";
-                // echo "<p>Course Description: ". $row['course_description']."</p>";
-                // echo "<p>Start Date: ". $row['start_date']."</p>";
-                // echo "<p>End Date: ". $row['end_date']."</p>";
+                echo "<p>Course ID: ". $row['course_id']."</p>";
+                echo "<p>Course Title: ". $row['course_title']."</p>";
+                echo "<p>Course Description: ". $row['course_description']."</p>";
+                echo "<p>Start Date: ". $row['start_date']."</p>";
+                echo "<p>End Date: ". $row['end_date']."</p>";
             ?>
         </div>
         <hr>
         <?php
-        // $sql2 = "SELECT * FROM course_section INNER JOIN instructor on course_section.username = instructor.username where course_id = " . $_GET['course'] . ";";
-        // $result2 = mysqli_query($connect,$sql2);
-        // if (!$result2) {
-        //     echo "Failed";
-        // }
+        $sql2 = "SELECT * FROM course_section INNER JOIN instructor on course_section.username = instructor.username where course_id = " . $_GET['course'] . ";";
+        $result2 = mysqli_query($connect,$sql2);
+        if (!$result2) {
+            echo "Failed";
+        }
         $result = getCourseSectionsResult($_GET['course'],$connect);
         while ($row2 = mysqli_fetch_assoc($result)) {
-            // echo "<div class='course-section-details'>";
-            // //echo "<p>Course Section ID: ". $row2['course_section_id']."</p>";
-            // echo "<p>Course Section Name: ". $row2['course_section_name']."</p>";
-            // //echo "<p>Instructor Username: ". $row2['username']."</p>";
-            // echo "<p>Instructor Name: ". $row2['first_name']. " " . $row2['last_name'] . "</p>";
-            // //echo "<p>Start Time: ". $row2['start_time'] ."</p>";
-            // //echo "<p>End Time: ". $row2['end_time'] . "</p>";
-            // //echo "<p>Day: ". $row2['day'] . "</p>";
-            // echo "<p>Status: ". $row2['status'] ."</p>";
-            // echo "<p>Maximum Students Allowed: ". $row2['max_student_num'] . "</p>";
+            echo "<div class='course-section-details'>";
+            echo "<p>Course Section ID: ". $row2['course_section_id']."</p>";
+            echo "<p>Course Section Name: ". $row2['course_section_name']."</p>";
+            echo "<p>Instructor Username: ". $row2['username']."</p>";
+            echo "<p>Instructor Name: ". $row2['first_name']. " " . $row2['last_name'] . "</p>";
+            echo "<p>Start Time: ". $row2['start_time'] ."</p>";
+            echo "<p>End Time: ". $row2['end_time'] . "</p>";
+            echo "<p>Day: ". $row2['day'] . "</p>";
+            echo "<p>Status: ". $row2['status'] ."</p>";
+            echo "<p>Maximum Students Allowed: ". $row2['max_student_num'] . "</p>";
             
 
-            // //echo "<p>Course Section ID: ". $row['course_section_id']."</p>";
-            // echo "</div>";
-            // echo "<hr>";
+            echo "<p>Course Section ID: ". $row['course_section_id']."</p>";
+            echo "</div>";
+            echo "<hr>";
         }
 
     }
