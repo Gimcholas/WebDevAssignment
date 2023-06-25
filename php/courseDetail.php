@@ -140,7 +140,7 @@
         ?>
             <form id = "newAnnouncementForm" method="POST" action="">
                 <input id="newAnnouncementInput" placeholder="New announcement Title" name= "title" required> </input>
-                <input class="hiddenAttributeNewAnnouncement" style="display: none;" name="content" placeholder="New announcement Content" required></input>
+                <textarea class="hiddenAttributeNewAnnouncement" style="display: none;" oninput="autoExpand(this)" name="content" placeholder="New announcement Content" required></textarea>
                 <div class="hiddenAttributeNewAnnouncement" style="display: none;" >
                     <div id="hidden-right-left">
                         <button type="button" id =  "cancelAnnouncement">Cancel</button>
@@ -194,9 +194,7 @@
                         ?> 
                     </h3>
                     <p>
-                        <?php
-                            echo $row['content'];
-                        ?> 
+                        <?php echo nl2br($row['content']); ?>
                     </p>
                 </div>
             </div>
@@ -209,6 +207,10 @@
 
     
     <script>
+        function autoExpand(e){
+            e.style.height = '2 rem';
+            e.style.height = (e.scrollHeight) + "px";
+        }
         const toggleDetail = document.getElementById("toggleDetail");
         const toggleStudentList = document.getElementById("toggleStudentList");
         const hiddenStudentList = document.getElementById("hiddenStudentList");
