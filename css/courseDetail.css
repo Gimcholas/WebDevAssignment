@@ -50,7 +50,7 @@
     align-items: center;
 }
 
-#newAnnouncementForm input {
+#newAnnouncementForm input, #newAnnouncementForm textarea {
     width : 100%;
     height : 2rem;
     border-radius: 1px;
