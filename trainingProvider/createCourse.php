@@ -29,7 +29,8 @@
 
         <div class="input-box">
         <label for="courseIntro">Course Introduction</label>
-        <input type="text" name="courseIntro" required> 
+        <!-- <input type="text" name="courseIntro" required>  -->
+        <textarea name="courseIntro" rows="5" cols="40"></textarea>
         </div><br>
 
         <div class="input-box">
