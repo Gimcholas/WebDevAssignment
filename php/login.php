@@ -23,7 +23,7 @@ session_start()
 
                     <input type="password" name="password" placeholder = "Password" required>
 
-                    <input type="submit" name="LoginBtn">
+                    <input type="submit" name="LoginBtn" value="Login">
                 </div>
             </form>    
         </div>  
@@ -50,6 +50,13 @@ session_start()
             }
             else if ($row["usertype"] == "Student"){
                 header("Location: courseDashboard.php");
+            }
+            else if ($row["usertype"] == "Instructor"){
+                header("Location: courseDashboard.php");
+            }
+            else if ($row["usertype"] == "Provider"){
+                echo "Success";
+                header("Location: ../trainingProvider/dashboard.php/");
             }
         }
         else {
