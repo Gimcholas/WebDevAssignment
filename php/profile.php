@@ -163,15 +163,15 @@
             <div class = "left-side">
                 <form id="changeProfilePictureForm" method="POST" action="" enctype="multipart/form-data">
                     <label for="uploadPicture">
-                        <div class="content-overlay"></div>
                         <img src = "
                             <?php
                                 echo $profile["profile_image_path"];
                             ?>
                         " alt="Profile Image"/>
 
-                        <div class="content-details fadeIn-bottom">
-                            <h3>Change Profile Picture</h3>
+                        <div class="image_overlay image_overlay_blur">
+                            <h3>Change</h3>
+                            <p>Profile Picture</p>
                         </div>
                     </label>
                     <input type="file" id="uploadPicture" name="uploadedPicture" style="display: none;"/>
