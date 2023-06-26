@@ -6,7 +6,7 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
     <title>Admin Dashboard</title>
 </head>
 
@@ -20,7 +20,7 @@
         <th>Username</th>
         <th>Usertype</th>
         <th>Joined Date</th>
-        <th colspan="3">Action</th>
+        <th colspan="2">Action</th>
     </tr>
     <?php
     $sql = "SELECT * FROM user;";
@@ -33,9 +33,8 @@
         <td><?php echo $row["username"]; ?></td>
         <td><?php echo $row["usertype"]; ?></td>
         <td><?php echo $row["joined_date"]; ?></td>
-        <td><a href="accountDetail.php?view&username=<?php echo $row["username"]?>">Details</a></td>
-        <td><a href="editAccount.php?edit&username=<?php echo $row["username"]?>">Edit</a></td>
-        <td><a href="dashboard.php?del&username=<?php echo $row["username"]?>" onclick="return confirmation();">Delete</a></td>
+        <td><a href="accountDetail.php?view&username=<?php echo $row["username"];?>">Details</a></td>
+        <td><a href="editAccount.php?edit&username=<?php echo $row["username"];?>">Edit</a></td>
     </tr>
     <?php
     }
