@@ -26,6 +26,9 @@
 ?>
 
 <?php
+    if(array_key_exists('postdata',$_SESSION)){
+        unset($_SESSION['postdata']);
+    }
     if(isset($_POST['submitEdit'])){
         $contactNumber = $_POST["contactNumber"];
         $emailAddress = $_POST["emailAddress"];
@@ -67,6 +70,54 @@
         mysqli_query($connect, $edit_password_sql); 
         header("Refresh:0");
         exit;
+    }
+
+    if (isset($_FILES["uploadedPicture"])){
+
+        $imageFolderPath = "../files/profile_picture/";
+
+        $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "png" => "image/png");
+        $filename = $_FILES["uploadedPicture"]["name"];
+        $filetype = $_FILES["uploadedPicture"]["type"];
+        $filesize = $_FILES["uploadedPicture"]["size"];
+    
+        // better handle error in javascript ??
+        // // Verify file extension
+        if(!array_key_exists(pathinfo($filename, PATHINFO_EXTENSION), $allowed)) 
+            die("Error: Please select a valid file format.");
+    
+        // // Verify file size - 5MB maximum
+        $maxsize = 5 * 1024 * 1024;
+        if($filesize > $maxsize) 
+            die("Error: File size is larger than the allowed limit.");
+    
+        // Verify MYME type of the file
+        if(in_array($filetype, $allowed)){
+            $newFileName = $_SESSION["username"];
+            if ($filetype == "image/jpg") {
+                $newFileName .= ".jpg";
+            }
+            else if ($filetype == "image/jpeg") {
+                $newFileName .= ".jpeg";
+            }
+            else if ($filetype == "image/png") {
+                $newFileName .= ".png";
+            }
+
+            $imagePath = $imageFolderPath . $newFileName;
+            if(file_exists($imagePath)){
+                echo $filename . " is already exists.";  
+                chmod($imagePath,0755);
+                unlink($imagePath);
+            }
+            move_uploaded_file($_FILES["uploadedPicture"]["tmp_name"], $imagePath);
+        }
+        else{
+            die ("Invalid FileType. Please try again."); }
+        
+        $insertpath_sql = "UPDATE user SET profile_image_path = '$imagePath' WHERE username = '".$_SESSION['username']."'";
+        mysqli_query($connect,$insertpath_sql); 
+        header("Location: " . $_SERVER['PHP_SELF']);
     }
 ?>
 <?php
@@ -110,13 +161,21 @@
     <body>
         <div class = "container">
             <div class = "left-side">
+                <form id="changeProfilePictureForm" method="POST" action="" enctype="multipart/form-data">
+                    <label for="uploadPicture">
+                        <div class="content-overlay"></div>
+                        <img src = "
+                            <?php
+                                echo $profile["profile_image_path"];
+                            ?>
+                        " alt="Profile Image"/>
 
-                <img src = "
-                    <?php
-                        echo $profile["profile_image_path"];
-                    ?>
-                    " alt="Profile Image" 
-                />
+                        <div class="content-details fadeIn-bottom">
+                            <h3>Change Profile Picture</h3>
+                        </div>
+                    </label>
+                    <input type="file" id="uploadPicture" name="uploadedPicture" style="display: none;"/>
+                </form>
 
             </div>
 
@@ -205,6 +264,13 @@
         </div>
     </body>
     <script>
+        const uploadPictureInput = document.getElementById("uploadPicture");
+
+        uploadPictureInput.addEventListener("change", function(e) {
+            document.getElementById("changeProfilePictureForm").submit();
+        });
+
+
         const editDIV = document.getElementById("editDIV");
         const displayDIV = document.getElementById("displayDIV");
         const newPasswordDIV = document.getElementById("newPasswordDIV");
