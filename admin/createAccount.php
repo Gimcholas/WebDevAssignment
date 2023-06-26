@@ -22,11 +22,11 @@
         <h2>Create New Account</h2>
         <div class="input-box-user">
             <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
-            <input type="text" name="username" placeholder="Username" required><br><br>
+            <input type="text" name="username" placeholder="Username" required>
         </div>
         <div class="input-box-pw">
             <img src="../files/password_icon.png" alt="PwIcon">
-            <input type="password" name="password" placeholder="Password" required><br><br>
+            <input type="password" name="password" placeholder="Password" required>
         </div>  
         <div class="input-box">
             <select name="usertype" id="usertype" onchange="updateForm()" required>
@@ -39,8 +39,8 @@
         </div>
         <div id="additionalFields"></div>
         <div  class="operations-button">
-            <a href="dashboard.php"><input type="button" value = "Back"></a><br><br>
-            <input type="submit" name="submit" value="Create Account"><br><br>
+            <a href="dashboard.php"><input type="button" value = "Back"></a>
+            <input type="submit" name="submit" value="Create Account">
         </div>
     </form>
     </div>
@@ -204,27 +204,27 @@ if(isset($_POST["submit"])) {
                         . $row["provider_name"]?></option> 
                     <?php } 
                 ?>
-            </select><br><br>
+            </select>
             </div>`;
 
         const nameInputHtml = `<div class="input-box">
-            <input type="text" name="firstName" placeholder="First Name" required><br><br>
+            <input type="text" name="firstName" placeholder="First Name" required>
             </div>
             <div class="input-box">
-            <input type="text" name="lastName" placeholder="Last Name" required><br><br>
+            <input type="text" name="lastName" placeholder="Last Name" required>
             </div>`;
             
         const contactInputHtml = `<div class="input-box">
-            <input type="tel" name="contactNumber" placeholder="Contact Number"><br><br>
+            <input type="tel" name="contactNumber" placeholder="Contact Number">
             </div>
             <div class="input-box">
-            <input type="email" name="email" placeholder="Contact Email"><br><br>
+            <input type="email" name="email" placeholder="Contact Email">
             </div>`;
 
         if (usertypeSelected == "Provider") {
             const html = 
             `<div class="input-box">
-            <input type="text" name="providerName" placeholder="Provider Name" required><br><br>
+            <input type="text" name="providerName" placeholder="Provider Name" required>
             </div>`;
             additionalForm.innerHTML = html + contactInputHtml;
         }
@@ -234,10 +234,10 @@ if(isset($_POST["submit"])) {
         else if (usertypeSelected == "Student") {
             const html = 
             `<div class="input-box">
-            <input type="date" name="dateOfBirth" required><br><br>
+            <input type="date" name="dateOfBirth" required>
             </div>
             <div class="input-box">
-            <input type="text" name="academicProgram" placeholder="Academic Program" required><br><br>
+            <input type="text" name="academicProgram" placeholder="Academic Program" required>
             </div>
             `;
             additionalForm.innerHTML = selectProviderHtml + nameInputHtml + html + contactInputHtml;

@@ -44,6 +44,11 @@ input, select{
     border-radius: 3px;
     position: relative;
     width: 360px;
+    margin-bottom: 20px;
+}
+
+select{
+    width: 420px;
 }
 
 .input-box-user img, .input-box-pw img{
