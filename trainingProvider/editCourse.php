@@ -160,7 +160,7 @@
             <div class="course-container">
                 <div class="input-box">
                 <label for="courseName">Course Name</label>
-                <input type="text" name="courseName" required value = <?php echo $course['course_title']; ?>> 
+                <input type="text" name="courseName" required value = "<?php echo $course['course_title']; ?>"> 
                 </div><br>
 
                 <div class="input-box">
@@ -175,7 +175,8 @@
 
                 <div class="input-box">
                 <label for="courseIntro">Course Introduction</label>
-                <input type="text" name="courseIntro" required value = <?php echo $course['course_description']; ?>> 
+                
+                <textarea name="courseIntro" rows="5" cols="50"><?php echo $course['course_description']; ?></textarea>
                 </div><br>
 
                 <div class="input-box">
@@ -222,12 +223,12 @@
     
                 <div class="input-box">
                 <label for="startTime">Start Time</label>
-                <input type="time" name="startTime[]" required value = <?php echo $row["start_time"]?>>
+                <input type="time" name="startTime[]" value = <?php echo $row["start_time"]?>>
                 </div><br>
     
                 <div class="input-box">
                 <label for="endTime">End Time</label>
-                <input type="time" name="endTime[]" required value = <?php echo $row["end_time"]?>>
+                <input type="time" name="endTime[]" value = <?php echo $row["end_time"]?>>
                 </div><br>
     
                 <div class="input-box">
