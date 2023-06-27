@@ -250,9 +250,9 @@
                         </h1>
                             
                         <?php
+                            generateHTMLChangePassword("Old Password","oldPassword");
                             generateHTMLChangePassword("New Password","newPassword");
                             generateHTMLChangePassword("Re-enter New Password","newPasswordConfirm");
-                        
                         ?>
 
                         <button type="button" id = "cancelChangePWD">Cancel</button>
