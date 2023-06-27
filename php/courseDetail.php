@@ -3,7 +3,9 @@
     session_start();
     $course_section_id = $_GET['section'];
     $course_id = $_GET['course'];
-    $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
+    $course_sql = "SELECT * FROM course AS c
+                    JOIN course_section AS cs ON cs.course_section_id = $course_section_id
+                    WHERE c.course_id = $course_id";
     $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
 ?>
 
@@ -16,6 +18,24 @@
         $content = $_POST['content'];
         $username = $_SESSION['username'];
         $sql = "INSERT INTO announcement (course_section_id,username,title,content,upload_date_time) VALUES ('$course_section_id','$username','$title','$content','$formattedDateTime')";
+        mysqli_query($connect,$sql);
+        header("Refresh:0");
+        exit;
+    }
+    else if (isset($_POST['submitEditSectionForm'])){
+        $edited_course_section_name = $_POST['edited_course_section_name'];
+        $edited_description = $_POST['edited_description'];
+        $edited_day = $_POST['edited_day'];
+        $edited_start_time = $_POST['edited_start_time'];
+        $edited_end_time = $_POST['edited_end_time'];
+        $edited_max_student_num = $_POST['edited_max_student_num'];
+        $edited_status = $_POST['edited_status'];
+
+        $sql = "UPDATE course_section 
+                SET course_section_name = '$edited_course_section_name', description = '$edited_description',
+                    day = '$edited_day', start_time = '$edited_start_time', end_time = '$edited_end_time',
+                    max_student_num = '$edited_max_student_num', status = '$edited_status' 
+                WHERE course_section_id = $course_section_id";
         mysqli_query($connect,$sql);
         header("Refresh:0");
         exit;
@@ -60,13 +80,16 @@
 
         <div class="right-panel">
             <div>
-                <button id="toggleDetail">Course Description</button>
+                <button id="toggleDetail" style = "display:block;">Course Description</button>
             </div>
                 <?php
                     if ($_SESSION["usertype"]  == "Instructor"){
                 ?>
                     <div>
-                        <button type='submit' id="toggleStudentList" > Student List</button>
+                        <button type='submit' id="toggleStudentList" style = "display:block;"> Student List</button>
+                    </div>
+                    <div>
+                        <button type='submit' id="toggleUpdateSection" style = "display:block;"> Update Section</button>
                     </div>
                     <?php
                     }
@@ -84,6 +107,14 @@
                 echo $course["course_description"]; 
             ?>
         </p> 
+        <h3>
+            Section Description
+        </h3>
+        <p>
+            <?php
+                echo $course["description"];
+            ?>
+        </p>
     </div>
 
 
@@ -130,6 +161,36 @@
             }
         ?>
     </div>
+
+    <div id="hiddenUpdateSection" style="display:none;">
+        <h1> Edit Section Information </h1>
+            <form name= "editSectionForm" method="post" action="">
+        <?php
+            $course_section_detail_sql = "SELECT * FROM course_section
+                                        WHERE course_section_id = $course_section_id"; 
+            $course_section_detail = mysqli_fetch_assoc(mysqli_query($connect, $course_section_detail_sql));
+
+            function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "text",$attribute1 = "",$attribute2="",$attribute3=""){
+                echo 
+                '<p> 
+                    <span class="title">'.$title.'</span>
+                    <span class="colon">:</span>
+                    <input type="'.$inputType.'" name="'.$inputName.'" value = "'.$value.'" required ' .$attribute1.' ' .$attribute1.' ' .$attribute1.'>
+                </p>';
+            }
+
+                generateHTMLEditCourseSection("Name","edited_course_section_name",$course_section_detail["course_section_name"]);
+                generateHTMLEditCourseSection("Description","edited_description",$course_section_detail["description"]);
+                generateHTMLEditCourseSection("Day","edited_day",$course_section_detail["day"]);
+                generateHTMLEditCourseSection("Start Time","edited_start_time",$course_section_detail["start_time"],"time");
+                generateHTMLEditCourseSection("End Time","edited_end_time",$course_section_detail["end_time"],"time");
+                generateHTMLEditCourseSection("Maximum Student Number","edited_max_student_num",$course_section_detail["max_student_num"],"number",'min = "1"');
+                generateHTMLEditCourseSection("Section Status","edited_status",$course_section_detail["status"]);
+        ?>
+                <input type="submit" name="submitEditSectionForm"/>
+            </form>
+    </div>
+
 
     <div class="announcement" style="display: block;"  id="hiddenAnnouncement">
         <h1> Announcements </h1>
@@ -221,6 +282,8 @@
         const cancelAnnouncementButton = document.getElementById("cancelAnnouncement");
         // const newannouncementContainer = document.getElementById("new-announcement-container");
         const newAnnouncementForm = document.getElementById("newAnnouncementForm");
+        const toggleUpdateSection = document.getElementById("toggleUpdateSection");
+        const hiddenUpdateSection = document.getElementById("hiddenUpdateSection");
 
         toggleDetail.addEventListener("click", function(e) {
             if(courseDetail.style.display == "none"){
@@ -237,12 +300,33 @@
             if(hiddenStudentList.style.display == "none"){
                 hiddenStudentList.style.display = "block";
                 hiddenAnnouncement.style.display = "none";
+                toggleDetail.style.display = "none";
+                toggleUpdateSection.style.display = "none";
                 toggleStudentList.innerHTML = "Announcement";
             }
             else {
                 hiddenStudentList.style.display = "none";
                 hiddenAnnouncement.style.display = "block";
+                toggleDetail.style.display = "block";
+                toggleUpdateSection.style.display = "block";
                 toggleStudentList.innerHTML = "Student List";
+            }
+        })
+
+        toggleUpdateSection.addEventListener("click", function(e) {
+            if(hiddenUpdateSection.style.display == "none"){
+                hiddenUpdateSection.style.display = "block";
+                hiddenAnnouncement.style.display = "none";
+                toggleDetail.style.display = "none";
+                toggleStudentList.style.display = "none";
+                toggleUpdateSection.innerHTML = "Announcement";
+            }
+            else {
+                hiddenUpdateSection.style.display = "none";
+                hiddenAnnouncement.style.display = "block";
+                toggleDetail.style.display = "block";
+                toggleStudentList.style.display = "block";
+                toggleUpdateSection.innerHTML = "Update Section";
             }
         })
 
