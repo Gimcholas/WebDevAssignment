@@ -151,7 +151,7 @@
     $profile = mysqli_fetch_assoc(mysqli_query($connect, $profile_sql)); 
 ?>
 
-
+<!DOCTYPE html>
 <html>
     <head>
         <title>Profile</title>

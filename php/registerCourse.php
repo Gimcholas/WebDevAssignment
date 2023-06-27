@@ -9,6 +9,7 @@
     $course_section = mysqli_query($connect,$course_section_sql); 
 ?>
 
+<!DOCTYPE html>
 <html>
 
 <head>
