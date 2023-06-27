@@ -5,8 +5,15 @@
     --colour--theme--grey : #dddddd;
 }
 
+
+* {
+    margin : 0;
+    padding : 0;
+}
+
 body{
     padding : 2.5% 2.5%;
+    display: block;
 }
 
 body h1{

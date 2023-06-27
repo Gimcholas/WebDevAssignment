@@ -40,7 +40,6 @@
             }
         ?>
     </title>
-    <link type="text/css" rel="stylesheet" href="../css/universal.css">
     <link type="text/css" rel="stylesheet" href="../css/courseDashboard.css">
 </head>
 
