@@ -58,7 +58,7 @@
                 $sql = "SELECT * FROM course where course_id=" . $_GET['course'] . ";";
                 $result = mysqli_query($connect,$sql);
                 $row = mysqli_fetch_assoc($result);
-                $row = getCourse($_GET['course'],$connect);
+                // $row = getCourse($_GET['course'],$connect);
                 ?>
                 <div class='course-details'>
                     <h1>Course Details</h1>
