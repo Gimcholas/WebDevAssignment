@@ -1,13 +1,14 @@
-<?php include '../db_connect.php';
+<?php 
 session_start();
+include "../phpFunction/function.php";
 ?>
 
 <!DOCTYPE html>
 <html>
 <head> 
-    <title>Admin Dashboard</title>
+    <title>Registered Course</title>
     <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
-    <link rel="stylesheet" href="#"/>
+    <link type="text/css" rel="stylesheet" href="../css/courseDashboard.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -17,7 +18,9 @@ session_start();
         <?php include '../NavBar/NavBar.php'?>
     </div>
     <div class="content" id="content"> 
-        <!-- do registered course code here  -->
+        <?php
+          createCourseDashboard();
+        ?>
     </div>
 </div>
 </body>
