@@ -44,13 +44,13 @@
                      }
                      else if ($_SESSION["usertype"] == "Student"){
                         echo "<li>";
-                        echo "<a href='../student/registeredCourse.php' class='logo'>";
+                        echo "<a href='../student/dashboard.php' class='logo'>";
                         echo "<img src='../files/logo1.png' alt=''>";
                         echo "<span class='nav-item'>TPMS</span>";
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../student/registeredCourse.php'>";
+                        echo "<li><a href='../student/dashboard.php'>";
                         echo "<i class='fas fa-home'></i>";
                         echo "<span class='nav-item'>Dashboard</span>";
                         echo "</a>";
@@ -88,13 +88,13 @@
                      }
                      else if ($_SESSION["usertype"] == "Instructor"){
                         echo "<li>";
-                        echo "<a href='../instructor/myCourse.php' class='logo'>";
+                        echo "<a href='../instructor/dashboard.php' class='logo'>";
                         echo "<img src='../files/logo1.png' alt=''>";
                         echo "<span class='nav-item'>TPMS</span>";
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../instructor/myCourse.php'>";
+                        echo "<li><a href='../instructor/dashboard.php'>";
                         echo "<i class='fas fa-home'></i>";
                         echo "<span class='nav-item'>Dashboard</span>";
                         echo "</a>";
