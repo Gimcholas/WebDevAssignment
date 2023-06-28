@@ -1,15 +1,19 @@
-<?php include '../db_connect.php'; 
+<?php include '../db_connect.php';
+    session_start();
     // if($_SESSION["usertype"] != 'Admin') {
     //     header("Location: ../Login/login.php");
     // }
-    session_start();
     $_SESSION['username'] = "Huawei";
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head> 
     <title>Create New Account</title>
-    <link rel='stylesheet' type="text/css" href=style.css>
+    <!-- <link rel='stylesheet' type="text/css" href=style.css> -->
 </head>
 
 <body>
@@ -18,65 +22,131 @@
         <h2>Create New Account</h2>
         <div class="input-box">
             <label>Username</label>
-            <input type="text" name="username" placeholder="Username" required><br><br>
+            <input type="text" name="username" placeholder="Username"><br><br>
         </div>
         <div class="input-box">
             <label>Password</label>
-            <input type="password" name="password" placeholder="Password" required><br><br>
+            <input type="password" name="password" placeholder="Password"><br><br>
         </div>  
 
         <div class="input-box">
             <label>Usertype: </label>
-            <select name="usertype" id="usertype" onchange="updateForm()" required>
+            <select name="usertype" id="usertype" onchange="updateForm()">
                 <option hidden disabled selected value>Select a usertype</option>
                 <option value="Instructor">Instructor</option>
                 <option value="Student">Student</option>
             </select><br><br>
         </div>
         <div id="additionalFields"></div>
-    
+        <div id="errorMessage"><p></p></div>
         <input type="submit" name="submit" value="Create Account"><br><br>
         <a href="accountDashboard.php"><input type="button" value = "Back"></a><br><br>
     </form>
     </div>
+
+    <script>
+        function updateForm() {
+            const usertypeSelected = document.getElementById("usertype").value;
+            console.log(usertypeSelected);
+            
+            const additionalForm = document.getElementById("additionalFields");
+            additionalForm.innerHTML = "";
+            const commonHtml1 = `<div class="input-box">
+                <label>First Name</label>
+                <input type="text" name="firstName" placeholder="First Name"><br><br>
+                </div>
+                <div class="input-box">
+                <label>Last Name</label>
+                <input type="text" name="lastName" placeholder="Last Name"><br><br>
+                </div>`;
+                
+            const commonHtml2 = `<div class="input-box">
+                <label>Contact Number</label>
+                <input type="tel" name="contactNumber" placeholder="Contact Number"><br><br>
+                </div>
+                <div class="input-box">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Contact Email"><br><br>
+                </div>`;
+
+            if(usertypeSelected == "Instructor") {           
+                additionalForm.innerHTML = commonHtml1 + commonHtml2;
+            }
+            else if (usertypeSelected == "Student") {
+                const html = 
+                `<div class="input-box">
+                <label>Date Of Birth</label>
+                <input type="date" name="dateOfBirth"><br><br>
+                </div>
+                <div class="input-box">
+                <label>Academic Program</label>
+                <input type="text" name="academicProgram" placeholder="Academic Program"><br><br>
+                </div>
+                `;
+                additionalForm.innerHTML = commonHtml1 + html + commonHtml2;
+            }
+            
+        }
+
+        function showErrorMessage(message){
+            console.log(message);
+            const errorMessageBox = document.getElementById("errorMessage");
+            const errorHtml = `${message}`;
+            errorMessageBox.innerHTML = errorHtml;
+        }
+        
+    </script>
+
 </body>
 </html>
+
+
 
 <?php
 if(isset($_POST["submit"])) {
     if(empty($_POST["username"])) {
-        die("Username is required"); 
+        echo '<script>showErrorMessage("Username is required")</script>';
+        die();
     }
 
     $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";
     $result = mysqli_query($connect,$sql);
     $count = mysqli_num_rows($result);
     if($count > 0) {
-        die("Username not available");
+        echo '<script>showErrorMessage("Username not available")</script>';
+        die();
     }
     
     if(strlen($_POST["password"]) < 8) {
-        die("Password must be at least 8 characters"); 
+        echo '<script>showErrorMessage("Password must be at least 8 characters")</script>';
+        die(); 
     }
     if (!preg_match('/[A-Za-z]/', $_POST["password"]) || !preg_match('/[0-9]/', $_POST["password"])) {
-        die("Password must include at least one letter and one number");
+        echo '<script>showErrorMessage("Password must include at least one letter and one number")</script>';
+        die();
     }
     if(empty($_POST["usertype"])) {
-        die("Usertype is required"); 
+        echo '<script>showErrorMessage("Usertype is required")</script>';
+        die(); 
     }
 
     if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
         if(empty($_POST["firstName"])) 
-            die("First name is required");
+            echo '<script>showErrorMessage("First name is required")</script>';
+
+            die();
         if(empty($_POST["lastName"])) 
-            die("Last name is required");
+            echo '<script>showErrorMessage("Last name is required")</script>';
+            die();
     }
 
     if($_POST["usertype"] == "Student") {
         if(empty($_POST["dateOfBirth"])) 
-            die("Date of birth is required");
+            echo '<script>showErrorMessage("Date of birth is required")</script>';
+            die();
         if(empty($_POST["academicProgram"])) 
-            die("Academic program is required");
+            echo '<script>showErrorMessage("Academic program is required")</script>';
+            die();
     }
 
         
@@ -136,49 +206,4 @@ if(isset($_POST["submit"])) {
 
 }
 ?>
-
-<script>
-    function updateForm() {
-        const usertypeSelected = document.getElementById("usertype").value;
-        console.log(usertypeSelected);
-        
-        const additionalForm = document.getElementById("additionalFields");
-        additionalForm.innerHTML = "";
-        const commonHtml1 = `<div class="input-box">
-            <label>First Name</label>
-            <input type="text" name="firstName" placeholder="First Name" required><br><br>
-            </div>
-            <div class="input-box">
-            <label>Last Name</label>
-            <input type="text" name="lastName" placeholder="Last Name" required><br><br>
-            </div>`;
-            
-        const commonHtml2 = `<div class="input-box">
-            <label>Contact Number</label>
-            <input type="tel" name="contactNumber" placeholder="Contact Number"><br><br>
-            </div>
-            <div class="input-box">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Contact Email"><br><br>
-            </div>`;
-
-        if(usertypeSelected == "Instructor") {           
-            additionalForm.innerHTML = commonHtml1 + commonHtml2;
-        }
-        else if (usertypeSelected == "Student") {
-            const html = 
-            `<div class="input-box">
-            <label>Date Of Birth</label>
-            <input type="date" name="dateOfBirth" required><br><br>
-            </div>
-            <div class="input-box">
-            <label>Academic Program</label>
-            <input type="text" name="academicProgram" placeholder="Academic Program" required><br><br>
-            </div>
-            `;
-            additionalForm.innerHTML = commonHtml1 + html + commonHtml2;
-        }
-        
-    }
-</script>
 
