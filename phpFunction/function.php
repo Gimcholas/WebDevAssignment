@@ -88,6 +88,15 @@ function generateHTMLChangePassword($title,$inputName){
     </p>';
 }
 
+function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "text",$attribute1 = "",$attribute2="",$attribute3=""){
+    echo 
+    '<p> 
+        <span class="title">'.$title.'</span>
+        <span class="colon">:</span>
+        <input type="'.$inputType.'" name="'.$inputName.'" value = "'.$value.'" required ' .$attribute1.' ' .$attribute1.' ' .$attribute1.'>
+    </p>';
+}
+
 function createProfilePage(){
     global $connect;
     if(array_key_exists('postdata',$_SESSION)){
@@ -210,7 +219,7 @@ function createProfilePage(){
         <div class = "left-side">
             <form id="changeProfilePictureForm" method="POST" action="" enctype="multipart/form-data">
                 <label for="uploadPicture">
-                    <img src = "{$profile["profile_image_path"]}" alt="Profile Image"/>
+                    <img src = "{$profile['profile_image_path']}" alt="Profile Image"/>
 
                     <div class="image_overlay image_overlay_blur">
                         <h3>Change</h3>
@@ -229,7 +238,7 @@ function createProfilePage(){
                 <h1>
     HTML;
                     if($_SESSION['usertype'] == "Student" || $_SESSION['usertype'] == "Instructor"){
-                        echo $profile["last_name"]." ".$profile["first_name"];
+                        echo $profile["first_name"]." ".$profile["last_name"];
                     }
                     else if($_SESSION['usertype'] == "Provider"){
                         echo $profile["provider_name"];
@@ -304,8 +313,221 @@ function createProfilePage(){
     HTML;
 }
 
+function createCourseDetail(){
+    global $connect;
+    $course_section_id = $_GET['section'];
+    $course_id = $_GET['course'];
+    $course_sql = "SELECT * FROM course AS c
+                    JOIN course_section AS cs ON cs.course_section_id = $course_section_id
+                    WHERE c.course_id = $course_id";
+    $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
+    
+    if(isset($_POST['makeAnnouncement'])){
+        $datetime = new Datetime();
+        $formattedDateTime = $datetime->format('Y-m-d H:i:s');
 
-function generatePage($title,$function,$anyCode=""){
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $username = $_SESSION['username'];
+        $sql = "INSERT INTO announcement (course_section_id,username,title,content,upload_date_time) VALUES ('$course_section_id','$username','$title','$content','$formattedDateTime')";
+        mysqli_query($connect,$sql);
+        header("Refresh:0");
+        exit;
+    }
+    else if (isset($_POST['submitEditSectionForm'])){
+        $edited_course_section_name = $_POST['edited_course_section_name'];
+        $edited_description = $_POST['edited_description'];
+        $edited_day = $_POST['edited_day'];
+        $edited_start_time = $_POST['edited_start_time'];
+        $edited_end_time = $_POST['edited_end_time'];
+        $edited_max_student_num = $_POST['edited_max_student_num'];
+        $edited_status = $_POST['edited_status'];
+
+        $sql = "UPDATE course_section 
+                SET course_section_name = '$edited_course_section_name', description = '$edited_description',
+                    day = '$edited_day', start_time = '$edited_start_time', end_time = '$edited_end_time',
+                    max_student_num = '$edited_max_student_num', status = '$edited_status' 
+                WHERE course_section_id = $course_section_id";
+        mysqli_query($connect,$sql);
+        header("Refresh:0");
+        exit;
+    }
+
+    echo<<<HTML
+        <div class="banner">
+        <div class="left-panel">
+            <div class="image-container">
+                <img src="{$course['course_image_path']}" alt="Course img"/>
+            </div>
+
+            <div class="left-right-panel">
+                <h1>
+                    {$course['course_title']}
+                </h1>
+                <p>
+                    {$course['start_date']} - {$course['end_date']}
+                </p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div>
+                <button id="toggleDetail" style = "display:block;">Course Description</button>
+            </div>
+    HTML;
+                    if ($_SESSION["usertype"]  == "Instructor"){
+    echo<<<HTML
+                    <div>
+                        <button type='submit' id="toggleStudentList" style = "display:block;"> Student List</button>
+                    </div>
+                    <div>
+                        <button type='submit' id="toggleUpdateSection" style = "display:block;"> Update Section</button>
+                    </div>
+    HTML;
+                    }
+    echo<<<HTML
+            </div>
+        </div>
+
+        <div id = "hiddenDetail"  style="display: none;">
+        <h3>
+            Course Description
+        </h3>
+        <p>
+            {$course["course_description"]}
+        </p> 
+        <h3>
+            Section Description
+        </h3>
+        <p>
+            {$course["description"]}
+        </p>
+        </div>
+        <div id="hiddenStudentList" style="display:none;">
+        <h1> Students <h1>
+    HTML;
+            $student_list_sql = "   SELECT * FROM course_student as a 
+                                    JOIN student as s ON a.username = s.username 
+                                    JOIN user as u ON a.username = u.username 
+                                    WHERE course_section_id = $course_section_id 
+                                    ORDER BY s.last_name, s.first_name";
+            $student_list = mysqli_query($connect,$student_list_sql);
+            $student_count = mysqli_num_rows($student_list);
+
+            if($student_count == 0){
+    echo<<<HTML
+                <p>No student found</p>
+    HTML;
+                }
+            else {
+                while($each_student = mysqli_fetch_array($student_list)){
+    echo<<<HTML
+            <div class="each-student">
+                <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                <p>
+                    {$each_student['first_name']} {$each_student['last_name']}
+                </p>
+
+            </div>
+    HTML;
+                }
+            }
+    echo<<<HTML
+        </div>
+
+        <div id="hiddenUpdateSection" style="display:none;">
+        <h1> Edit Section Information </h1>
+            <form name= "editSectionForm" method="post" action="">
+    HTML;
+            $course_section_detail_sql = "SELECT * FROM course_section
+                                        WHERE course_section_id = $course_section_id"; 
+            $course_section_detail = mysqli_fetch_assoc(mysqli_query($connect, $course_section_detail_sql));
+
+                generateHTMLEditCourseSection("Name","edited_course_section_name",$course_section_detail["course_section_name"]);
+                generateHTMLEditCourseSection("Description","edited_description",$course_section_detail["description"]);
+                generateHTMLEditCourseSection("Day","edited_day",$course_section_detail["day"]);
+                generateHTMLEditCourseSection("Start Time","edited_start_time",$course_section_detail["start_time"],"time");
+                generateHTMLEditCourseSection("End Time","edited_end_time",$course_section_detail["end_time"],"time");
+                generateHTMLEditCourseSection("Maximum Student Number","edited_max_student_num",$course_section_detail["max_student_num"],"number",'min = "1"');
+                generateHTMLEditCourseSection("Section Status","edited_status",$course_section_detail["status"]);
+    echo<<<HTML
+                <input type="submit" name="submitEditSectionForm"/>
+            </form>
+        </div>
+
+
+        <div class="announcement" style="display: block;"  id="hiddenAnnouncement">
+        <h1> Announcements </h1>
+
+        <div id ="new-announcement-container">
+    HTML;
+            if($_SESSION["usertype"] == "Instructor"){
+    echo<<<HTML
+            <form id = "newAnnouncementForm" method="POST" action="">
+                <input id="newAnnouncementInput" placeholder="New announcement Title" name= "title" required> </input>
+                <textarea class="hiddenAttributeNewAnnouncement" style="display: none;" oninput="autoExpand(this)" name="content" placeholder="New announcement Content" required></textarea>
+                <div class="hiddenAttributeNewAnnouncement" style="display: none;" >
+                    <div id="hidden-right-left">
+                        <button type="button" id =  "cancelAnnouncement">Cancel</button>
+                        <button type="submit" name = "makeAnnouncement">Submit</button>
+                    </div>  
+                </div>
+            </form>
+
+        </div>
+    HTML;
+            }
+            $announcement_sql = "SELECT * FROM announcement WHERE course_section_id = {$course_section_id} ORDER BY upload_date_time DESC";
+            $announcement_result = mysqli_query($connect, $announcement_sql);	
+            $count = mysqli_num_rows($announcement_result);
+
+            if($count == 0){
+    echo<<<HTML
+            <p> No announcement found </p>
+    HTML;
+            }
+
+            else{
+                while($row = mysqli_fetch_assoc($announcement_result)){
+                        $profile_image_sql = "SELECT * FROM user WHERE username='".$row['username']."'";
+                        $profile_image = mysqli_fetch_assoc(mysqli_query($connect,$profile_image_sql));
+                        $author_name_sql = "SELECT * FROM instructor WHERE username='".$row['username']."'";
+                        $author_name = mysqli_fetch_assoc(mysqli_query($connect,$author_name_sql));
+    echo<<<HTML
+            <div class="each-announcement">
+                <div class="upper">
+                    <div class="upper-left">
+                        <img src="{$profile_image['profile_image_path']}" alt="{$author_name['first_name']} {$author_name['last_name']}">
+                        <h3>
+                            {$author_name['first_name']} {$author_name['last_name']};
+                        </h3>
+                    </div>
+                    <h3>
+                        {$row['upload_date_time']}
+                    </h3>
+
+                </div>
+
+                <div class="bottom">
+                    <h3>
+                        {$row['title']} 
+                    </h3>
+                    <p>
+    HTML;
+                        echo nl2br($row['content']);
+    echo<<<HTML
+                    </p>
+                </div>
+            </div>
+
+    HTML;
+                }
+            }
+    echo<<<HTML
+        </div>
+    HTML;
+}
+
+function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
     echo <<<HTML
         <!DOCTYPE html>
         <html>image.png
@@ -314,11 +536,7 @@ function generatePage($title,$function,$anyCode=""){
         <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src ="../js/navbar.js"></script>
-    HTML;
-
-        echo $anyCode;
-
-    echo <<<HTML
+        $anyCodeOnHead
         </head>
         <body>
         <div class="Container">
@@ -334,10 +552,8 @@ function generatePage($title,$function,$anyCode=""){
     echo <<<HTML
             </div>
         </div>
-        <script src ="../js/profile.js"></script>
+        $anyCodeInsideBody
         </body>
-
-
         </html>
     HTML;
 }
