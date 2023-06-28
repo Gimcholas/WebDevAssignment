@@ -694,6 +694,7 @@ function createEnrollmentPage(){
 }
 
 function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
+    session_start();
     echo <<<HTML
         <!DOCTYPE html>
         <html>image.png
