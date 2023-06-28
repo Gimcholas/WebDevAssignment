@@ -527,6 +527,172 @@ function createCourseDetail(){
     HTML;
 }
 
+function createRegisterCoursePage(){
+    global $connect;
+    $course_id = $_GET['course'];
+    $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
+    $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
+
+    $course_section_sql = "SELECT * FROM course_section AS cs
+                            JOIN instructor AS i ON i.username = cs.username
+                            JOIN user AS u ON u.username = cs.username
+                            where cs.course_id = $course_id";
+    $course_section = mysqli_query($connect,$course_section_sql); 
+
+    echo<<<HTML
+    <div class="banner">
+        <div class="left-panel">
+            <div class="image-container">
+                <img src="{$course['course_image_path']}" alt="Course img"/>
+            </div>
+
+            <div class="left-right-panel">
+                <h1>
+                    {$course['course_title']}
+                </h1>
+                <p>
+                    {$course["start_date"]} - {$course["end_date"]}
+                </p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <form action="enrollment.php" method="post" >
+                <button type='submit' name = "Enroll" value="{$course_id}">Enroll</button>
+            </form>
+        </div>
+    </div>
+
+    <div class='courseIntroSection'>
+        <h2>Course Introduction</h2>
+        <p>
+            {$course['course_description']}
+        </p>
+    </div>
+
+
+    <div class= "instructor-list">
+    <h2>Course Instructor</h2>
+    HTML;
+            while($section = mysqli_fetch_assoc($course_section)){
+    echo<<<HTML
+            <div class = "instructor">
+                <img src="{$section['profile_image_path']}" alt = "{$section['first_name']} {$section['last_name']}">
+                    <p>
+                        {$section["first_name"]} {$section["last_name"]}
+                    </p>
+            </div>
+    HTML;
+            }
+    echo<<<HTML
+    </div>
+    HTML;
+}
+
+function createEnrollmentPage(){
+    global $connect;
+    if(isset($_POST['confirmation'])){
+        $course_section_id = $_POST["confirmation"];
+        $insert_sql = "INSERT INTO course_student (course_section_id, username) VALUES ('$course_section_id', '".$_SESSION["username"]."');";
+        $output = mysqli_query($connect,$insert_sql);
+        if($output){
+            header("Location: courseDashboard.php");
+        }
+    }
+
+    if(isset($_POST["Enroll"])){
+        $course_id = $_POST['Enroll'];
+        $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
+        $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
+
+        $course_section_sql = "SELECT * FROM course_section AS cs
+                                JOIN instructor AS i ON i.username = cs.username
+                                JOIN user AS u ON u.username = cs.username
+                                where cs.course_id = $course_id";
+        $course_section = mysqli_query($connect,$course_section_sql); 
+    
+        echo<<<HTML
+            <h1>
+                {$course['course_title']}
+            </h1>
+
+        HTML;
+                while($each_section = mysqli_fetch_assoc($course_section)){
+        echo<<<HTML
+            <div class="instructor-list">
+
+                <img src="{$each_section['profile_image_path']}" alt = "{$each_section['first_name']} {$each_section['last_name']}">
+
+                <h3>
+                    {$each_section['first_name']} {$each_section['last_name']}
+                </h3>
+
+                <h3>   
+                    {$each_section['course_section_name']}
+                </h3>
+                <h3>   
+                    {$each_section['day']}
+                </h3>
+                <h3>   
+                    {$each_section['start_time']} - {$each_section['end_time']}
+                </h3>
+        HTML;
+                    if($each_section["status"] == "Open"){
+        echo<<<HTML
+                    <button open-modal="{$each_section['course_section_id']}">Enroll</button>
+
+                    <dialog dialog-modal class="dialog-container dialog-{$each_section['course_section_id']}">
+                        <form method="post" action="">
+                            <p>
+                                Course : {$course['course_title']}
+                            </p>
+
+                            <p>
+                                Section : {$each_section['course_section_name']}
+                            </p>
+
+                            <p>
+                                Lecturer : {$each_section['first_name']} {$each_section['last_name']}
+                            </p>
+
+                            <p>
+                                Duration : {$course['start_date']} - {$course['end_date']}
+                            </p>
+
+                            <p>
+                                Date : {$each_section['day']}
+                            </p>
+
+                            <p>
+                                Time : {$each_section['start_time']} - {$each_section['end_time']}
+                            </p>
+
+                            <p> </p>
+
+                            <p>
+                                Do you really want to enroll this course?
+                            </p>
+
+                            <button type="submit" formmethod="dialog">Cancel </button>
+                            <button type="submit" method = "post" name='confirmation' value= '{$each_section["course_section_id"]}'>Confirm</button>
+                        </form>
+                    </dialog>
+        HTML;
+                    }
+                    if($each_section["status"] == "Close"){
+        echo<<<HTML
+                    <h3> Closed </h3>
+        HTML;
+                    }
+
+        echo<<<HTML
+            </div>
+        HTML;
+        }
+    }
+
+}
+
 function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
     echo <<<HTML
         <!DOCTYPE html>

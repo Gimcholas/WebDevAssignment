@@ -1,19 +1,18 @@
 :root {
-    --text--theme--main   : Helvetica, Arial, Verdana;
     --colour--theme--main : #a3d698;
     --colour--theme--sub  : #9AD9B3;
     --colour--theme--grey : #dddddd;
 }
 
-.container,.instructor-list {
+.courseIntroSection, .instructor-list {
     padding: 0 min(5%,3rem);
 }
 
-.container p {
+.courseIntroSection p {
     margin-bottom : 3em;
 }
 
-.container h2 {
+.courseIntroSection h2 {
     margin-bottom : 0.3em;
 }
 
