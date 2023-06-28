@@ -17,7 +17,7 @@ body{
 }
 
 nav{
-    position: absolute;
+    position: fixed;
     top:0;
     bottom:0;
     height:100%;
@@ -27,6 +27,7 @@ nav{
     overflow:hidden;
     transition: width 0.2s linear;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in;
 }
 
 .logo{
@@ -101,8 +102,9 @@ nav:hover{
 .content {
     flex-grow: 1;
     /* width: 200px; */
-    margin-left: 100px
+    margin-left: 100px;
     /* Add your desired styles */
+    transition: all 0.3s ease-in;
 }
 
 .content.shifted {
