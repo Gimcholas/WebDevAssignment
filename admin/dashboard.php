@@ -204,7 +204,7 @@
     <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
     <link rel="stylesheet" href="dashboard.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
+    <script src ="../js/navbar.js"></script></head>
 
 <body>
 <div class="Container">
