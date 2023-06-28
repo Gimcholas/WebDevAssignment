@@ -313,7 +313,7 @@ function createProfilePage(){
     HTML;
 }
 
-function createCourseDetail(){
+function createCourseDetailPage(){
     global $connect;
     $course_section_id = $_GET['section'];
     $course_id = $_GET['course'];
@@ -596,7 +596,7 @@ function createEnrollmentPage(){
         $insert_sql = "INSERT INTO course_student (course_section_id, username) VALUES ('$course_section_id', '".$_SESSION["username"]."');";
         $output = mysqli_query($connect,$insert_sql);
         if($output){
-            header("Location: courseDashboard.php");
+            header("Location: dashboard.php");
         }
     }
 
