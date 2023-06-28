@@ -1,29 +1,5 @@
 <?php 
-session_start();
-include "../phpFunction/function.php";
+  session_start();
+  include '../phpFunction/function.php';
+  generatePage("Registered Course",'createCourseDashboard','<link type="text/css" rel="stylesheet" href="../css/courseDashboard.css">');
 ?>
-
-<!DOCTYPE html>
-<html>
-<head> 
-    <title>Registered Course</title>
-    <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
-    <link type="text/css" rel="stylesheet" href="../css/courseDashboard.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src ="../js/navbar.js"></script></head>
-
-<body>
-<div class="Container">
-    <div class="sidebar">
-        <?php include '../NavBar/NavBar.php'?>
-    </div>
-    <div class="content" id="content"> 
-        <?php
-          createCourseDashboard();
-        ?>
-    </div>
-</div>
-</body>
-
-
-</html>

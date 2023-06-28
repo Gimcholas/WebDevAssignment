@@ -2,6 +2,10 @@
 
 include '../db_connect.php';
 
+function registerCourseDashboard(){
+    createCourseDashboard(false);
+}
+
 function createCourseDashboard($myCoursePage = true){
     global $connect;
     echo "<h1>";
@@ -201,7 +205,139 @@ function createProfilePage(){
 
     $profile = mysqli_fetch_assoc(mysqli_query($connect, $profile_sql)); 
 
-    
+    echo<<<HTML
+    <div class = "container">
+        <div class = "left-side">
+            <form id="changeProfilePictureForm" method="POST" action="" enctype="multipart/form-data">
+                <label for="uploadPicture">
+                    <img src = "{$profile["profile_image_path"]}" alt="Profile Image"/>
+
+                    <div class="image_overlay image_overlay_blur">
+                        <h3>Change</h3>
+                        <p>Profile Picture</p>
+                    </div>
+                </label>
+                <input type="file" id="uploadPicture" name="uploadedPicture" style="display: none;"/>
+            </form>
+
+        </div>
+
+        <div class = "right-side">
+
+            <div id="displayDIV" style = "display:block;">
+
+                <h1>
+    HTML;
+                    if($_SESSION['usertype'] == "Student" || $_SESSION['usertype'] == "Instructor"){
+                        echo $profile["last_name"]." ".$profile["first_name"];
+                    }
+                    else if($_SESSION['usertype'] == "Provider"){
+                        echo $profile["provider_name"];
+                    }
+    echo<<<HTML
+                </h1>
+    HTML;
+                
+                    if($_SESSION['usertype'] == "Student" || $_SESSION['usertype'] == "Instructor"){
+                        generateHTMLProfileDetail("Training Provider",$profile["provider_username"]);
+                    }
+
+                    generateHTMLProfileDetail("Join on",$profile["joined_date"]);
+                    generateHTMLProfileDetail("Contact",$profile["contact_number"]);
+                    generateHTMLProfileDetail("Email",$profile["email"]);
+
+                    if($_SESSION['usertype'] == "Student"){
+                        generateHTMLProfileDetail("Date Of Birth",$profile["date_of_birth"]);
+                        generateHTMLProfileDetail("Academic Program",$profile["academic_program"]);
+                    }
+    echo<<<HTML
+                <button id="startEditButton">Edit Profile</button>
+                <button id="changePasswordButton">Change Password</button>
+            </div>
+
+            <div id="editDIV" style="display:none;">
+                <form id="editProfileForm" method="POST" action="">
+                    <h1>
+                        Edit Profile
+                    </h1>
+
+    HTML;
+                        if($_SESSION['usertype'] == "Student" || $_SESSION['usertype'] == "Instructor"){
+                            generateHTMLEditProfile("First Name","firstName",$profile["first_name"]);
+                            generateHTMLEditProfile("Last Name","lastName",$profile["last_name"]);
+                        }
+                        else if($_SESSION['usertype'] == "Provider"){
+                            generateHTMLEditProfile("Provider Name","providerName",$profile["provider_name"]);
+                        }
+
+                        generateHTMLEditProfile("Contact","contactNumber",$profile["contact_number"],"tel");
+                        generateHTMLEditProfile("Email","emailAddress",$profile["email"],"email");
+
+                        if($_SESSION['usertype'] == "Student"){
+                            generateHTMLEditProfile("Date Of Birth","dateOfBirth",$profile["date_of_birth"],"date");
+                        }
+    echo<<<HTML
+
+                    <button type="button" id = "cancelEdit">Cancel</button>
+                    <button type="submit" id = "submitEdit" name = "submitEdit">Edit</button>
+
+                </form>
+            </div>
+
+
+            <div id="newPasswordDIV" style="display:none;">
+                <form id="newPasswordForm" method="POST" action="">
+                    <h1>Change to New Password</h1>
+    HTML;
+                        
+                        generateHTMLChangePassword("Old Password","oldPassword");
+                        generateHTMLChangePassword("New Password","newPassword");
+                        generateHTMLChangePassword("Re-enter New Password","newPasswordConfirm");
+    echo<<<HTML
+                    <button type="button" id = "cancelChangePWD">Cancel</button>
+                    <button type="submit" id = "submitChangePWD" name = "submitChangePWD">Edit</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    HTML;
 }
 
-?>
+
+function generatePage($title,$function,$anyCode=""){
+    echo <<<HTML
+        <!DOCTYPE html>
+        <html>image.png
+        <head> 
+        <title>$title</title>
+        <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src ="../js/navbar.js"></script>
+    HTML;
+
+        echo $anyCode;
+
+    echo <<<HTML
+        </head>
+        <body>
+        <div class="Container">
+            <div class="sidebar">
+    HTML;
+                include '../NavBar/NavBar.php';
+    echo <<<HTML
+            </div>
+            <div class="content" id="content"> 
+    HTML;
+                $function();
+
+    echo <<<HTML
+            </div>
+        </div>
+        <script src ="../js/profile.js"></script>
+        </body>
+
+
+        </html>
+    HTML;
+}
