@@ -1,8 +1,5 @@
 <!-- <?php include '../db_connect.php'; 
 session_start();
-// unset($_SESSION["usernama"]);
-// unset($_SESSION["usertype"]);
-// header("Location:login.php");
 ;?> -->
 
 <html>
