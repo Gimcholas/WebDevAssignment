@@ -201,7 +201,7 @@
 <html>
 <head> 
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
+    <link rel="stylesheet" href="../navBar/navBarStyle.css"/>
     <link rel="stylesheet" href="dashboard.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src ="../js/navbar.js"></script></head>
@@ -209,7 +209,7 @@
 <body>
 <div class="Container">
     <div class="sidebar">
-        <?php include '../NavBar/NavBar.php'?>
+        <?php include '../navBar/navBar.php'?>
     </div>
     <div class="content" id="content">    
         <header>

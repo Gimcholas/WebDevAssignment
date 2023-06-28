@@ -533,7 +533,7 @@ function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
         <html>image.png
         <head> 
         <title>$title</title>
-        <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
+        <link rel="stylesheet" href="../navBar/navBarStyle.css"/>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src ="../js/navbar.js"></script>
         $anyCodeOnHead
@@ -542,7 +542,7 @@ function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
         <div class="Container">
             <div class="sidebar">
     HTML;
-                include '../NavBar/NavBar.php';
+                include '../navBar/navBar.php';
     echo <<<HTML
             </div>
             <div class="content" id="content"> 
