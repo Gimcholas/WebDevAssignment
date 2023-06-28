@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
     <link rel="stylesheet" href="#"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
+    <script src ="../js/navbar.js"></script></head>
 
 <body>
 <div class="Container">
@@ -57,18 +57,5 @@
 </div>
 </body>
 
-<script>
-    $(document).ready(function() {
-        $(".sidebar").hover(
-          function() {
-            $(".content").addClass("shifted");
-            // console.log('done')
-          },
-          function() {
-            $(".content").removeClass("shifted");
-          }
-        );
-      }
-    );
-</script>
+
 </html>
