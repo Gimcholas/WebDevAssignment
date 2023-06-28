@@ -1,5 +1,5 @@
 <!-- <?php include '../db_connect.php'; 
-// session_start();
+session_start();
 // unset($_SESSION["usernama"]);
 // unset($_SESSION["usertype"]);
 // header("Location:login.php");
@@ -16,36 +16,166 @@
     <body>
         <nav>
             <ul>
-                <li>
-                    <a href="#" class="logo">
-                        <img src="../NavBar/logo1.png" alt="">
-                        <span class="nav-itme">TPMS</span>
-                    </a>
-                </li>
-                <li><a href="#" class="">
-                    <i class="fas fa-home"></i>
-                    <span class="nav-item">Dashboard</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="fas fa-server"></i>
-                    <span class="nav-item">Course Overview</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="fas fa-book"></i>
-                    <span class="nav-item">Registered Course</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="fas fa-bullhorn"></i>
-                    <span class="nav-item">Feedback</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="fas fa-user"></i>
-                    <span class="nav-item">Profile</span>
-                </a></li>
-                <li><a href="#" class="logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span class="nav-item">Logout</span>
-                </a></li>
+                <?php
+                     if($_SESSION["usertype"] == "Admin") {
+                        echo "<li>";
+                        echo "<a href='../admin/dashboard.php' class='logo'>";
+                        echo "<img src='../files/logo1.png' alt=''>";
+                        echo "<span class='nav-item'>TPMS</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../admin/dashboard.php'>";
+                        echo "<i class='fas fa-home'></i>";
+                        echo "<span class='nav-item'>Dashboard</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../admin/courseOverview.php'>";
+                        echo "<i class='fas fa-server'></i>";
+                        echo "<span class='nav-item'>Course Overview</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../admin/profile.php'>";
+                        echo "<i class='fas fa-user'></i>";
+                        echo "<span class='nav-item'>Profile</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<i class='fas fa-sign-out-alt'></i>";
+                        echo "<span class='nav-item'>Logout</span>";
+                        echo "</a>";
+                        echo "</li>";
+                     }
+                     else if ($_SESSION["usertype"] == "Student"){
+                        echo "<li>";
+                        echo "<a href='../student/dashboard.php' class='logo'>";
+                        echo "<img src='../files/logo1.png' alt=''>";
+                        echo "<span class='nav-item'>TPMS</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../student/dashboard.php'>";
+                        echo "<i class='fas fa-home'></i>";
+                        echo "<span class='nav-item'>Dashboard</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../student/availableCourse.php'>";
+                        echo "<i class='fas fa-server'></i>";
+                        echo "<span class='nav-item'>Available Course</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../student/registeredCourse.php'>";
+                        echo "<i class='fas fa-book'></i>";
+                        echo "<span class='nav-item'>Registered Course</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../student/feedback.php'>";
+                        echo "<i class='fas fa-bullhorn'></i>";
+                        echo "<span class='nav-item'>Feedback</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../student/profile.php'>";
+                        echo "<i class='fas fa-user'></i>";
+                        echo "<span class='nav-item'>Profile</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<i class='fas fa-sign-out-alt'></i>";
+                        echo "<span class='nav-item'>Logout</span>";
+                        echo "</a>";
+                        echo "</li>";
+                     }
+                     else if ($_SESSION["usertype"] == "Instructor"){
+                        echo "<li>";
+                        echo "<a href='../instructor/dashboard.php' class='logo'>";
+                        echo "<img src='../files/logo1.png' alt=''>";
+                        echo "<span class='nav-item'>TPMS</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../instructor/dashboard.php'>";
+                        echo "<i class='fas fa-home'></i>";
+                        echo "<span class='nav-item'>Dashboard</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../instructor/myCourse.php'>";
+                        echo "<i class='fas fa-book'></i>";
+                        echo "<span class='nav-item'>My Course</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../instructor/feedback.php'>";
+                        echo "<i class='fas fa-bullhorn'></i>";
+                        echo "<span class='nav-item'>Feedback</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../instructor/profile.php'>";
+                        echo "<i class='fas fa-user'></i>";
+                        echo "<span class='nav-item'>Profile</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<i class='fas fa-sign-out-alt'></i>";
+                        echo "<span class='nav-item'>Logout</span>";
+                        echo "</a>";
+                        echo "</li>";
+                     }
+                     else if ($_SESSION["usertype"] == "Provider"){
+                        echo "<li>";
+                        echo "<a href='../trainingProvider/dashboard.php' class='logo'>";
+                        echo "<img src='../files/logo1.png' alt=''>";
+                        echo "<span class='nav-item'>TPMS</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../trainingProvider/dashboard.php'>";
+                        echo "<i class='fas fa-home'></i>";
+                        echo "<span class='nav-item'>Dashboard</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../trainingProvider/accountDashboard.php'>";
+                        echo "<i class='fas fa-book'></i>";
+                        echo "<span class='nav-item'>Account</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../trainingProvider/courses.php'>";
+                        echo "<i class='fas fa-book'></i>";
+                        echo "<span class='nav-item'>Courses</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../trainingProvider/feedback.php'>";
+                        echo "<i class='fas fa-bullhorn'></i>";
+                        echo "<span class='nav-item'>Feedback</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../trainingProvider/profile.php'>";
+                        echo "<i class='fas fa-user'></i>";
+                        echo "<span class='nav-item'>Profile</span>";
+                        echo "</a>";
+                        echo "</li>";
+
+                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<i class='fas fa-sign-out-alt'></i>";
+                        echo "<span class='nav-item'>Logout</span>";
+                        echo "</a>";
+                        echo "</li>";
+                     }
+                ?>
             </ul>
         </nav>
     </body>
@@ -56,9 +186,6 @@
         // Add click event listener to each navigation item
         navItems.forEach(function(navItem) {
         navItem.addEventListener('click', function(e) {
-            // Prevent the default link behavior
-            e.preventDefault();
-
             // Remove the 'active' class from all navigation items
             navItems.forEach(function(item) {
             item.classList.remove('active');
@@ -68,5 +195,8 @@
             this.classList.add('active');
         });
         });
+
+
+        
     </script>
 </html>

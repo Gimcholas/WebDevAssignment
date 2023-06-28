@@ -87,3 +87,7 @@ input:focus , select:focus{
     border-color: #aaa;
     box-shadow: 0 0 5px #aaa;
 }
+
+dialog {
+    margin:auto;
+}

@@ -201,42 +201,49 @@
 <html>
 <head> 
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="createAccount.css">
+    <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
+    <link rel="stylesheet" href="dashboard.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-<header>
-    <h1>Admin Dashboard</h1>
+<div class="Container">
+    <div class="sidebar">
+        <?php include '../NavBar/NavBar.php'?>
+    </div>
+    <div class="content" id="content">    
+        <header>
+            <h1>Admin Dashboard</h1>
     <!-- <a href="createAccount.php"><button>Add Account</button></a> -->
-    <button create-account-button>Add Account</button>
-</header>
-<dialog create-account>
-<form action="" method="POST">
-        <h3>Create New Account</h3>
-        <div class="input-box-user">
-            <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
-            <input type="text" name="username" placeholder="Username" required>
-        </div>
-        <div class="input-box-pw">
-            <img src="../files/password_icon.png" alt="PwIcon">
-            <input type="password" name="password" placeholder="Password" required>
-        </div>  
-        <div class="input-box">
-            <select name="usertype" id="usertype" onchange="updateForm()" required>
-                <option hidden disabled selected value>Select a usertype</option>
-                <option value="Admin">Admin</option>
-                <option value="Instructor">Instructor</option>
-                <option value="Provider">Training Provider</option>
-                <option value="Student">Student</option>
-            </select>
-        </div>
-        <div id="additionalFields"></div>
-        <div  class="operations-button">
-            <a href="dashboard.php"><input type="button" value = "Back"></a>
-            <input type="submit" name="createAccount" value="Create Account">
-        </div>
-    </form>
-</dialog>
+            <button create-account-button>Add Account</button>
+        </header>
+            <dialog create-account>
+            <form action="" method="POST">
+                    <h3>Create New Account</h3>
+                    <div class="input-box-user">
+                        <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="input-box-pw">
+                        <img src="../files/password_icon.png" alt="PwIcon">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>  
+                    <div class="input-box">
+                        <select name="usertype" id="usertype" onchange="updateForm()" required>
+                            <option hidden disabled selected value>Select a usertype</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Instructor">Instructor</option>
+                            <option value="Provider">Training Provider</option>
+                            <option value="Student">Student</option>
+                        </select>
+                    </div>
+                    <div id="additionalFields"></div>
+                    <div  class="operations-button">
+                        <a href="dashboard.php"><input type="button" value = "Back"></a>
+                        <input type="submit" name="createAccount" value="Create Account">
+                    </div>
+                </form>
+            </dialog>
 
 <?php if(isset($_GET['edit'])) {
             
@@ -613,8 +620,22 @@ if(isset($_GET['view'])) {
     <p>Number of instructor: <?php echo $countInstructor; ?></p>
     <p>Number of student: <?php echo $countStudent; ?></p>
     <p>Number of training provider: <?php echo $countProvider; ?></p>
+    </div>
 </body>
 <script>
+    $(document).ready(function() {
+        $(".sidebar").hover(
+          function() {
+            $(".content").addClass("shifted");
+            // console.log('done')
+          },
+          function() {
+            $(".content").removeClass("shifted");
+          }
+        );
+      }
+    );
+
     const createAccountModal = document.querySelector("[create-account]");
     const createAccountButton = document.querySelector("[create-account-button]");
     const viewDetailsButton = document.getElementsByClassName('view-details');
@@ -645,13 +666,13 @@ if(isset($_GET['view'])) {
     });
 
     window.addEventListener('click', e => {
-        console.log("Closing");
+        // console.log("Closing");
         const dialogDimension = detailsModal.getBoundingClientRect();
-        console.log(e.clientX > dialogDimension.left);
-        console.log(e.clientX + " " + dialogDimension.left);
-        console.log(e.clientX < dialogDimension.right);
-        console.log(e.clientY > dialogDimension.top);
-        console.log(e.clientY < dialogDimension.bottom);
+        // console.log(e.clientX > dialogDimension.left);
+        // console.log(e.clientX + " " + dialogDimension.left);
+        // console.log(e.clientX < dialogDimension.right);
+        // console.log(e.clientY > dialogDimension.top);
+        // console.log(e.clientY < dialogDimension.bottom);
         if (
             e.clientX < dialogDimension.left ||
             e.clientX > dialogDimension.right ||
@@ -659,19 +680,19 @@ if(isset($_GET['view'])) {
             e.clientY > dialogDimension.bottom
         ) {
             detailsModal.close();
-            console.log("Closing");
+            // console.log("Closing");
         }
     }
     );
 
     window.addEventListener('click', e => {
-        console.log("Closing");
+        // console.log("Closing");
         const dialogDimension = editModal.getBoundingClientRect();
-        console.log(e.clientX > dialogDimension.left);
-        console.log(e.clientX + " " + dialogDimension.left);
-        console.log(e.clientX < dialogDimension.right);
-        console.log(e.clientY > dialogDimension.top);
-        console.log(e.clientY < dialogDimension.bottom);
+        // console.log(e.clientX > dialogDimension.left);
+        // console.log(e.clientX + " " + dialogDimension.left);
+        // console.log(e.clientX < dialogDimension.right);
+        // console.log(e.clientY > dialogDimension.top);
+        // console.log(e.clientY < dialogDimension.bottom);
         if (
             e.clientX < dialogDimension.left ||
             e.clientX > dialogDimension.right ||
@@ -679,7 +700,7 @@ if(isset($_GET['view'])) {
             e.clientY > dialogDimension.bottom
         ) {
             editModal.close();
-            console.log("Closing");
+            // console.log("Closing");
         }
     }
     );
@@ -703,7 +724,7 @@ if(isset($_GET['view'])) {
 
     function updateForm() {
         const usertypeSelected = document.getElementById("usertype").value;
-        console.log(usertypeSelected);
+        // console.log(usertypeSelected);
         
         const additionalForm = document.getElementById("additionalFields");
         additionalForm.innerHTML = "";

@@ -1,4 +1,4 @@
-<?php include '../db_connect.php'; 
+<?php include 'db_connect.php'; 
 session_start()
 ;?>
 
@@ -6,7 +6,7 @@ session_start()
 <html>
     <head>
         <title>Login</title>
-        <link rel="stylesheet" type="text/css" href = "../css/login.css">
+        <link rel="stylesheet" type="text/css" href = "css/login.css">
     </head>
 
     <body>
@@ -14,7 +14,7 @@ session_start()
 
         <!-- left part div -->
             <div class="leftdiv">
-                <img src="../files/MMU_Logo.png" alt="MMU Logo" >
+                <img src="files/MMU_Logo.png" alt="MMU Logo" >
             </div>
 
         <!-- right part div -->
@@ -48,17 +48,17 @@ session_start()
             $_SESSION["username"] = $row["username"];
             $_SESSION["usertype"] = $row["usertype"];
             if($row["usertype"] == "Admin") { // Redirect user to admin page
-                header("Location: ../admin/dashboard.php");
+                header("Location: admin/dashboard.php");
             }
             else if ($row["usertype"] == "Student"){
-                header("Location: courseDashboard.php");
+                header("Location: student/dashboard.php");
             }
             else if ($row["usertype"] == "Instructor"){
-                header("Location: courseDashboard.php");
+                header("Location: instructor/dashboard.php");
             }
             else if ($row["usertype"] == "Provider"){
                 echo "Success";
-                header("Location: ../trainingProvider/dashboard.php/");
+                header("Location: trainingProvider/dashboard.php");
             }
         }
         else {
