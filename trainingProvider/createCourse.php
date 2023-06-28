@@ -7,11 +7,48 @@
 <html>
 <head> 
     <title>Add Course</title>
+    <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
     <link rel='stylesheet' type="text/css" href=style.css>
     <script text="text/javascript" src="script.js"></script>
-</head> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src ="../js/navbar.js"></script></head>
+</head>
+
 <body>
+<div class="Container">
+    <div class="sidebar">
+        <?php include '../NavBar/NavBar.php'?>
+    </div>
+    <div class="content" id="content"> 
     <form action="createCourse.php" method="post" id="courseForm" enctype="multipart/form-data">
+        <?php if($_SESSION["usertype"] == "Admin") {
+            // Show the select training provider
+                    echo "<div class='input-box'>";
+                    echo "<label for='providerUsername'>Provider Username </label>";
+                    echo "<select name='providerUsername[]' required >";
+                    echo "<option disabled selected value>Select A Training Provider</option>";
+                    echo "<?php"; 
+                    $sql = 'SELECT * FROM training_provider;';
+                    $result = mysqli_query($connect,$sql);
+                    $count = mysqli_num_rows($result);
+                    if ($count == 0) {
+                        ?>
+                        <option disabled selected value>No Training Provider Found</option>
+
+                    <?php
+                    }
+                    while($row = mysqli_fetch_array($result)) {
+                        ?>
+                        <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
+                        . $row["provider_name"]?></option> 
+                    <?php } 
+                ?>
+            </select>
+            </div><br>    
+        <?php
+        }
+        ?>
+
         <div class="input-box">
         <label for="courseName">Course Name</label>
         <input type="text" name="courseName" required> 
@@ -112,10 +149,18 @@
         </div>
 
         <div class='back'>
-            <a href="courses.php"><input type="button" value = "Back"></a><br><br>
+            <?php if ($_SESSION["usertype"] == "Admin") {
+                echo "<a href='../admin/courseOverview.php'><input type='button' value = 'Back'></a><br><br>";
+            }
+            else {
+                echo "<a href='courses.php'><input type='button' value = 'Back'></a><br><br>";                
+            }?>
         </div>
     </form>
+    </div>
+</div>
 </body>
+</html>
 
 <?php 
     if(isset($_POST['submit'])) {
