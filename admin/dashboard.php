@@ -1,5 +1,8 @@
 <?php include '../db_connect.php';
-    session_start(); 
+    session_start();
+    if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "Provider") {
+        header("Location: ../login.php");
+    }
     
     // Validate Create Account Form and Edit Account Form 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
