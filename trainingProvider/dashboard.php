@@ -49,9 +49,9 @@
                     <h3><?php echo $countCourse ?></h3> 
                 </div>
             </div>
-            <a href="/assignment/trainingProvider/courses.php"><button>Manage Courses</button></a>
-            <a href="/assignment/trainingProvider/accountDashboard.php"><button>Manage Accounts</button></a>
-            <a href="/assignment/trainingProvider/feedback.php"><button>View Feedback</button></a>
+            <a href="courses.php"><button>Manage Courses</button></a>
+            <a href="../admin/dashboard.php"><button>Manage Accounts</button></a>
+            <a href="feedback.php"><button>View Feedback</button></a>
         </header>
     </div>
 </div>

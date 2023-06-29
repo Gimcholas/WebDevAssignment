@@ -24,16 +24,18 @@ const newPasswordForm = document.getElementById("newPasswordForm");
 const password = document.getElementById("newPassword");
 const passwordConfirm = document.getElementById("newPasswordConfirm");
 
-editButton.addEventListener("click",function(e){
-    displayDIV.style.display = "none";
-    editDIV.style.display = "block";
-})
+if (editButton != null) { // When usertype is student/instructor/training provider
+    editButton.addEventListener("click",function(e){
+        displayDIV.style.display = "none";
+        editDIV.style.display = "block";
+    })
 
-cancelEditButton.addEventListener("click", function(e){
-    displayDIV.style.display = "block";
-    editDIV.style.display = "none";
-    editProfileForm.reset();
-})
+    cancelEditButton.addEventListener("click", function(e){
+        displayDIV.style.display = "block";
+        editDIV.style.display = "none";
+        editProfileForm.reset();
+    })
+}
 
 changePasswordButton.addEventListener("click", function(e) {
     displayDIV.style.display = "none";

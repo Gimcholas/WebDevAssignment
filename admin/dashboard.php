@@ -1,7 +1,7 @@
 <?php include '../db_connect.php';
     session_start(); 
-    //echo $_SESSION["username"];
-    //echo $_SESSION["usertype"];
+    
+    // Validate Create Account Form and Edit Account Form 
     if(isset($_POST["createAccount"])) {
         if(empty($_POST["username"])) {
             die("Username is required"); 
@@ -122,7 +122,6 @@
         <?php
     }
     
-    
     if(isset($_POST['editAccount'])) {
         $username = $_GET['username'];
         $sql = "SELECT * FROM user where username='$username';";
@@ -213,39 +212,50 @@
     </div>
     <div class="content" id="content">    
         <header>
-            <h1>Admin Dashboard</h1>
-    <!-- <a href="createAccount.php"><button>Add Account</button></a> -->
+            <?php if ($_SESSION["usertype"] == "Admin") {
+                echo "<h1>Admin Dashboard</h1>";
+            } 
+            else if ($_SESSION["usertype"] == "Provider") {
+                echo "<h1>Training Provider Dashboard</h1>";
+            }
+            ?>
             <button create-account-button>Add Account</button>
         </header>
-            <dialog create-account>
-            <form action="" method="POST">
-                    <h3>Create New Account</h3>
-                    <div class="input-box-user">
-                        <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
-                        <input type="text" name="username" placeholder="Username" required>
-                    </div>
-                    <div class="input-box-pw">
-                        <img src="../files/password_icon.png" alt="PwIcon">
-                        <input type="password" name="password" placeholder="Password" required>
-                    </div>  
-                    <div class="input-box">
-                        <select name="usertype" id="usertype" onchange="updateForm()" required>
-                            <option hidden disabled selected value>Select a usertype</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Instructor">Instructor</option>
-                            <option value="Provider">Training Provider</option>
-                            <option value="Student">Student</option>
-                        </select>
-                    </div>
-                    <div id="additionalFields"></div>
-                    <div  class="operations-button">
-                        <a href="dashboard.php"><input type="button" value = "Back"></a>
-                        <input type="submit" name="createAccount" value="Create Account">
-                    </div>
-                </form>
-            </dialog>
 
-<?php if(isset($_GET['edit'])) {
+        <!-- Create Account Dialog -->
+        <dialog create-account>
+            <form action="" method="POST">
+                <h3>Create New Account</h3>
+                <div class="input-box-user">
+                    <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-box-pw">
+                    <img src="../files/password_icon.png" alt="PwIcon">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>  
+                <div class="input-box">
+                    <select name="usertype" id="usertype" onchange="updateForm()" required>
+                        <option hidden disabled selected value>Select a usertype</option>
+                        ?> 
+                        <?php if ($_SESSION['usertype'] == 'Admin') {
+                            echo '<option value="Admin">Admin</option>';
+                            echo '<option value="Provider">Training Provider</option>';
+                        }?>
+                        <option value="Instructor">Instructor</option>
+                        <option value="Student">Student</option>
+                    </select>
+                </div>
+                <div id="additionalFields"></div>
+                <div  class="operations-button">
+                    <input type="button" value = "Back" onclick="createAccountModal.close();">
+                    <input type="submit" name="createAccount" value="Create Account">
+                </div>
+            </form>
+        </dialog>
+
+        <!-- Edit Account Dialog -->
+        <?php if(isset($_GET['edit'])) {
             
             $username = $_GET['username'];
 
@@ -256,378 +266,479 @@
             $usertype = $row['usertype'];
             ?>
             <dialog edit-account-modal>
-            <h3>Edit Account Details</h3>
-            <form action='' method='POST'>
-            <?php
-            if($usertype == 'Admin') {
-                // Allow to change password only
-            }
-            else if($usertype == 'Instructor') {
-                // Allow to change password, firstname, lastname, contactnumber, email
-                $sql2 = "SELECT * FROM instructor where username='$username';";
-                $result2 = mysqli_query($connect,$sql2);
-                $row2 = mysqli_fetch_assoc($result2);
-                ?>
-                <div class="input-box">
-                <label>First Name</label>
-                <input type="text" name="firstName" placeholder="First Name" required value="<?php echo $row2['first_name']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Last Name</label>
-                <input type="text" name="lastName" placeholder="Last Name" required value="<?php echo $row2['last_name']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Contact Number</label>
-                <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Email</label>
-                <input type="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br><br>
-                </div>
-                <?php
-            }
-            else if($usertype == 'Student') {
-                // Allow to change password, firstname, lastname, dataofbirth, academicprogram, contactnumber, email
-                $sql2 = "SELECT * FROM student where username='$username';";
-                $result2 = mysqli_query($connect,$sql2);
-                $row2 = mysqli_fetch_assoc($result2);
-                ?>
-                <div class="input-box">
-                <label>First Name</label>
-                <input type="text" name="firstName" placeholder="First Name" required value="<?php echo $row2['first_name']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Last Name</label>
-                <input type="text" name="lastName" placeholder="Last Name" required value="<?php echo $row2['last_name']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Date Of Birth</label>
-                <input type="date" name="dateOfBirth" required value="<?php echo $row2['date_of_birth']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Academic Program</label>
-                <input type="text" name="academicProgram" placeholder="Academic Program" required value="<?php echo $row2['academic_program']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Contact Number</label>
-                <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Email</label>
-                <input type="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br><br>
-                </div>
-                <?php
-            }
-            else if($usertype == 'Provider') {
-                // Allow to change password, providername, contactnumber, email
-                $sql2 = "SELECT * FROM training_provider where username='$username';";
-                $result2 = mysqli_query($connect,$sql2);
-                $row2 = mysqli_fetch_assoc($result2);
-                ?>
-                
-                <div class="input-box">
-                <label>Provider Name</label>
-                <input type="text" name="providerName" required value="<?php echo $row2['provider_name']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Contact Number</label>
-                <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
-                </div>
-                <div class="input-box">
-                <label>Email</label>
-                <input type="email" name="email" placeholder="Email" value="<?php echo $row2['email']; ?>"><br><br>
-                </div>
-                <?php
-            }
-            
-            // Change password
-            ?>
-            <div class="input-box">
-            <label>New Password</label>
-            <input type="password" name="password" placeholder="Password"><br><br>
-            </div> 
-            
-            <div class='submitBtn'>
-                <input type='submit' name='editAccount' value='Save'><br><br>
-            </div>
-            <div class='backBtn'>
-                <a href="dashboard.php"><input type='button' name='back' value='Back'></a>
-            </div>
-            </form>
+                <h3>Edit Account Details</h3>
+                <form action='' method='POST'>
+                    <?php
+                    if($usertype == 'Admin') {
+                        // Allow to change password only
+                    }
+                    else if($usertype == 'Instructor') {
+                        // Allow to change password, firstname, lastname, contactnumber, email
+                        $sql2 = "SELECT * FROM instructor where username='$username';";
+                        $result2 = mysqli_query($connect,$sql2);
+                        $row2 = mysqli_fetch_assoc($result2);
+                        ?>
+                        <div class="input-box">
+                        <label>First Name</label>
+                        <input type="text" name="firstName" placeholder="First Name" required value="<?php echo $row2['first_name']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Last Name</label>
+                        <input type="text" name="lastName" placeholder="Last Name" required value="<?php echo $row2['last_name']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Contact Number</label>
+                        <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br><br>
+                        </div>
+                        <?php
+                    }
+                    else if($usertype == 'Student') {
+                        // Allow to change password, firstname, lastname, dataofbirth, academicprogram, contactnumber, email
+                        $sql2 = "SELECT * FROM student where username='$username';";
+                        $result2 = mysqli_query($connect,$sql2);
+                        $row2 = mysqli_fetch_assoc($result2);
+                        ?>
+                        <div class="input-box">
+                        <label>First Name</label>
+                        <input type="text" name="firstName" placeholder="First Name" required value="<?php echo $row2['first_name']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Last Name</label>
+                        <input type="text" name="lastName" placeholder="Last Name" required value="<?php echo $row2['last_name']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Date Of Birth</label>
+                        <input type="date" name="dateOfBirth" required value="<?php echo $row2['date_of_birth']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Academic Program</label>
+                        <input type="text" name="academicProgram" placeholder="Academic Program" required value="<?php echo $row2['academic_program']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Contact Number</label>
+                        <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br><br>
+                        </div>
+                        <?php
+                    }
+                    else if($usertype == 'Provider') {
+                        // Allow to change password, providername, contactnumber, email
+                        $sql2 = "SELECT * FROM training_provider where username='$username';";
+                        $result2 = mysqli_query($connect,$sql2);
+                        $row2 = mysqli_fetch_assoc($result2);
+                        ?>
+                        
+                        <div class="input-box">
+                        <label>Provider Name</label>
+                        <input type="text" name="providerName" required value="<?php echo $row2['provider_name']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Contact Number</label>
+                        <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
+                        </div>
+                        <div class="input-box">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Email" value="<?php echo $row2['email']; ?>"><br><br>
+                        </div>
+                        <?php
+                    }
+                    
+                    // Change password
+                    ?>
+                    <div class="input-box">
+                    <label>New Password</label>
+                    <input type="password" name="password" placeholder="Password"><br><br>
+                    </div> 
+                    
+                    <div class='submitBtn'>
+                        <input type='submit' name='editAccount' value='Save'><br><br>
+                    </div>
+                    <div class='backBtn'>
+                        <a href="dashboard.php"><input type='button' name='back' value='Back'></a>
+                    </div>
+                </form>
             </dialog>
             <?php
-        }
-?>
+        }?>
 
-<?php
-if(isset($_GET['view'])) {
-    $username = $_GET['username'];
-    $sql = "SELECT * FROM user where username='$username';";
-    $result = mysqli_query($connect,$sql);
-    $row = mysqli_fetch_assoc($result);
-    echo "<dialog view-details-modal>";
-    echo "<button id='close-view'>X</button>";
-    echo "<br><b>Profile Image</b><br>";
-    if ($row["profile_image_path"] != NULL) {
-        ?>
-        <!-- Profile image -->
-        <img src=<?php echo $row["profile_image_path"] ?> alt = "Profile image">
-
+        <!-- View Account Details Dialog -->
         <?php
-    }
-    else {
-        ?>
-        <img src="../files/defaultProfileImage.jpg" alt = "Profile image">
-        <?php
-    }
-    echo "<br><b>Username</b><br>";
-    echo $row["username"]; 
-    echo "<br><b>Usertype</b><br>";
-    echo $row["usertype"]; 
-    echo "<br><b>Joined Date</b><br>";
-    echo $row["joined_date"]; 
+        if(isset($_GET['view'])) {
+            $username = $_GET['username'];
+            $sql = "SELECT * FROM user where username='$username';";
+            $result = mysqli_query($connect,$sql);
+            $row = mysqli_fetch_assoc($result);
+            echo "<dialog view-details-modal>";
+            echo "<button id='close-view'>X</button>";
+            echo "<br><b>Profile Image</b><br>";
+            if ($row["profile_image_path"] != NULL) {
+                ?>
+                <!-- Profile image -->
+                <img src=<?php echo $row["profile_image_path"] ?> alt = "Profile image">
 
-    if($row["usertype"] == "Instructor") {
-        
-        $sql = "SELECT AVG(rating) as rating, COUNT(rating) as amount FROM instructor_feedback where instructor_username = '$username'";
-        $result = mysqli_query($connect,$sql);
-        $row = mysqli_fetch_assoc($result);
-        $numOfStars = floor($row["rating"]);
-        echo "<div class=rating>";
-        echo "<b>Rating</b>";
-        for($i=0; $i<$numOfStars; $i++)
-            echo "<img src='../files/star-orange.png' alt='star'>";
-        for($i=0; $i<(5-$numOfStars); $i++)
-            echo "<img src='../files/star-white.png' alt='star'>";
-    
-        echo " (" . $row["amount"] . ")";
-        echo "</div>"; 
-        
-
-        $sql = "SELECT * FROM instructor JOIN training_provider ON instructor.provider_username = training_provider.username where instructor.username='$username';";
-        $result = mysqli_query($connect,$sql);
-        $row = mysqli_fetch_assoc($result);
-
-        echo "<br><b>First Name</b><br>";
-        echo $row["first_name"]; 
-        echo "<br><b>Last Name</b><br>";
-        echo $row["last_name"]; 
-        echo "<br><b>Training Provider Username</b><br>";
-        echo $row["provider_username"]; 
-        echo "<br><b>Training Provider Name</b><br>";
-        echo $row["provider_name"]; 
-        echo "<br><b>Contact Number</b><br>";
-        echo $row["contact_number"]; 
-        echo "<br><b>Email</b><br>";
-        echo $row["email"]; 
-        
-
-        echo "<h3>Courses</h3>"; ?>
-        
-        <?php 
-        $sql = "SELECT * FROM instructor JOIN training_provider ON 
-                instructor.provider_username = training_provider.username 
-                JOIN course_section ON course_section.username = instructor.username
-                JOIN course ON course_section.course_id = course.course_id
-                where instructor.username='" . $username ."';";
-
-        $result = mysqli_query($connect,$sql); 
-        $numOfRows = mysqli_num_rows($result);
-        if($numOfRows == 0) {
-            echo "No Course In Charge";
-        }
-        else {
-            ?>
-            <table border="1">
-            <tr>
-                <th>Course ID</th>
-                <th>Course Title</th>
-                <th>Course Section</th>
-                <th>Day</th>
-                <th>Time</th>
-            </tr>
-            <?php
-            while($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row["course_id"]. "</td>";
-                echo "<td>" . $row["course_title"]. "</td>";
-                echo "<td>" . $row["course_section_name"] . "</td>";
-                echo "<td>" . $row["day"] . "</td>";
-                echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
-                echo "</tr>";
+                <?php
             }
-            echo "</table>";
-        }
-
-    }
-    else if($row["usertype"] == "Student") {
-        $sql = "SELECT * FROM student JOIN training_provider ON 
-                student.provider_username = training_provider.username 
-                where student.username='" . $username ."';";
-
-        $result = mysqli_query($connect,$sql);
-        $row = mysqli_fetch_assoc($result);
-
-        echo "<br><b>First Name</b><br>";
-        echo $row["first_name"]; 
-        echo "<br><b>Last Name</b><br>";
-        echo $row["last_name"]; 
-        echo "<br><b>Date of Birth</b><br>";
-        echo $row["date_of_birth"]; 
-        echo "<br><b>Academic Program</b><br>";
-        echo $row["academic_program"]; 
-        echo "<br><b>Training Provider Username</b><br>";
-        echo $row["provider_username"];
-        echo "<br><b>Training Provider Name</b><br>";
-        echo $row["provider_name"];  
-        echo "<br><b>Contact Number</b><br>";
-        echo $row["contact_number"]; 
-        echo "<br><b>Email</b><br>";
-        echo $row["email"]; 
-        ?>
-        <h3>Registered Course</h3>
-        <?php 
-        $sql = "SELECT * FROM student JOIN training_provider ON 
-                student.provider_username = training_provider.username 
-                JOIN course_student ON course_student.username = student.username
-                JOIN course_section ON course_student.course_section_id = course_section.course_section_id
-                JOIN course ON course_section.course_id = course.course_id
-                where student.username='" . $username ."';";
-
-        $result = mysqli_query($connect,$sql);
-        $numOfRows = mysqli_num_rows($result);
-        if ($numOfRows == 0) {
-            echo "<p>No course found</p>";
-        }
-        else {
-            echo "<table border='1'>";
-            echo "<tr>";
-            echo "<th>Course Title</th>";
-            echo "<th>Course Section Name</th>";
-            echo "<th>Day</th>";
-            echo "<th>Time</th>";
-            echo "<th>Completed Date</th>";
-            echo "</tr>";
-            
-            while($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row["course_title"] . "</td>";
-                echo "<td>" . $row["course_section_name"] . "</td>";
-                echo "<td>" . $row["day"] . "</td>";
-                echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
-                echo "<td>" . $row["course_completed_date"] . "</td>";
-                echo "</tr>";
+            else {
+                ?>
+                <img src="../files/defaultProfileImage.jpg" alt = "Profile image">
+                <?php
             }
-            echo "</table>";
-        }
-    }
-    else if($row["usertype"] == "Provider") {
-        $sql = "SELECT * FROM training_provider where username='$username';";
-        $result = mysqli_query($connect,$sql);
-        $row = mysqli_fetch_assoc($result);
+            echo "<br><b>Username</b><br>";
+            echo $row["username"]; 
+            echo "<br><b>Usertype</b><br>";
+            echo $row["usertype"]; 
+            echo "<br><b>Joined Date</b><br>";
+            echo $row["joined_date"]; 
 
-        echo "<br><b>Training Provider Name</b><br>";
-        echo $row["provider_name"]; 
-        echo "<br><b>Contact Number</b><br>";
-        echo $row["contact_number"]; 
-        echo "<br><b>Email</b><br>";
-        echo $row["email"]; 
-
-        $sql = "SELECT * FROM course where provider_username = '" . $username . "';";
-        $result = mysqli_query($connect,$sql);
-        $numOfRows = mysqli_num_rows($result);
-        if($numOfRows == 0) {
-            echo "No Course Created";
-        }
-        else {
-            ?>
-            <table border="1">
-            <tr>
-                <th>Course ID</th>
-                <th>Course Title</th>
-                <th>Course Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+            if($row["usertype"] == "Instructor") {
                 
-            </tr>
-            <?php
-            while($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row["course_id"]. "</td>";
-                echo "<td>" . $row["course_title"]. "</td>";
-                echo "<td>" . $row["course_description"] . "</td>";
-                echo "<td>" . $row["start_date"] . "</td>";
-                echo "<td>" . $row["end_date"] . "</td>";
-                echo "</tr>";
+                $sql = "SELECT AVG(rating) as rating, COUNT(rating) as amount FROM instructor_feedback where instructor_username = '$username'";
+                $result = mysqli_query($connect,$sql);
+                $row = mysqli_fetch_assoc($result);
+                $numOfStars = floor($row["rating"]);
+                echo "<div class=rating>";
+                echo "<b>Rating</b>";
+                for($i=0; $i<$numOfStars; $i++)
+                    echo "<img src='../files/star-orange.png' alt='star'>";
+                for($i=0; $i<(5-$numOfStars); $i++)
+                    echo "<img src='../files/star-white.png' alt='star'>";
+            
+                echo " (" . $row["amount"] . ")";
+                echo "</div>"; 
+                
+
+                $sql = "SELECT * FROM instructor JOIN training_provider ON instructor.provider_username = training_provider.username where instructor.username='$username';";
+                $result = mysqli_query($connect,$sql);
+                $row = mysqli_fetch_assoc($result);
+
+                echo "<br><b>First Name</b><br>";
+                echo $row["first_name"]; 
+                echo "<br><b>Last Name</b><br>";
+                echo $row["last_name"]; 
+                echo "<br><b>Training Provider Username</b><br>";
+                echo $row["provider_username"]; 
+                echo "<br><b>Training Provider Name</b><br>";
+                echo $row["provider_name"]; 
+                echo "<br><b>Contact Number</b><br>";
+                echo $row["contact_number"]; 
+                echo "<br><b>Email</b><br>";
+                echo $row["email"];
+                echo "<br>";
+                
+
+                echo "<h3>Courses</h3>"; ?>
+                
+                <?php 
+                $sql = "SELECT * FROM instructor JOIN training_provider ON 
+                        instructor.provider_username = training_provider.username 
+                        JOIN course_section ON course_section.username = instructor.username
+                        JOIN course ON course_section.course_id = course.course_id
+                        where instructor.username='" . $username ."';";
+
+                $result = mysqli_query($connect,$sql); 
+                $numOfRows = mysqli_num_rows($result);
+                if($numOfRows == 0) {
+                    echo "No Course In Charge";
+                }
+                else {
+                    ?>
+                    <table border="1">
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course Title</th>
+                        <th>Course Section</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                    </tr>
+                    <?php
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>" . $row["course_id"]. "</td>";
+                        echo "<td>" . $row["course_title"]. "</td>";
+                        echo "<td>" . $row["course_section_name"] . "</td>";
+                        echo "<td>" . $row["day"] . "</td>";
+                        echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                }
+
             }
-            echo "</table>";
+            else if($row["usertype"] == "Student") {
+                $sql = "SELECT * FROM student JOIN training_provider ON 
+                        student.provider_username = training_provider.username 
+                        where student.username='" . $username ."';";
+
+                $result = mysqli_query($connect,$sql);
+                $row = mysqli_fetch_assoc($result);
+
+                echo "<br><b>First Name</b><br>";
+                echo $row["first_name"]; 
+                echo "<br><b>Last Name</b><br>";
+                echo $row["last_name"]; 
+                echo "<br><b>Date of Birth</b><br>";
+                echo $row["date_of_birth"]; 
+                echo "<br><b>Academic Program</b><br>";
+                echo $row["academic_program"]; 
+                echo "<br><b>Training Provider Username</b><br>";
+                echo $row["provider_username"];
+                echo "<br><b>Training Provider Name</b><br>";
+                echo $row["provider_name"];  
+                echo "<br><b>Contact Number</b><br>";
+                echo $row["contact_number"]; 
+                echo "<br><b>Email</b><br>";
+                echo $row["email"];
+                echo "<br>"; 
+                ?>
+                <h3>Registered Course</h3>
+                <?php 
+                $sql = "SELECT * FROM student JOIN training_provider ON 
+                        student.provider_username = training_provider.username 
+                        JOIN course_student ON course_student.username = student.username
+                        JOIN course_section ON course_student.course_section_id = course_section.course_section_id
+                        JOIN course ON course_section.course_id = course.course_id
+                        where student.username='" . $username ."';";
+
+                $result = mysqli_query($connect,$sql);
+                $numOfRows = mysqli_num_rows($result);
+                if ($numOfRows == 0) {
+                    echo "<p>No course found</p>";
+                }
+                else {
+                    echo "<table border='1'>";
+                    echo "<tr>";
+                    echo "<th>Course Title</th>";
+                    echo "<th>Course Section Name</th>";
+                    echo "<th>Day</th>";
+                    echo "<th>Time</th>";
+                    echo "<th>Completed Date</th>";
+                    echo "</tr>";
+                    
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>" . $row["course_title"] . "</td>";
+                        echo "<td>" . $row["course_section_name"] . "</td>";
+                        echo "<td>" . $row["day"] . "</td>";
+                        echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                        echo "<td>" . $row["course_completed_date"] . "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                }
+            }
+            else if($row["usertype"] == "Provider") {
+                $sql = "SELECT * FROM training_provider where username='$username';";
+                $result = mysqli_query($connect,$sql);
+                $row = mysqli_fetch_assoc($result);
+
+                echo "<br><b>Training Provider Name</b><br>";
+                echo $row["provider_name"]; 
+                echo "<br><b>Contact Number</b><br>";
+                echo $row["contact_number"]; 
+                echo "<br><b>Email</b><br>";
+                echo $row["email"];
+                echo "<br>"; 
+
+                $sql = "SELECT * FROM course where provider_username = '" . $username . "';";
+                $result = mysqli_query($connect,$sql);
+                $numOfRows = mysqli_num_rows($result);
+                if($numOfRows == 0) {
+                    echo "No Course Created";
+                }
+                else {
+                    ?>
+                    <table border="1">
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course Title</th>
+                        <th>Course Description</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        
+                    </tr>
+                    <?php
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>" . $row["course_id"]. "</td>";
+                        echo "<td>" . $row["course_title"]. "</td>";
+                        echo "<td>" . $row["course_description"] . "</td>";
+                        echo "<td>" . $row["start_date"] . "</td>";
+                        echo "<td>" . $row["end_date"] . "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                }
+            }
+            echo "</dialog>";
+        }?>
+
+        <?php
+        // User table
+        if ($_SESSION["usertype"] == "Admin") {
+            $sql = "SELECT * FROM user;";
+            
+            $result = mysqli_query($connect,$sql);
+            $count = mysqli_num_rows($result);
+            ?>
+            <!-- All user in a table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Usertype</th>
+                        <th>Joined Date</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    while($row = mysqli_fetch_assoc($result)) {
+                    ?>
+                        <tr>
+                            <td><?php echo $row["username"]; ?></td>
+                            <td><?php echo $row["usertype"]; ?></td>
+                            <td><?php echo $row["joined_date"]; ?></td>
+                            <!-- <td><a href="accountDetail.php?view&username=<?php echo $row["username"];?>">Details</a></td> -->
+                            <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button class="view-details">Details</button></a></td>
+
+                            <!-- <td><a href="editAccount.php?edit&username=<?php echo $row["username"];?>">Edit</a></td> -->
+                            <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button class="edit-details">Edit</button></a></td>
+                        </tr>
+                    <?php 
+                    } ?>
+                </tbody>
+            </table>
+            <?php
         }
-    }
-    echo "</dialog>";
-}
-?>
+        // Instructor and Student table
+        else if($_SESSION["usertype"] == "Provider") {
+            ?>
+            <!-- Instructor Table -->
+            <table border="1">
+                <caption>Instructors</caption>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Contact Number</th>
+                        <th>Email</th>
+                        <th>Joined Date</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql = "SELECT * FROM user INNER JOIN instructor on user.username = instructor.username WHERE provider_username = '". $_SESSION["username"] . "';";
+                    $result = mysqli_query($connect,$sql);
+                    $countInstructor = mysqli_num_rows($result);
 
-<table>
-    <tr>
-        <th>Username</th>
-        <th>Usertype</th>
-        <th>Joined Date</th>
-        <th colspan="2">Action</th>
-    </tr>
-    <?php
-    $sql = "SELECT * FROM user;";
-    $result = mysqli_query($connect,$sql);
-    $count = mysqli_num_rows($result);
+                    while($row = mysqli_fetch_assoc($result)) {
+                    ?>
+                    <tr>
+                        <td><?php echo $row["username"]; ?></td>
+                        <td><?php echo $row["first_name"]; ?></td>
+                        <td><?php echo $row["last_name"]; ?></td>
+                        <td><?php echo $row["contact_number"]; ?></td>
+                        <td><?php echo $row["email"]; ?></td>
+                        <td><?php echo $row["joined_date"]; ?></td>
+                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>">Details</a></td>
+                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>">Edit</a></td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
 
-    while($row = mysqli_fetch_assoc($result)) {
-    ?>
-    <tr>
-        <td><?php echo $row["username"]; ?></td>
-        <td><?php echo $row["usertype"]; ?></td>
-        <td><?php echo $row["joined_date"]; ?></td>
-        <!-- <td><a href="accountDetail.php?view&username=<?php echo $row["username"];?>">Details</a></td> -->
-        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button class="view-details">Details</button></a></td>
+            <!-- Student Table -->
+            <table border="1">
+                <caption>Students</caption>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Date Of Birth</th>
+                        <th>Academic Program</th>
+                        <th>Contact Number</th>
+                        <th>Email</th>
+                        <th>Joined Date</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql = "SELECT * FROM user INNER JOIN student on user.username = student.username WHERE provider_username = '". $_SESSION["username"] . "';";
+                    $result = mysqli_query($connect,$sql);
+                    $countStudent = mysqli_num_rows($result);
 
-        <!-- <td><a href="editAccount.php?edit&username=<?php echo $row["username"];?>">Edit</a></td> -->
-        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button class="edit-details">Edit</button></a></td>
-    </tr>
-    <?php
-    }
-    ?>
+                    while($row = mysqli_fetch_assoc($result)) {
+                    ?>
+                    <tr>
+                        <td><?php echo $row["username"]; ?></td>
+                        <td><?php echo $row["first_name"]; ?></td>
+                        <td><?php echo $row["last_name"]; ?></td>
+                        <td><?php echo $row["date_of_birth"]; ?></td>
+                        <td><?php echo $row["academic_program"]; ?></td>
+                        <td><?php echo $row["contact_number"]; ?></td>
+                        <td><?php echo $row["email"]; ?></td>
+                        <td><?php echo $row["joined_date"]; ?></td>
+                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>">Details</a></td>
+                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>">Edit</a></td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        <?php
+        }
+        ?>
       
-      
-    </table>
-    <?php
-    $sql = "SELECT * FROM user where usertype = 'Admin';";
-    $result = mysqli_query($connect,$sql);
-    $countAdmin = mysqli_num_rows($result);
+        <!-- Display numbers of each usertype -->
+        <?php
+            $sql = "SELECT * FROM user where usertype = 'Admin';";
+            $result = mysqli_query($connect,$sql);
+            $countAdmin = mysqli_num_rows($result);
 
-    $sql = "SELECT * FROM instructor;";
-    $result = mysqli_query($connect,$sql);
-    $countInstructor = mysqli_num_rows($result);
+            $sql = "SELECT * FROM instructor;";
+            $result = mysqli_query($connect,$sql);
+            $countInstructor = mysqli_num_rows($result);
 
-    $sql = "SELECT * FROM student;";
-    $result = mysqli_query($connect,$sql);
-    $countStudent = mysqli_num_rows($result);
+            $sql = "SELECT * FROM student;";
+            $result = mysqli_query($connect,$sql);
+            $countStudent = mysqli_num_rows($result);
 
-    $sql = "SELECT * FROM training_provider;";
-    $result = mysqli_query($connect,$sql);
-    $countProvider = mysqli_num_rows($result);
+            $sql = "SELECT * FROM training_provider;";
+            $result = mysqli_query($connect,$sql);
+            $countProvider = mysqli_num_rows($result);
 
-    ?>
-    <p>Number of users: <?php echo $count; ?></p>
-    <p>Number of admin: <?php echo $countAdmin; ?></p>
-    <p>Number of instructor: <?php echo $countInstructor; ?></p>
-    <p>Number of student: <?php echo $countStudent; ?></p>
-    <p>Number of training provider: <?php echo $countProvider; ?></p>
+            if ($_SESSION['usertype'] == 'Admin') {
+            ?>
+            <p>Number of users: <?php echo $count; ?></p>
+            <p>Number of admin: <?php echo $countAdmin; ?></p>
+            <p>Number of training provider: <?php echo $countProvider; ?></p>
+            <?php 
+        } ?>
+
+        <p>Number of instructor: <?php echo $countInstructor; ?></p>
+        <p>Number of student: <?php echo $countStudent; ?></p>
     </div>
 </body>
+
 <script>
     $(document).ready(function() {
         $(".sidebar").hover(
           function() {
             $(".content").addClass("shifted");
-            // console.log('done')
           },
           function() {
             $(".content").removeClass("shifted");
@@ -636,25 +747,23 @@ if(isset($_GET['view'])) {
       }
     );
 
-    const createAccountModal = document.querySelector("[create-account]");
     const createAccountButton = document.querySelector("[create-account-button]");
     const viewDetailsButton = document.getElementsByClassName('view-details');
     const editDetailsButton = document.getElementsByClassName("edit-details");
     const closeViewDetailsBtn = document.getElementById("close-view");
     
+    const createAccountModal = document.querySelector("[create-account]");
     const detailsModal = document.querySelector("[view-details-modal]");
     const editModal = document.querySelector("[edit-account-modal]");
 
     if (closeViewDetailsBtn != null) {
         closeViewDetailsBtn.addEventListener('click', () => {
             detailsModal.close();
+            window.location.replace('dashboard.php');
         });
     }
 
-
-
     window.addEventListener('load', e => {
-        //console.log(window.location.toString().includes('view'));
         if ("view" == "<?php if (isset($_GET['view'])) echo "view"; else echo "";?>") 
         {
             detailsModal.showModal();
@@ -666,57 +775,25 @@ if(isset($_GET['view'])) {
     });
 
     window.addEventListener('click', e => {
-        // console.log("Closing");
-        const dialogDimension = detailsModal.getBoundingClientRect();
-        // console.log(e.clientX > dialogDimension.left);
-        // console.log(e.clientX + " " + dialogDimension.left);
-        // console.log(e.clientX < dialogDimension.right);
-        // console.log(e.clientY > dialogDimension.top);
-        // console.log(e.clientY < dialogDimension.bottom);
-        if (
-            e.clientX < dialogDimension.left ||
-            e.clientX > dialogDimension.right ||
-            e.clientY < dialogDimension.top ||
-            e.clientY > dialogDimension.bottom
-        ) {
+        if (e.target === detailsModal) {
             detailsModal.close();
-            // console.log("Closing");
+            window.location.replace('dashboard.php');
         }
-    }
-    );
+    });
 
     window.addEventListener('click', e => {
-        // console.log("Closing");
-        const dialogDimension = editModal.getBoundingClientRect();
-        // console.log(e.clientX > dialogDimension.left);
-        // console.log(e.clientX + " " + dialogDimension.left);
-        // console.log(e.clientX < dialogDimension.right);
-        // console.log(e.clientY > dialogDimension.top);
-        // console.log(e.clientY < dialogDimension.bottom);
-        if (
-            e.clientX < dialogDimension.left ||
-            e.clientX > dialogDimension.right ||
-            e.clientY < dialogDimension.top ||
-            e.clientY > dialogDimension.bottom
-        ) {
+        if (e.target === editModal){
             editModal.close();
-            // console.log("Closing");
+            window.location.replace('dashboard.php');
         }
-    }
-    );
+    });
 
     createAccountModal.addEventListener('click', e => {
-        const dialogDimension = createAccountModal.getBoundingClientRect();
-        if (
-            e.clientX < dialogDimension.left ||
-            e.clientX > dialogDimension.right ||
-            e.clientY < dialogDimension.top ||
-            e.clientY > dialogDimension.bottom
-        ) {
+        if (e.target === createAccountModal) {
             createAccountModal.close();
-        }
-    }
-    );
+            window.location.replace('dashboard.php');
+        } 
+    });
 
     createAccountButton.addEventListener("click", () =>{
         createAccountModal.showModal();

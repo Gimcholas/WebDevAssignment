@@ -131,6 +131,7 @@ function createProfilePage(){
                                     SET provider_name = '$providerName', contact_number = '$contactNumber', email = '$emailAddress' 
                                     WHERE username = '".$_SESSION['username']."'";
         }
+ 
 
         mysqli_query($connect, $edit_profile_sql); 
         header("Refresh:0");
@@ -211,6 +212,10 @@ function createProfilePage(){
                         JOIN training_provider as tp ON tp.username = u.username
                         WHERE u.username = '".$_SESSION['username']."'";
     }
+    else if($_SESSION['usertype'] == "Admin") {
+        $profile_sql = "SELECT * FROM user WHERE username = '".$_SESSION['username']."'";
+    }
+
 
     $profile = mysqli_fetch_assoc(mysqli_query($connect, $profile_sql)); 
 
@@ -243,24 +248,30 @@ function createProfilePage(){
                     else if($_SESSION['usertype'] == "Provider"){
                         echo $profile["provider_name"];
                     }
+                    else if ($_SESSION['usertype'] == "Admin"){
+                        echo $profile["username"];
+                    }
     echo<<<HTML
                 </h1>
     HTML;
-                
-                    if($_SESSION['usertype'] == "Student" || $_SESSION['usertype'] == "Instructor"){
-                        generateHTMLProfileDetail("Training Provider",$profile["provider_username"]);
+                    if ($_SESSION['usertype'] != "Admin") {
+                        if($_SESSION['usertype'] == "Student" || $_SESSION['usertype'] == "Instructor"){
+                            generateHTMLProfileDetail("Training Provider",$profile["provider_username"]);
+                        }
+
+                        generateHTMLProfileDetail("Join on",$profile["joined_date"]);
+                        generateHTMLProfileDetail("Contact",$profile["contact_number"]);
+                        generateHTMLProfileDetail("Email",$profile["email"]);
+
+                        if($_SESSION['usertype'] == "Student"){
+                            generateHTMLProfileDetail("Date Of Birth",$profile["date_of_birth"]);
+                            generateHTMLProfileDetail("Academic Program",$profile["academic_program"]);
+                        }
                     }
-
-                    generateHTMLProfileDetail("Join on",$profile["joined_date"]);
-                    generateHTMLProfileDetail("Contact",$profile["contact_number"]);
-                    generateHTMLProfileDetail("Email",$profile["email"]);
-
-                    if($_SESSION['usertype'] == "Student"){
-                        generateHTMLProfileDetail("Date Of Birth",$profile["date_of_birth"]);
-                        generateHTMLProfileDetail("Academic Program",$profile["academic_program"]);
+                    if ($_SESSION['usertype'] != "Admin") {
+                        echo "<button id='startEditButton'>Edit Profile</button>";
                     }
     echo<<<HTML
-                <button id="startEditButton">Edit Profile</button>
                 <button id="changePasswordButton">Change Password</button>
             </div>
 
