@@ -36,7 +36,7 @@
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<li><a href='../logout.php' class='logout'>";
                         echo "<i class='fas fa-sign-out-alt'></i>";
                         echo "<span class='nav-item'>Logout</span>";
                         echo "</a>";
@@ -80,7 +80,7 @@
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<li><a href='../logout.php' class='logout'>";
                         echo "<i class='fas fa-sign-out-alt'></i>";
                         echo "<span class='nav-item'>Logout</span>";
                         echo "</a>";
@@ -118,7 +118,7 @@
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<li><a href='../logout.php' class='logout'>";
                         echo "<i class='fas fa-sign-out-alt'></i>";
                         echo "<span class='nav-item'>Logout</span>";
                         echo "</a>";
@@ -162,7 +162,7 @@
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../login.php' class='logout'>";
+                        echo "<li><a href='../logout.php' class='logout'>";
                         echo "<i class='fas fa-sign-out-alt'></i>";
                         echo "<span class='nav-item'>Logout</span>";
                         echo "</a>";
