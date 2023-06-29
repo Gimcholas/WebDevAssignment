@@ -89,12 +89,8 @@
                 die('Cannot enter data'.mysqli_error($connect));
             }
             
-            $courseID = mysqli_insert_id($connect); // Get the course_ID from the last query
-            
             for($i=0; $i<count($_POST['sectionName']); $i++) {
-                if(empty($_POST['courseSectionID'][$i])) {
-                    die("Course Section ID missing");
-                }
+                
                 if(empty($_POST['instructorUsername'][$i])) {
                     die("Instructor username is required"); 
                 }
@@ -104,38 +100,46 @@
                 if(empty($_POST['maxStudentNum'][$i])) {
                     die("Maximum Student Number is required"); 
                 }
-                
-                $sql2 = "UPDATE course_section SET username = '{$_POST['instructorUsername'][$i]}'
-                        , course_section_name = '{$_POST['sectionName'][$i]}', status = '{$_POST['status'][$i]}'
-                        , max_student_num = '{$_POST['maxStudentNum'][$i]}' 
-                        WHERE course_section_id = {$_POST['courseSectionID'][$i]}";
-
-
-            
-                $result = mysqli_query($connect,$sql2);
-                if(!$result) {
-                    die('Cannot enter data'.mysqli_error($connect));
-                }
-
-                if(!empty($_POST["startTime"][$i]) && !empty($_POST["endTime"][$i])) {
-                    $startTime = date('H:i:s', strtotime($_POST['startTime'][$i]));
-                    $endTime = date('H:i:s', strtotime($_POST['endTime'][$i]));
-                    $sql2 = "UPDATE course_section SET start_time = '{$startTime}'
-                            , end_time = '{$endTime}'
-                            WHERE course_section_id = {$_POST['courseSectionID'][$i]}";
-
-                    $result = mysqli_query($connect,$sql2);
-                    if(!$result)
-                        die('Cannot enter data'.mysqli_error($connect));
-                }
-
-                if(!empty($_POST["day"][$i])) {
-                    $sql2 = "UPDATE course_section SET day = '{$_POST["day"][$i]}' 
+                if(!empty($_POST['courseSectionID'][$i])) { // Edit section
+                    $sql2 = "UPDATE course_section SET username = '{$_POST['instructorUsername'][$i]}'
+                            , course_section_name = '{$_POST['sectionName'][$i]}', status = '{$_POST['status'][$i]}'
+                            , max_student_num = '{$_POST['maxStudentNum'][$i]}' 
                             WHERE course_section_id = {$_POST['courseSectionID'][$i]}";
                     $result = mysqli_query($connect,$sql2);
-                    if(!$result)
+                    if(!$result) {
                         die('Cannot enter data'.mysqli_error($connect));
-                }            
+                    }
+
+                    
+                    if(!empty($_POST["startTime"][$i]) && !empty($_POST["endTime"][$i])) {
+                        $startTime = date('H:i:s', strtotime($_POST['startTime'][$i]));
+                        $endTime = date('H:i:s', strtotime($_POST['endTime'][$i]));
+                        $sql2 = "UPDATE course_section SET start_time = '{$startTime}'
+                                , end_time = '{$endTime}'
+                                WHERE course_section_id = {$_POST['courseSectionID'][$i]}";
+
+                        $result = mysqli_query($connect,$sql2);
+                        if(!$result)
+                            die('Cannot enter data'.mysqli_error($connect));
+                    }
+
+                    if(!empty($_POST["day"][$i])) {
+                        $sql2 = "UPDATE course_section SET day = '{$_POST["day"][$i]}' 
+                                WHERE course_section_id = {$_POST['courseSectionID'][$i]}";
+                        $result = mysqli_query($connect,$sql2);
+                        if(!$result)
+                            die('Cannot enter data'.mysqli_error($connect));
+                    }   
+                }
+                else { // Add new section
+                    $sql2 = "INSERT into course_section(course_id, username, course_section_name, status, max_student_num)
+                             values (" . $_POST['courseID'] . ", '" . $_POST['instructorUsername'][$i] . "', '" . $_POST['sectionName'][$i] . "', " . "'Open'," .$_POST['maxStudentNum'][$i] . ");";
+                    $result = mysqli_query($connect,$sql2);
+                    if(!$result) {
+                        die('Cannot enter data'.mysqli_error($connect));
+                    }
+                }
+
             }
             header("refresh:0.5; url=courseDetail.php?view&course={$_POST['courseID']}");
         }
@@ -154,40 +158,82 @@
     if(isset($_GET["edit"])) {
         if(isset($_GET["course"])) {
             $course = getCourse($_GET['course'],$connect);
+            $providerUsername = $course["provider_username"];
             $courseSectionResult = getCourseSectionsResult($_GET['course'],$connect);
             ?>
             <form action="" method="post" id="courseForm" enctype="multipart/form-data">
                 <input type="text" name="courseID" value = <?php echo $course["course_id"]?> hidden>
-            <div class="course-container">
-                <div class="input-box">
-                <label for="courseName">Course Name</label>
-                <input type="text" name="courseName" required value = "<?php echo $course['course_title']; ?>"> 
-                </div><br>
+                <div class="course-container">
+                    <div class="input-box">
+                    <label for="courseName">Course Name</label>
+                    <input type="text" name="courseName" required value = "<?php echo $course['course_title']; ?>"> 
+                    </div><br>
 
-                <div class="input-box">
-                <label for="startDate">Start Date</label>
-                <input type="date" name="startDate" required value = <?php echo $course['start_date']; ?>> 
-                </div><br>
+                    <div class="input-box">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" name="startDate" required value = <?php echo $course['start_date']; ?>> 
+                    </div><br>
 
-                <div class="input-box">
-                <label for="endDate">End Date</label>
-                <input type="date" name="endDate" required value = <?php echo $course['end_date']; ?>> 
-                </div><br>
+                    <div class="input-box">
+                    <label for="endDate">End Date</label>
+                    <input type="date" name="endDate" required value = <?php echo $course['end_date']; ?>> 
+                    </div><br>
 
-                <div class="input-box">
-                <label for="courseIntro">Course Introduction</label>
-                
-                <textarea name="courseIntro" rows="5" cols="50"><?php echo $course['course_description']; ?></textarea>
-                </div><br>
+                    <div class="input-box">
+                    <label for="courseIntro">Course Introduction</label>
+                    
+                    <textarea name="courseIntro" rows="5" cols="50"><?php echo $course['course_description']; ?></textarea>
+                    </div><br>
 
-                <div class="input-box">
-                <label for="Course Image">Upload course image</label><br>
-                <input type="file" name="photo">
-                </div><br>
-            </div>
+                    <div class="input-box">
+                    <label for="Course Image">Upload course image</label><br>
+                    <input type="file" name="photo">
+                    </div><br>
+                </div>
 
             <div class=course-sections-container>
-            <?php while($row = mysqli_fetch_assoc($courseSectionResult)) { ?>
+            <?php 
+            $numOfSections = mysqli_num_rows($courseSectionResult);
+            if ($numOfSections == 0) { ?>
+                <div class=course-section>
+                <div class="input-box">
+                <label for="sectionName">Section Name</label>
+                <input type="text" name="sectionName[]" required>
+                </div><br>
+                   
+                <div class="input-box">
+                <label for="instructorUsername">Instructor Username</label>
+                <select name="instructorUsername[]" id="originalSelector" required value>
+                <!-- Get instructor list -->
+                <?php 
+                        $sql = "SELECT * FROM instructor where provider_username" . "= '" . $providerUsername . "';";
+                        $result = mysqli_query($connect,$sql);
+                        $count = mysqli_num_rows($result);
+                        if ($count == 0) {
+                            echo $count;
+                            ?>
+                            <option disabled selected value>No Available Instructors Found</option>
+    
+                        <?php
+                        }
+                        while($row2 = mysqli_fetch_array($result)) {
+                         ?>    
+                            <option value=<?php echo "'" . $row2["username"] . "' ";?>>
+                                    <?php echo $row2["username"] . " - " . $row2["first_name"] . " " . $row2["last_name"]?>
+                            </option> 
+                        <?php }
+                        ?>
+                </select>
+                </div><br>
+
+                <div class="input-box">
+                    <label for="maxStudentNum">Maximum Student Allowed</label>
+                    <input type="number" name="maxStudentNum[]" required>
+                </div><br>
+            </div>
+            <?php
+            }
+            while($row = mysqli_fetch_assoc($courseSectionResult)) { ?>
                 <div class=course-section>
                 <input type="text" name="courseSectionID[]" value = <?php echo $row["course_section_id"]?> hidden>
                 <div class="input-box">
@@ -202,7 +248,7 @@
                 <select name="instructorUsername[]" id="originalSelector" required value>
                 <!-- Get instructor list -->
                 <?php 
-                        $sql = "SELECT * FROM instructor where provider_username" . "= '" . $_SESSION['username'] . "';";
+                        $sql = "SELECT * FROM instructor where provider_username" . "= '" . $providerUsername . "';";
                         $result = mysqli_query($connect,$sql);
                         $count = mysqli_num_rows($result);
                         if ($count == 0) {
@@ -268,7 +314,7 @@
             <div id="additionalSection"></div>
         
             <div class="addSection">
-            <input type="button" value="Add More Section" onclick="addSection()">
+                <input type="button" value="Add More Section" onclick="addSection()">     
             </div>
 
             <a href="courseDetail.php?view&course=<?php echo $_GET["course"]?>">Cancel</a>
@@ -284,4 +330,5 @@
 
 </body>
 </html>
-
+<script>
+</script>
