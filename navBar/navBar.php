@@ -138,13 +138,13 @@
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../trainingProvider/accountDashboard.php'>";
+                        echo "<li><a href='../admin/dashboard.php'>";
                         echo "<i class='fas fa-book'></i>";
                         echo "<span class='nav-item'>Account</span>";
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../trainingProvider/courses.php'>";
+                        echo "<li><a href='../admin/courseOverview.php'>";
                         echo "<i class='fas fa-book'></i>";
                         echo "<span class='nav-item'>Courses</span>";
                         echo "</a>";
