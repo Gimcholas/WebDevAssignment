@@ -132,7 +132,7 @@ if(isset($_POST["submit"])) {
     $password = $_POST["password"];
     $usertype = $_POST["usertype"];
 
-    $hashed_password = password_hash($password,PASSWORD_DEFAULT);
+    $hashed_password = password_hash($password,PASSWORD_DEFAULT); 
     //echo $hashed_password;
 
     $sql = "INSERT INTO user (username,password_hash,usertype) values ('$username','$hashed_password','$usertype')";
