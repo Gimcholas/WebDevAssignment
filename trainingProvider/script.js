@@ -18,14 +18,14 @@ function addSection() {
     const sectionDiv = document.createElement("div");
     sectionDiv.id = "courseSection" + counter;
 
-    const html = `<div id="courseSection'+ counter + '">\
+    const html = `<div id="courseSection${counter}">\
     <div class="input-box">\
     <label for="sectionName">Section Name</label> \
     <input type="text" name="sectionName[]" required>\
     </div><br>\
     <div class="input-box">\
     <label for="instructorUsername">Instructor Username</label>\
-    <select name="instructorUsername[]" id="cloneSelector" required>\
+    <select name="instructorUsername[]" class="cloneSelector" required>\
     </select>\
     </div><br>\
     <div class="input-box">\
@@ -44,10 +44,17 @@ function addSection() {
     //form.innerHTML+=html;
     form.appendChild(sectionDiv);
     var first = document.getElementById("originalSelector");
-    var options = first.innerHTML;
+    if (first.innerHTML != null) {
+        var options = first.innerHTML;
+    }
+    else {
 
-    var clone = document.getElementById("cloneSelector");
-    clone.innerHTML = options;
+    }
+
+    var clones = document.querySelectorAll(".cloneSelector");
+    clones.forEach((clone)=> {
+        clone.innerHTML = options;
+    }) 
 };
 
 function removeSection(counter) {
