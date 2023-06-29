@@ -2,8 +2,8 @@
     include "../db_connect.php";
     include "functions.php";
     session_start();
-    $_SESSION["username"] = "Huawei";
-    $username = $_SESSION["username"];
+    // $_SESSION["username"] = "Huawei";
+    // $username = $_SESSION["username"];
 ?>
 
 <html>
@@ -31,7 +31,7 @@
                     <a href="createCourse.php"><button>Add Course</button><a>
                     <?php 
                     //Get the ongoing course
-                    $sql = "SELECT * FROM course WHERE provider_username = '" . $username . "' and end_date > '" . date("Y-m-d") . "';";
+                    $sql = "SELECT * FROM course WHERE provider_username = '" . $_SESSION["username"] . "' and end_date > '" . date("Y-m-d") . "';";
                     $result = mysqli_query($connect,$sql);
                     displayCourses($result);
                     ?>
@@ -44,7 +44,7 @@
                 <div class="display-course-container">
                     <?php 
                     //Get the ended course 
-                    $sql = "SELECT * FROM course WHERE provider_username = '" . $username . "' and end_date <= '" . date("Y-m-d") . "';";
+                    $sql = "SELECT * FROM course WHERE provider_username = '" . $_SESSION["username"] . "' and end_date <= '" . date("Y-m-d") . "';";
                     $result = mysqli_query($connect,$sql);
                     displayCourses($result);
                     ?>
