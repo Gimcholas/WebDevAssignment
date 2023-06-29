@@ -20,13 +20,13 @@
         <div class="input-box">
             <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
             <input type="text" name="username" id="username" placeholder="Username"><br>
-            <div id="username-messageBox"></div><br>
+            <div class="errorMessageBox" id="username-messageBox"></div><br>
 
         </div>
         <div class="input-box">
             <img src="../files/password_icon.png" alt="UserIcon">
             <input type="password" id="password" name="password" placeholder="Password"><br>
-            <div id="password-messageBox"></div><br>
+            <div class="errorMessageBox" id="password-messageBox"></div><br>
         </div>  
 
         <div class="input-box">
@@ -35,7 +35,7 @@
                 <option value="Instructor">Instructor</option>
                 <option value="Student">Student</option>
             </select><br>
-            <div id="input-box-messageBox"></div><br>
+            <div class="errorMessageBox" id="input-box-messageBox"></div><br>
         </div>
         <div id="additionalFields"></div>
         <div class="operationsButton">
@@ -54,20 +54,20 @@
             additionalForm.innerHTML = "";
             const commonHtml1 = `<div class="input-box">
                 <input type="text" id="firstName" name="firstName" placeholder="First Name"><br>
-                <div id="firstName-messageBox"></div><br>
+                <div class="errorMessageBox" id="firstName-messageBox"></div><br>
                 </div>
                 <div class="input-box">
                 <input type="text" id="lastName" name="lastName" placeholder="Last Name"><br>
-                <div id="lastName-messageBox"></div><br>
+                <div class="errorMessageBox" id="lastName-messageBox"></div><br>
                 </div>`;
                 
             const commonHtml2 = `<div class="input-box">
                 <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number"><br>
-                <div id="contactNumber-messageBox"></div><br>
+                <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
                 </div>
                 <div class="input-box">
                 <input type="email" id= "email" name="email" placeholder="Contact Email"><br>
-                <div id="email-messageBox"></div><br>
+                <div class="errorMessageBox" id="email-messageBox"></div><br>
                 </div>`;
 
             if(usertypeSelected == "Instructor") {           
@@ -78,11 +78,11 @@
                 `<div class="input-box">
                 <img src="../files/BD_Icon.png" alt="UserIcon">
                 <input type="date" id="dateOfBirth" name="dateOfBirth"><br>
-                <div id="dateOfBirth-messageBox"></div><br>
+                <div class="errorMessageBox" id="dateOfBirth-messageBox"></div><br>
                 </div>
                 <div class="input-box">
                 <input type="text" id="academicProgram" name="academicProgram" placeholder="Academic Program"><br>
-                <div id="academicProgram-messageBox"></div><br>
+                <div class="errorMessageBox" id="academicProgram-messageBox"></div><br>
                 </div>
                 `;
                 additionalForm.innerHTML = commonHtml1 + html + commonHtml2;

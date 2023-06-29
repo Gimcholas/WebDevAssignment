@@ -76,6 +76,14 @@ h2{
 
 }
 
+.errorMessageBox{
+    position: absolute;
+    text-align: center;
+    margin-top: -15px;
+    margin-left: 95px;
+    color: red;
+}
+
 /*box shadow on focus (effect)*/
 input:focus , select:focus{
     outline: none;
