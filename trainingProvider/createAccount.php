@@ -227,7 +227,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $allowSubmission=true;
     if(empty($_POST["username"])) {
         $allowSubmission=false;
-
     }
 
     $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";

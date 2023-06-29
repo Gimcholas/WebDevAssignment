@@ -83,6 +83,14 @@ select{
     background-color: rgb(154, 150, 150);
 }
 
+.errorMessageBox{
+    position: absolute;
+    text-align: center;
+    margin-top: -20px;
+    margin-left: 5px;
+    color: red;
+}
+
 /*box shadow on focus (effect)*/
 input:focus , select:focus{
     outline: none;
