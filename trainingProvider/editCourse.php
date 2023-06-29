@@ -1,7 +1,7 @@
 <?php 
     include "../db_connect.php";
     include "functions.php";
-    $_SESSION["username"] = "Huawei";
+    session_start();
 
 
     if(isset($_POST["updateCourse"])) {
@@ -145,6 +145,7 @@
 <html>
 <head>
     <title>Edit Course Details</title>
+    <script text="text/javascript" src="script.js"></script>
 </head>
 
 <body>
@@ -263,6 +264,13 @@
             <?php }
             ?>
             </div>
+
+            <div id="additionalSection"></div>
+        
+            <div class="addSection">
+            <input type="button" value="Add More Section" onclick="addSection()">
+            </div>
+
             <a href="courseDetail.php?view&course=<?php echo $_GET["course"]?>">Cancel</a>
             <input type="submit" name="updateCourse" value="Save">
             
