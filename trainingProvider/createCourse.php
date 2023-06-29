@@ -1,6 +1,8 @@
 <?php include "../db_connect.php";
     session_start();
-    $_SESSION["username"] = "Huawei";
+    if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "Provider") {
+        header("Location: ../login.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +27,7 @@
             // Show the select training provider
                     echo "<div class='input-box'>";
                     echo "<label for='providerUsername'>Provider Username </label>";
-                    echo "<select name='providerUsername[]' required >";
+                    echo "<select name='providerUsername' required >";
                     echo "<option disabled selected value>Select A Training Provider</option>";
                     echo "<?php"; 
                     $sql = 'SELECT * FROM training_provider;';
@@ -164,6 +166,12 @@
 
 <?php 
     if(isset($_POST['submit'])) {
+
+        if($_SESSION['usertype'] == "Admin") {
+            if(empty($_POST['providerUsername'])) {
+                die("Training Provider username is required");
+            }
+        }
         if(empty($_POST['courseName'])) {
             die("Course name is required"); 
         }
@@ -235,8 +243,12 @@
                 echo "Error: There was a problem uploading your file. Please try again."; 
             }
         }
-
-        $sql1 = "INSERT into course(provider_username, course_title, course_description, start_date, end_date,course_image_path) values ('" . $_SESSION['username'] . "', '" . $_POST['courseName'] . "', '" . $_POST['courseIntro'] . "', '" . $_POST['startDate'] . "', '" . $_POST['endDate'] . "', '" . $imagePath ."');";
+        if($_SESSION['usertype'] == "Admin") {
+            $sql1 = "INSERT into course(provider_username, course_title, course_description, start_date, end_date,course_image_path) values ('" . $_POST['providerUsername'] . "', '" . $_POST['courseName'] . "', '" . $_POST['courseIntro'] . "', '" . $_POST['startDate'] . "', '" . $_POST['endDate'] . "', '" . $imagePath ."');";
+        }
+        else if ($_SESSION['usertype'] == "Admin") {
+            $sql1 = "INSERT into course(provider_username, course_title, course_description, start_date, end_date,course_image_path) values ('" . $_SESSION['username'] . "', '" . $_POST['courseName'] . "', '" . $_POST['courseIntro'] . "', '" . $_POST['startDate'] . "', '" . $_POST['endDate'] . "', '" . $imagePath ."');";
+        }
         
         
         $result = mysqli_query($connect,$sql1);
