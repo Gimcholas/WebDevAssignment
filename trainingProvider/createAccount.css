@@ -1,23 +1,11 @@
+
 body {
     margin: 0;
     padding: 0 0;
 }
 
-header{
-    font-family: 'Montserrat', sans-serif;
-    background: #a3d698;
-    color: white;
-    padding: 1px 20px;
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
 *{
     font-family: 'Montserrat', sans-serif;
-}
-
-.create-account-form{
-    text-align: center;
 }
 
 form{
@@ -30,29 +18,27 @@ form{
     margin-bottom: 30px;
     display: block;
     border-radius: 10px;
+    padding-bottom: 30px;
 }
 
-h2{
-    font-size: 45px;
-    padding-top: 30px;
-    font-weight: bolder;
+.input-box{
+    text-align: center;
 }
 
-input, select{
+.input-box input, .input-box select{
     padding: 20px 0px 20px 60px;
     border: 1px solid #ccc;
     border-radius: 3px;
     position: relative;
     width: 360px;
     margin-bottom: 20px;
-    align-items: center;
 }
 
-select{
+.input-box select{
     width: 420px;
 }
 
-.input-box-user img, .input-box-pw img{
+.input-box img{
     position: absolute;
     margin-top: 8px;
     margin-left: 8px;
@@ -60,27 +46,34 @@ select{
     z-index: 2;
 }
 
-.operations-button{
+h2{
+    font-size: 45px;
+    padding-top: 30px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.operationsButton{
     display: flex;
+    text-align: center;
     justify-content: center;
 }
 
-.operations-button input{
-    font-size: 20px;
+.operationsButton input{
+    height: fit-content;
+    width: fit-content;
+    padding: 20px;
+    margin-right: 20px;
     background-color: lightgreen;
     border: 1px solid black;
-    margin: 0px;
-    margin-left: 30px;
-    margin-bottom: 20px;
-    margin-top: 30px;
-    padding: 20px;
+    border-radius: 3px;
     font-weight: bold;
-    width: fit-content;
 }
 
-.operations-button input:hover{
+.operationsButton input:hover{
     cursor: pointer;
     background-color: rgb(154, 150, 150);
+
 }
 
 /*box shadow on focus (effect)*/
@@ -88,8 +81,4 @@ input:focus , select:focus{
     outline: none;
     border-color: #aaa;
     box-shadow: 0 0 5px #aaa;
-}
-
-dialog {
-    margin:auto;
 }

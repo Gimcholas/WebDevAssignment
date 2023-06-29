@@ -10,7 +10,7 @@
 <html>
 <head> 
     <title>Create New Account</title>
-    <!-- <link rel='stylesheet' type="text/css" href=style.css> -->
+    <link rel='stylesheet' type="text/css" href=createAccount.css>
 </head>
 
 <body>
@@ -18,19 +18,18 @@
     <form action="createAccount.php" method="POST" onsubmit="return mySubmitFunction(event)" id="form">
         <h2>Create New Account</h2>
         <div class="input-box">
-            <label>Username</label>
+            <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
             <input type="text" name="username" id="username" placeholder="Username"><br>
             <div id="username-messageBox"></div><br>
 
         </div>
         <div class="input-box">
-            <label>Password</label>
+            <img src="../files/password_icon.png" alt="UserIcon">
             <input type="password" id="password" name="password" placeholder="Password"><br>
             <div id="password-messageBox"></div><br>
         </div>  
 
         <div class="input-box">
-            <label>Usertype: </label>
             <select name="usertype" id="usertype" onchange="updateForm()">
                 <option hidden disabled selected value>Select a usertype</option>
                 <option value="Instructor">Instructor</option>
@@ -39,8 +38,10 @@
             <div id="input-box-messageBox"></div><br>
         </div>
         <div id="additionalFields"></div>
-        <input type="submit" name="submitBtn" value="Create Account"><br><br>
-        <a href="accountDashboard.php"><input type="button" value = "Back"></a><br><br>
+        <div class="operationsButton">
+            <a href="accountDashboard.php"><input type="button" value = "Back"></a><br><br>
+            <input type="submit" name="submitBtn" value="Create Account"><br><br>
+        </div>
     </form>
     </div>
 
@@ -52,23 +53,19 @@
             const additionalForm = document.getElementById("additionalFields");
             additionalForm.innerHTML = "";
             const commonHtml1 = `<div class="input-box">
-                <label>First Name</label>
                 <input type="text" id="firstName" name="firstName" placeholder="First Name"><br>
                 <div id="firstName-messageBox"></div><br>
                 </div>
                 <div class="input-box">
-                <label>Last Name</label>
                 <input type="text" id="lastName" name="lastName" placeholder="Last Name"><br>
                 <div id="lastName-messageBox"></div><br>
                 </div>`;
                 
             const commonHtml2 = `<div class="input-box">
-                <label>Contact Number</label>
                 <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number"><br>
                 <div id="contactNumber-messageBox"></div><br>
                 </div>
                 <div class="input-box">
-                <label>Email</label>
                 <input type="email" id= "email" name="email" placeholder="Contact Email"><br>
                 <div id="email-messageBox"></div><br>
                 </div>`;
@@ -79,12 +76,11 @@
             else if (usertypeSelected == "Student") {
                 const html = 
                 `<div class="input-box">
-                <label>Date Of Birth</label>
+                <img src="../files/BD_Icon.png" alt="UserIcon">
                 <input type="date" id="dateOfBirth" name="dateOfBirth"><br>
                 <div id="dateOfBirth-messageBox"></div><br>
                 </div>
                 <div class="input-box">
-                <label>Academic Program</label>
                 <input type="text" id="academicProgram" name="academicProgram" placeholder="Academic Program"><br>
                 <div id="academicProgram-messageBox"></div><br>
                 </div>
