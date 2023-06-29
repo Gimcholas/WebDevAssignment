@@ -1,6 +1,10 @@
 <?php
 
 include '../db_connect.php';
+if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "Provider" 
+    or isset($_SESSION['usertype']) != "Instructor" or isset($_SESSION['usertype']) != "Student") {
+    header("Location: ../login.php");
+  }
 
 function registerCourseDashboard(){
     createCourseDashboard(false);
