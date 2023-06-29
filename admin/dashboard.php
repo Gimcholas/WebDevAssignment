@@ -759,6 +759,7 @@
     if (closeViewDetailsBtn != null) {
         closeViewDetailsBtn.addEventListener('click', () => {
             detailsModal.close();
+            window.location.replace('dashboard.php');
         });
     }
 
@@ -774,42 +775,24 @@
     });
 
     window.addEventListener('click', e => {
-
-        const dialogDimension = detailsModal.getBoundingClientRect();
-
-        if (
-            e.clientX < dialogDimension.left ||
-            e.clientX > dialogDimension.right ||
-            e.clientY < dialogDimension.top ||
-            e.clientY > dialogDimension.bottom
-        ) {
+        if (e.target === detailsModal) {
             detailsModal.close();
-
+            window.location.replace('dashboard.php');
         }
     });
 
     window.addEventListener('click', e => {
-        const dialogDimension = editModal.getBoundingClientRect();
-        if (
-            e.clientX < dialogDimension.left ||
-            e.clientX > dialogDimension.right ||
-            e.clientY < dialogDimension.top ||
-            e.clientY > dialogDimension.bottom
-        ) {
+        if (e.target === editModal){
             editModal.close();
+            window.location.replace('dashboard.php');
         }
     });
 
     createAccountModal.addEventListener('click', e => {
-        const dialogDimension = createAccountModal.getBoundingClientRect();
-        if (
-            e.clientX < dialogDimension.left ||
-            e.clientX > dialogDimension.right ||
-            e.clientY < dialogDimension.top ||
-            e.clientY > dialogDimension.bottom
-        ) {
+        if (e.target === createAccountModal) {
             createAccountModal.close();
-        }
+            window.location.replace('dashboard.php');
+        } 
     });
 
     createAccountButton.addEventListener("click", () =>{
