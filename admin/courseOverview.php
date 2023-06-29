@@ -29,7 +29,12 @@ session_start();
                     <a href="../trainingProvider/createCourse.php"><button>Add Course</button><a>
                     <?php 
                     //Get the ongoing course
-                    $sql = "SELECT * FROM course WHERE end_date > '" . date("Y-m-d") . "';";
+                    if($_SESSION['usertype'] == "Admin") {
+                        $sql = "SELECT * FROM course WHERE end_date > '" . date("Y-m-d") . "';";
+                    }
+                    else if ($_SESSION['usertype'] == "Provider") {
+                        $sql = "SELECT * FROM course WHERE provider_username = '" . $_SESSION["username"] . "' and end_date > '" . date("Y-m-d") . "';";
+                    }
                     $result = mysqli_query($connect,$sql);
                     displayCourses($result);
                     ?>
@@ -41,8 +46,13 @@ session_start();
                 <h1>Ended Courses</h1>
                 <div class="display-course-container">
                     <?php 
-                    //Get the ended course 
-                    $sql = "SELECT * FROM course WHERE end_date <= '" . date("Y-m-d") . "';";
+                    //Get the ended course
+                    if($_SESSION['usertype'] == "Admin") { 
+                        $sql = "SELECT * FROM course WHERE end_date <= '" . date("Y-m-d") . "';";
+                    }
+                    else if ($_SESSION['usertype'] == "Provider") {
+                        $sql = "SELECT * FROM course WHERE provider_username = '" . $_SESSION["username"] . "' and end_date <= '" . date("Y-m-d") . "';";
+                    }
                     $result = mysqli_query($connect,$sql);
                     displayCourses($result);
                     ?>
