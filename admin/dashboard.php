@@ -5,9 +5,9 @@
     }
     
     // Validate Create Account Form and Edit Account Form 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['hiddenCreateAccount'] == "true") {
         $allowSubmission=true;
-        
+
         if(empty($_POST["username"])) {
             $allowSubmission=false;
         }
@@ -129,7 +129,7 @@
         }
     }
     
-    if(isset($_POST['editAccount'])) {
+    if(isset($_POST['editAccount']) && $_POST['hiddenEditAccount'] == "true") {
         $username = $_GET['username'];
         $sql = "SELECT * FROM user where username='$username';";
         $result = mysqli_query($connect,$sql);
@@ -137,6 +137,7 @@
         $usertype = $row['usertype'];
         // User change password
         if(!empty($_POST["password"])) {
+
             if(strlen($_POST["password"]) < 8) {
                 $allowSubmission=false;
             }
@@ -261,6 +262,7 @@
                 <div  class="operations-button">
                     <input type="button" value = "Back" onclick="createAccountModal.close();">
                     <input type="submit" name="createAccount" value="Create Account">
+                    <input type="hidden" name="hiddenCreateAccount" id="createAccount" value="false">
                 </div>
             </form>
         </dialog>
@@ -278,7 +280,7 @@
             ?>
             <dialog edit-account-modal>
                 <h3>Edit Account Details</h3>
-                <form action='' method='POST'>
+                <form action='' method='POST' onsubmit="return mySubmitFunction(event)" id="resetPassword">
                     <?php
                     if($usertype == 'Admin') {
                         // Allow to change password only
@@ -364,16 +366,20 @@
                     // Change password
                     ?>
                     <div class="input-box">
-                    <label>New Password</label>
-                    <input type="password" name="password" placeholder="Password"><br><br>
+                        <input type="password" name="newPassword" id="newPassword" placeholder="New Password"><br>
+                        <div class="errorMessageBox" id="newPassword-messageBox"></div><br>
                     </div> 
                     
-                    <div class='submitBtn'>
-                        <input type='submit' name='editAccount' value='Save'><br><br>
+                    <div class="buttons">
+                        <div class='backBtn'>
+                            <a href="dashboard.php"><input type='button' name='back' value='Back'></a>
+                        </div>
+                        <div class='submitBtn'>
+                            <input type='submit' name='editAccount' value='Save'><br><br>
+                        </div>
                     </div>
-                    <div class='backBtn'>
-                        <a href="dashboard.php"><input type='button' name='back' value='Back'></a>
-                    </div>
+                    <input type="hidden" name="hiddenEditAccount" id="editAccount" value="false">
+
                 </form>
             </dialog>
             <?php
@@ -386,7 +392,7 @@
             $sql = "SELECT * FROM user where username='$username';";
             $result = mysqli_query($connect,$sql);
             $row = mysqli_fetch_assoc($result);
-            echo "<dialog view-details-modal>";
+            echo "<dialog view-details-modal class='view-details'>";
             echo "<button id='close-view'>X</button>";
             echo "<br><b>Profile Image</b><br>";
             if ($row["profile_image_path"] != NULL) {
@@ -898,163 +904,197 @@
     function mySubmitFunction(event) {
         event.preventDefault();
 
-        var usernameElement = document.getElementById("username");
-        var passwordElement = document.getElementById("password");
-        var usertypeElement = document.getElementById("usertype");
+        // Add Account
+        if(document.getElementById("createAccount").value!=null){
+            var usernameElement = document.getElementById("username");
+            var passwordElement = document.getElementById("password");
+            var usertypeElement = document.getElementById("usertype");
 
-        var username = usernameElement ? usernameElement.value : "";
-        var password = passwordElement ? passwordElement.value : "";
-        var usertype = usertypeElement ? usertypeElement.value : "";
+            var username = usernameElement ? usernameElement.value : "";
+            var password = passwordElement ? passwordElement.value : "";
+            var usertype = usertypeElement ? usertypeElement.value : "";
 
-        var allowSubmission = true;
-        if (username == "") {
-            showErrorMessage("Username is required", "username");
-            allowSubmission = false;
-        }
-        else{
-            showErrorMessage("", "username");
-        }
-
-        var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)/;
-        if (password.length < 8 || !passwordPattern.test(password)) {
-            if(password.length < 8) showErrorMessage("Password must be at least 8 characters", "password");
-            else showErrorMessage("Password must include at least one letter and one number", "password");
-            allowSubmission = false;
-        }
-        else{
-            showErrorMessage("", "password");
-        }
-
-        if (usertype == "") {
-            showErrorMessage("Usertype is required", "usertype");
-            allowSubmission = false;
-        }
-        else{
-            showErrorMessage("", "usertype");
-        }
-
-        if (usertype == "Instructor" || usertype == "Student") {
-            var firstNameElement = document.getElementById("firstName");
-            var lastNameElement = document.getElementById("lastName");
-            var providerElement = document.getElementById("provider");
-
-
-
-            var firstName = firstNameElement ? firstNameElement.value : "";
-            var lastName = lastNameElement ? lastNameElement.value : "";
-            var provider = providerElement ? providerElement.value : "";
-
-
-            if (firstName == "") {
-                showErrorMessage("First name is required", "firstName");
+            var allowSubmission = true;
+            if (username == "") {
+                showErrorMessage("Username is required", "username");
                 allowSubmission = false;
             }
             else{
-                showErrorMessage("", "firstName");
+                showErrorMessage("", "username");
             }
 
-            if (lastName == "") {
-                showErrorMessage("Last name is required", "lastName");
+            var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)/;
+            if (password.length < 8 || !passwordPattern.test(password)) {
+                if(password.length < 8) showErrorMessage("Password must be at least 8 characters", "password");
+                else showErrorMessage("Password must include at least one letter and one number", "password");
                 allowSubmission = false;
             }
             else{
-                showErrorMessage("", "lastName");
+                showErrorMessage("", "password");
             }
 
-            if(provider == ""){
-                showErrorMessage("Provider is required", "provider")
-                allowSubmission=false;
+            if (usertype == "") {
+                showErrorMessage("Usertype is required", "usertype");
+                allowSubmission = false;
             }
             else{
-                showErrorMessage("","provider")
+                showErrorMessage("", "usertype");
             }
 
-            if (usertype == "Student") {
-                var dateOfBirthElement = document.getElementById("dateOfBirth");
-                var academicProgramElement = document.getElementById("academicProgram");
+            if (usertype == "Instructor" || usertype == "Student") {
+                var firstNameElement = document.getElementById("firstName");
+                var lastNameElement = document.getElementById("lastName");
+                var providerElement = document.getElementById("provider");
 
-                var dateOfBirth = dateOfBirthElement ? dateOfBirthElement.value : "";
-                var academicProgram = academicProgramElement ? academicProgramElement.value : "";
 
-                if (dateOfBirth == "") {
-                    showErrorMessage("Date of birth is required", "dateOfBirth");
+
+                var firstName = firstNameElement ? firstNameElement.value : "";
+                var lastName = lastNameElement ? lastNameElement.value : "";
+                var provider = providerElement ? providerElement.value : "";
+
+
+                if (firstName == "") {
+                    showErrorMessage("First name is required", "firstName");
                     allowSubmission = false;
                 }
                 else{
-                    showErrorMessage("", "dateOfBirth");
+                    showErrorMessage("", "firstName");
                 }
 
-                if (academicProgram == "") {
-                    showErrorMessage("Academic program is required", "academicProgram");
+                if (lastName == "") {
+                    showErrorMessage("Last name is required", "lastName");
                     allowSubmission = false;
                 }
                 else{
-                    showErrorMessage("", "academicProgram");
+                    showErrorMessage("", "lastName");
+                }
+
+                if(provider == ""){
+                    showErrorMessage("Provider is required", "provider")
+                    allowSubmission=false;
+                }
+                else{
+                    showErrorMessage("","provider")
+                }
+
+                if (usertype == "Student") {
+                    var dateOfBirthElement = document.getElementById("dateOfBirth");
+                    var academicProgramElement = document.getElementById("academicProgram");
+
+                    var dateOfBirth = dateOfBirthElement ? dateOfBirthElement.value : "";
+                    var academicProgram = academicProgramElement ? academicProgramElement.value : "";
+
+                    if (dateOfBirth == "") {
+                        showErrorMessage("Date of birth is required", "dateOfBirth");
+                        allowSubmission = false;
+                    }
+                    else{
+                        showErrorMessage("", "dateOfBirth");
+                    }
+
+                    if (academicProgram == "") {
+                        showErrorMessage("Academic program is required", "academicProgram");
+                        allowSubmission = false;
+                    }
+                    else{
+                        showErrorMessage("", "academicProgram");
+                    }
+                }
+
+                var contactElement = document.getElementById("contactNumber");
+                var emailElement = document.getElementById("email");
+
+                var contact = contactElement ? contactElement.value : "";
+                var email = emailElement ? emailElement.value : "";
+
+                if(contact == ""){
+                    showErrorMessage("Contact is required", "contactNumber");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "contactNumber");
+                }
+
+                if(email == ""){
+                    showErrorMessage("E-mail is required", "email");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "email");
+                }
+
+            }
+
+            if(usertype == "Provider"){
+
+                var providerNameElement = document.getElementById("providerName");
+                var contactNumberElement = document.getElementById("contactNumber");
+                var emailElement = document.getElementById("email");
+
+                var providerName = providerNameElement ? providerNameElement.value : "";
+                var contactNumber = contactNumberElement ? contactNumberElement.value : "";
+                var email = emailElement ? emailElement.value : "";
+
+                if(providerName == ""){
+                    showErrorMessage("Provider Name is required", "providerName");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "providerName");
+                }
+
+                if(contactNumber == ""){
+                    showErrorMessage("Contact Number is required", "contactNumber");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "contactNumber");
+                }
+
+                if(email == ""){
+                    showErrorMessage("E-mail is required", "email");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "email");
                 }
             }
 
-            var contactElement = document.getElementById("contactNumber");
-            var emailElement = document.getElementById("email");
-
-            var contact = contactElement ? contactElement.value : "";
-            var email = emailElement ? emailElement.value : "";
-
-            if(contact == ""){
-                showErrorMessage("Contact is required", "contactNumber");
-                allowSubmission = false;
+            if(allowSubmission) {
+                document.getElementById("createAccount").value="true";
+                document.getElementById('form').submit();
             }
             else{
-                showErrorMessage("", "contactNumber");
-            }
-
-            if(email == ""){
-                showErrorMessage("E-mail is required", "email");
-                allowSubmission = false;
-            }
-            else{
-                showErrorMessage("", "email");
-            }
-
-        }
-
-        if(usertype == "Provider"){
-
-            var providerNameElement = document.getElementById("providerName");
-            var contactNumberElement = document.getElementById("contactNumber");
-            var emailElement = document.getElementById("email");
-
-            var providerName = providerNameElement ? providerNameElement.value : "";
-            var contactNumber = contactNumberElement ? contactNumberElement.value : "";
-            var email = emailElement ? emailElement.value : "";
-
-            if(providerName == ""){
-                showErrorMessage("Provider Name is required", "providerName");
-                allowSubmission = false;
-            }
-            else{
-                showErrorMessage("", "providerName");
-            }
-
-            if(contactNumber == ""){
-                showErrorMessage("Contact Number is required", "contactNumber");
-                allowSubmission = false;
-            }
-            else{
-                showErrorMessage("", "contactNumber");
-            }
-
-            if(email == ""){
-                showErrorMessage("E-mail is required", "email");
-                allowSubmission = false;
-            }
-            else{
-                showErrorMessage("", "email");
+                document.getElementById("createAccount").value="false";
             }
         }
 
+        if(document.getElementById("editAccount").value!=null){
 
-        if(allowSubmission) {
-            document.getElementById('form').submit();
+            var passwordElement = document.getElementById("newPassword");
+            var password = passwordElement ? passwordElement.value : "";
+
+            var allowSubmission = true;
+
+            var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)/;
+            if (password.length < 8 || !passwordPattern.test(password)) {
+                if(password.length < 8) showErrorMessage("Password must be at least 8 characters", "newPassword");
+                else showErrorMessage("Password must include at least one letter and one number", "newPassword");
+                allowSubmission = false;
+            }
+            else{
+                showErrorMessage("", "newPassword");
+            }
+
+            if(allowSubmission) {
+                document.getElementById("editAccount").value="true";
+                document.getElementById('resetPassword').submit();
+                alert("New Password Set");
+            }
+            else{
+                document.getElementById("editAccount").value="false";
+            }
+
         }
 
     }

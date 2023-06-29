@@ -43,6 +43,7 @@ form{
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 20px;
     display: block;
     border: 1px solid black;
 }
@@ -158,6 +159,35 @@ p{
     margin-left: auto;
     margin-right: auto;
     padding: 5px;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+}
+
+.submitBtn input, .backBtn input{
+    width: fit-content;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: lightgreen;
+    border: 2px solid black;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.submitBtn input:hover, .backBtn input:hover{
+    cursor: pointer;
+}
+
+.backBtn a:hover{
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.view-details{
+    width: fit-content;
 }
 
 /*box shadow on focus (effect)*/
