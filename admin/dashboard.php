@@ -939,6 +939,7 @@
             var providerElement = document.getElementById("provider");
 
 
+
             var firstName = firstNameElement ? firstNameElement.value : "";
             var lastName = lastNameElement ? lastNameElement.value : "";
             var provider = providerElement ? providerElement.value : "";
@@ -1014,8 +1015,43 @@
                 showErrorMessage("", "email");
             }
 
-
         }
+
+        if(usertype == "Provider"){
+
+            var providerNameElement = document.getElementById("providerName");
+            var contactNumberElement = document.getElementById("contactNumber");
+            var emailElement = document.getElementById("email");
+
+            var providerName = providerNameElement ? providerNameElement.value : "";
+            var contactNumber = contactNumberElement ? contactNumberElement.value : "";
+            var email = emailElement ? emailElement.value : "";
+
+            if(providerName == ""){
+                showErrorMessage("Provider Name is required", "providerName");
+                allowSubmission = false;
+            }
+            else{
+                showErrorMessage("", "providerName");
+            }
+
+            if(contactNumber == ""){
+                showErrorMessage("Contact Number is required", "contactNumber");
+                allowSubmission = false;
+            }
+            else{
+                showErrorMessage("", "contactNumber");
+            }
+
+            if(email == ""){
+                showErrorMessage("E-mail is required", "email");
+                allowSubmission = false;
+            }
+            else{
+                showErrorMessage("", "email");
+            }
+        }
+
 
         if(allowSubmission) {
             document.getElementById('form').submit();
