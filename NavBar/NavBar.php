@@ -2,7 +2,7 @@
     <head>
         <meta charset="UTF-8"/>
         <title>Side Menu Bar | Web Development Assignment </title>
-        <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
+        <link rel="stylesheet" href="../navBar/navBarStyle.css"/>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
@@ -44,13 +44,13 @@
                      }
                      else if ($_SESSION["usertype"] == "Student"){
                         echo "<li>";
-                        echo "<a href='../student/registeredCourse.php' class='logo'>";
+                        echo "<a href='../student/dashboard.php' class='logo'>";
                         echo "<img src='../files/logo1.png' alt=''>";
                         echo "<span class='nav-item'>TPMS</span>";
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../student/registeredCourse.php'>";
+                        echo "<li><a href='../student/dashboard.php'>";
                         echo "<i class='fas fa-home'></i>";
                         echo "<span class='nav-item'>Dashboard</span>";
                         echo "</a>";
