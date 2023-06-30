@@ -260,8 +260,8 @@
                 </div>
                 <div id="additionalFields"></div>
                 <div  class="operations-button">
-                    <input type="button" value = "Back" onclick="createAccountModal.close();">
-                    <input type="submit" name="createAccount" value="Create Account">
+                    <input class="back" type="button" value = "Back" onclick="createAccountModal.close();">
+                    <input class="submit" type="submit" name="createAccount" value="Create Account">
                     <input type="hidden" name="hiddenCreateAccount" id="createAccount" value="false">
                 </div>
             </form>
@@ -605,6 +605,7 @@
             $count = mysqli_num_rows($result);
             ?>
             <!-- All user in a table -->
+            <div class="table-wrapper table-wrapper-full-height">
             <table>
                 <thead>
                     <tr>
@@ -632,13 +633,15 @@
                     } ?>
                 </tbody>
             </table>
+            </div>
             <?php
         }
         // Instructor and Student table
         else if($_SESSION["usertype"] == "Provider") {
             ?>
             <!-- Instructor Table -->
-            <table border="1">
+            <div class='table-wrapper table-wrapper-half-height'>
+            <table>
                 <caption>Instructors</caption>
                 <thead>
                     <tr>
@@ -674,9 +677,11 @@
                     ?>
                 </tbody>
             </table>
+            </div>
 
             <!-- Student Table -->
-            <table border="1">
+            <div class='table-wrapper table-wrapper-half-height'>
+            <table>
                 <caption>Students</caption>
                 <thead>
                     <tr>
@@ -716,6 +721,7 @@
                     ?>
                 </tbody>
             </table>
+            </div>
         <?php
         }
         ?>
