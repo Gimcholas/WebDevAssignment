@@ -4,128 +4,133 @@
         header("Location: ../login.php");
     }
     
-    // Validate Create Account Form and Edit Account Form 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['hiddenCreateAccount'] == "true") {
-        $allowSubmission=true;
+    // Validate Create Account Form and Edit Account Form
+    if(isset($_POST['hiddenCreateAccount'])) { 
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['hiddenCreateAccount'] == "true") {
+            $allowSubmission=true;
 
-        if(empty($_POST["username"])) {
-            $allowSubmission=false;
-        }
-
-        $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";
-        $result = mysqli_query($connect,$sql);
-        $count = mysqli_num_rows($result);
-        if($count > 0) {
-            $allowSubmission=false;
-            echo '<script>alert("username taken, try again with another username")</script>';
-        }
-
-        if(strlen($_POST["password"]) < 8) {
-            $allowSubmission=false;
-        }
-        if (!preg_match('/[A-Za-z]/', $_POST["password"]) || !preg_match('/[0-9]/', $_POST["password"])) {
-            $allowSubmission=false;
-        }
-        if(empty($_POST["usertype"])) {
-            $allowSubmission=false;
-        }
-
-        $contactNumber = NULL;
-        $email = NULL;            
-        if($_POST["usertype"] == "Provider") {
-            if(empty($_POST["providerName"])) 
+            if(empty($_POST["username"])) {
                 $allowSubmission=false;
-            if(!empty($_POST["contactNumber"])) {
-            $contactNumber = $_POST["contactNumber"];
             }
-            if(strlen($_POST['email']) > 0) {
-                if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-                    $allowSubmission=false;
-                }
-                else {
-                    $email = $_POST["email"];
-                } 
-            }            
-        }
-        if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
-            if(empty($_POST["provider"])) // Check the provider username is empty
-                $allowSubmission=false;
-            
-            // Check if the provider username is valid
-            $sql = "SELECT * FROM training_provider where username='" . $_POST["provider"] . "';";
+
+            $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";
             $result = mysqli_query($connect,$sql);
             $count = mysqli_num_rows($result);
-            if($count == 0) {
+            if($count > 0) {
+                $allowSubmission=false;
+                echo '<script>alert("username taken, try again with another username")</script>';
+            }
+
+            if(strlen($_POST["password"]) < 8) {
                 $allowSubmission=false;
             }
-            if(empty($_POST["firstName"])) 
-                $allowSubmission=false;
-            if(empty($_POST["lastName"])) 
-                $allowSubmission=false;
-        }
-
-        if($_POST["usertype"] == "Student") {
-            if(empty($_POST["dateOfBirth"])) 
-                $allowSubmission=false;
-            if(empty($_POST["academicProgram"])) 
-                $allowSubmission=false;
-        }
-            
-
-        if($allowSubmission){            
-            //print_r($_POST);
-            $username = $_POST["username"];
-            $password = $_POST["password"];
-            $usertype = $_POST["usertype"];
-
-            $hashed_password = password_hash($password,PASSWORD_DEFAULT);
-            //echo $hashed_password;
-
-            $sql = "INSERT INTO user (username,password_hash,usertype) values ('$username','$hashed_password','$usertype')";
-            $abc = mysqli_query($connect,$sql);
-            if(!$abc)
-            $allowSubmission=false;
-            //else 
-                //echo 'Successful created a new account';
-            
-            if ($usertype != "Admin") {
-                if ($usertype == "Provider") {
-                        $providerName = $_POST["providerName"];
-                        $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
-                } 
-                else if ($usertype == "Student") {
-                    $firstName = $_POST["firstName"];
-                    $lastName = $_POST["lastName"];
-                    $dateOfBirth = $_POST["dateOfBirth"];
-                    $academicProgram = $_POST["academicProgram"];
-                    $providerUsername = $_POST["provider"];
-                    $contactNumber = $_POST["contactNumber"];
-                    $email = $_POST["email"];
-                    $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$providerUsername','$contactNumber','$email');";
-                }
-                else if ($usertype == "Instructor") {
-                    $firstName = $_POST["firstName"];
-                    $lastName = $_POST["lastName"];
-                    $providerUsername = $_POST["provider"];
-                    $contactNumber = $_POST["contactNumber"];
-                    $email = $_POST["email"];
-                    $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$providerUsername','$contactNumber','$email');";
-                }
-
-            
-                $abc2 = mysqli_query($connect,$sql2);
-
-                if(!$abc2)
+            if (!preg_match('/[A-Za-z]/', $_POST["password"]) || !preg_match('/[0-9]/', $_POST["password"])) {
                 $allowSubmission=false;
             }
-            
-            
-            ?>
+            if(empty($_POST["usertype"])) {
+                $allowSubmission=false;
+            }
 
-                <script type="text/javascript">
-                    alert("Successful created a new account");
-                </script>
-        <?php
+            $contactNumber = NULL;
+            $email = NULL;            
+            if($_POST["usertype"] == "Provider") {
+                if(empty($_POST["providerName"])) 
+                    $allowSubmission=false;
+                if(!empty($_POST["contactNumber"])) {
+                $contactNumber = $_POST["contactNumber"];
+                }
+                if(strlen($_POST['email']) > 0) {
+                    if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+                        $allowSubmission=false;
+                    }
+                    else {
+                        $email = $_POST["email"];
+                    } 
+                }            
+            }
+            if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
+                if(empty($_POST["provider"])) // Check the provider username is empty
+                    $allowSubmission=false;
+                
+                // Check if the provider username is valid
+                $sql = "SELECT * FROM training_provider where username='" . $_POST["provider"] . "';";
+                $result = mysqli_query($connect,$sql);
+                $count = mysqli_num_rows($result);
+                if($count == 0) {
+                    $allowSubmission=false;
+                }
+                if(empty($_POST["firstName"])) 
+                    $allowSubmission=false;
+                if(empty($_POST["lastName"])) 
+                    $allowSubmission=false;
+            }
+
+            if($_POST["usertype"] == "Student") {
+                if(empty($_POST["dateOfBirth"])) 
+                    $allowSubmission=false;
+                if(empty($_POST["academicProgram"])) 
+                    $allowSubmission=false;
+            }
+                
+
+            if($allowSubmission){            
+                //print_r($_POST);
+                $username = $_POST["username"];
+                $password = $_POST["password"];
+                $usertype = $_POST["usertype"];
+
+                $hashed_password = password_hash($password,PASSWORD_DEFAULT);
+                //echo $hashed_password;
+
+                $sql = "INSERT INTO user (username,password_hash,usertype) values ('$username','$hashed_password','$usertype')";
+                $abc = mysqli_query($connect,$sql);
+                if(!$abc) {
+                    echo mysqli_error($connect);
+                    die();
+                }
+                
+                if ($usertype != "Admin") {
+                    if ($usertype == "Provider") {
+                            $providerName = $_POST["providerName"];
+                            $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
+                    } 
+                    else if ($usertype == "Student") {
+                        $firstName = $_POST["firstName"];
+                        $lastName = $_POST["lastName"];
+                        $dateOfBirth = $_POST["dateOfBirth"];
+                        $academicProgram = $_POST["academicProgram"];
+                        $providerUsername = $_POST["provider"];
+                        $contactNumber = $_POST["contactNumber"];
+                        $email = $_POST["email"];
+                        $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$providerUsername','$contactNumber','$email');";
+                    }
+                    else if ($usertype == "Instructor") {
+                        $firstName = $_POST["firstName"];
+                        $lastName = $_POST["lastName"];
+                        $providerUsername = $_POST["provider"];
+                        $contactNumber = $_POST["contactNumber"];
+                        $email = $_POST["email"];
+                        $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$providerUsername','$contactNumber','$email');";
+                    }
+
+                
+                    $abc2 = mysqli_query($connect,$sql2);
+
+                    if(!$abc2) {
+                        echo mysqli_error($connect);
+                        die();
+                    }
+                    
+                }
+                
+                
+                ?>
+
+                    <script type="text/javascript">
+                        alert("Successful created a new account");
+                    </script>
+            <?php
+            }
         }
     }
     
@@ -136,17 +141,16 @@
         $row = mysqli_fetch_assoc($result);
         $usertype = $row['usertype'];
         // User change password
-        if(!empty($_POST["password"])) {
-
-            if(strlen($_POST["password"]) < 8) {
+        if(!empty($_POST["newPassword"])) {
+            if(strlen($_POST["newPassword"]) < 8) {
                 $allowSubmission=false;
             }
-            if (!preg_match('/[A-Za-z]/', $_POST["password"]) || !preg_match('/[0-9]/', $_POST["password"])) {
+            if (!preg_match('/[A-Za-z]/', $_POST["newPassword"]) || !preg_match('/[0-9]/', $_POST["newPassword"])) {
                 $allowSubmission=false;
             }
             
             // Update password in the database
-            $password = $_POST["password"];
+            $password = $_POST["newPassword"];
             $hashed_password = password_hash($password,PASSWORD_DEFAULT);
             $sql = "UPDATE user SET password_hash = '" . $hashed_password . "' where username = " . "'" . $username . "';";
             $result = mysqli_query($connect,$sql);
@@ -283,6 +287,7 @@
                     <?php
                     if($usertype == 'Admin') {
                         // Allow to change password only
+                        echo '<input type="hidden" id="formType" value="Admin">';
                     }
                     else if($usertype == 'Instructor') {
 
@@ -1122,26 +1127,24 @@
             var allowSubmission = true;
 
             var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)/;
-            if (password.length < 8 || !passwordPattern.test(password)) {
-                if(password.length < 8) showErrorMessage("Password must be at least 8 characters", "newPassword");
-                else showErrorMessage("Password must include at least one letter and one number", "newPassword");
-                allowSubmission = false;
-            }
-            else{
-                showErrorMessage("", "newPassword");
+            if (password.length > 0) {
+                if (password.length < 8 || !passwordPattern.test(password)) {
+                    if(password.length < 8) showErrorMessage("Password must be at least 8 characters", "newPassword");
+                    else showErrorMessage("Password must include at least one letter and one number", "newPassword");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "newPassword");
+                }
             }
 
             // For other usertype may have other editable
             var usertype = document.getElementById("formType").value;
 
             if(usertype=="Instructor" || usertype=="Student"){
-                var contactNumberElement = document.getElementById("contactNumber");
-                var emailElement = document.getElementById("email");
                 var firstNameElement = document.getElementById("firstName");
                 var lastNameElement = document.getElementById("lastName");
 
-                var contactNumber = contactNumberElement ? contactNumberElement.value : "";
-                var email = emailElement ? emailElement.value : "";
                 var firstName = firstNameElement ? firstNameElement.value : "";
                 var lastName = lastNameElement ? lastNameElement.value : "";
 
@@ -1160,22 +1163,6 @@
                 }
                 else{
                     showErrorMessage("", "lastName");
-                }
-
-                if(contactNumber == ""){
-                    showErrorMessage("Contact Number is required", "contactNumber");
-                    allowSubmission = false;
-                }
-                else{
-                    showErrorMessage("", "contactNumber");
-                }
-
-                if(email == ""){
-                    showErrorMessage("E-mail is required", "email");
-                    allowSubmission = false;
-                }
-                else{
-                    showErrorMessage("", "email");
                 }
             }
 
@@ -1205,12 +1192,8 @@
 
             if(usertype=="Provider"){
                 var providerNameElement = document.getElementById("providerName");
-                var contactNumberElement = document.getElementById("contactNumber");
-                var emailElement = document.getElementById("email");
 
                 var providerName = providerNameElement ? providerNameElement.value : "";
-                var contactNumber = contactNumberElement ? contactNumberElement.value : "";
-                var email = emailElement ? emailElement.value : "";
 
                 if(providerName == ""){
                     showErrorMessage("Provider Name is required", "providerName");
@@ -1218,22 +1201,6 @@
                 }
                 else{
                     showErrorMessage("", "providerName");
-                }
-
-                if(contactNumber == ""){
-                    showErrorMessage("Contact Number is required", "contactNumber");
-                    allowSubmission = false;
-                }
-                else{
-                    showErrorMessage("", "contactNumber");
-                }
-
-                if(email == ""){
-                    showErrorMessage("E-mail is required", "email");
-                    allowSubmission = false;
-                }
-                else{
-                    showErrorMessage("", "email");
                 }
             }
 
