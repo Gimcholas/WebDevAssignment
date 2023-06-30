@@ -102,13 +102,13 @@ nav:hover{
 .content {
     flex-grow: 1;
     /* width: 200px; */
-    margin-left: 100px;
+    margin-left: 90px;
     /* Add your desired styles */
     transition: all 0.3s ease-in;
 }
 
 .content.shifted {
-    margin-left: 300px; /* Width of the sidebar */
+    margin-left: 250px; /* Width of the sidebar */
     transition: all 0.5s ease;
 
     /* background-color: red;
