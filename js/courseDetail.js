@@ -10,10 +10,25 @@ const courseDetail = document.getElementById("hiddenDetail");
 const newAnnouncementInput = document.getElementById("newAnnouncementInput");
 const hiddenAttributeNewAnnouncement = document.querySelectorAll(".hiddenAttributeNewAnnouncement");
 const cancelAnnouncementButton = document.getElementById("cancelAnnouncement");
-// const newannouncementContainer = document.getElementById("new-announcement-container");
 const newAnnouncementForm = document.getElementById("newAnnouncementForm");
 const toggleUpdateSection = document.getElementById("toggleUpdateSection");
 const hiddenUpdateSection = document.getElementById("hiddenUpdateSection");
+
+const toggleFeedback = document.getElementById("toggleFeedback");
+const hiddenFeedback = document.getElementById("hiddenFeedback");
+const toggleCertificate = document.getElementById("toggleCertificate");
+const hiddenCertificate = document.getElementById("hiddenCertificate");
+const togglePrintCertificate = document.getElementById("printCertificate");
+const divShowingCertificate = document.querySelector(".divShowingCertificate");
+
+togglePrintCertificate.addEventListener("click",function(e){
+    var openWindow = window.open("", "title",  'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+    openWindow.document.write(divShowingCertificate.innerHTML);
+    openWindow.document.close();
+    openWindow.focus();
+    openWindow.print();
+    openWindow.close();
+})
 
 toggleDetail.addEventListener("click", function(e) {
     if(courseDetail.style.display == "none"){
@@ -23,6 +38,40 @@ toggleDetail.addEventListener("click", function(e) {
     else {
         courseDetail.style.display = "none";
         toggleDetail.innerHTML = "Course Description";
+    }
+})
+
+toggleFeedback.addEventListener("click", function(e) {
+    if(hiddenFeedback.style.display == "none"){
+        hiddenFeedback.style.display = "block";
+        hiddenAnnouncement.style.display = "none";
+        toggleDetail.style.display = "none";
+        toggleCertificate.style.display = "none";
+        toggleFeedback.innerHTML = "Announcement";
+    }
+    else {
+        hiddenFeedback.style.display = "none";
+        hiddenAnnouncement.style.display = "block";
+        toggleDetail.style.display = "block";
+        toggleCertificate.style.display = "block";
+        toggleFeedback.innerHTML = "Feedback";
+    }
+})
+
+toggleCertificate.addEventListener("click", function(e) {
+    if(hiddenCertificate.style.display == "none"){
+        hiddenCertificate.style.display = "block";
+        hiddenAnnouncement.style.display = "none";
+        toggleDetail.style.display = "none";
+        toggleFeedback.style.display = "none";
+        toggleCertificate.innerHTML = "Announcement";
+    }
+    else {
+        hiddenCertificate.style.display = "none";
+        hiddenAnnouncement.style.display = "block";
+        toggleDetail.style.display = "block";
+        toggleFeedback.style.display = "block";
+        toggleCertificate.innerHTML = "Certificate";
     }
 })
 
@@ -72,11 +121,10 @@ newAnnouncementInput.addEventListener("click", function(e) {
         if (f.style.display === "none") {
             f.style.display = "block";
         } 
-        // else {
-        //     f.style.display = "none";
-        // }
     });
 });
+
+
 
 if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
