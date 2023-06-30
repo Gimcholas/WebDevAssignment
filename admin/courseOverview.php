@@ -24,12 +24,44 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
         <header class="header-bar">
             <h1>Courses Overview<h1>
         </header>
+        <dialog selectInstructorModal>
+            <?php if($_SESSION["usertype"] == "Admin") { ?>
+                <!-- Show the select training provider -->
+                <form action='../trainingProvider/createCourse.php' method='POST'>
+                <h3>Choose a training provider</h3>
+                <div class='input-box'>
+                <select name='providerUsername' required >
+                    <option disabled selected value>Select A Training Provider</option>
+                    <?php
+                    $sql = 'SELECT * FROM training_provider;';
+                    $result = mysqli_query($connect,$sql);
+                    $count = mysqli_num_rows($result);
+                    if ($count == 0) {
+                        ?>
+                        <option disabled selected value>No Training Provider Found</option>
 
+                    <?php
+                    }
+                    while($row = mysqli_fetch_assoc($result)) { ?>
+                        <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " . $row["provider_name"]?></option> 
+                    <?php } 
+                    ?>
+                </select>
+                </div>
+                <div id='modal-button'>
+                    <input class='back-btn' type='button' value='Cancel' onclick='closeModal()'>    
+                    <input class='next-btn' type='submit' name='selectProvider' value='Next'>    
+                </div>
+            </form>
+            <?php
+            } ?>
+        </dialog>
         <div class="left-panel">
             <div class="ongoing-course">
                 <h1>Ongoing Courses</h1>
                 <div class="display-course-container">
-                    <a href="../trainingProvider/createCourse.php"><button>Add Course</button><a>
+                    <!-- <a href="../trainingProvider/createCourse.php"><button>Add Course</button><a> -->
+                    <a onclick='selectProvider()'><button>Add Course</button><a>
                     <?php 
                     //Get the ongoing course
                     if($_SESSION['usertype'] == "Admin") {
@@ -131,3 +163,15 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
     }
 
 ?>
+
+<script>
+    const selectProviderModal = document.querySelector("[selectInstructorModal]");
+    
+    function closeModal() {
+        selectProviderModal.close();
+    }
+    function selectProvider() {
+        selectProviderModal.showModal();
+    }
+
+</script>

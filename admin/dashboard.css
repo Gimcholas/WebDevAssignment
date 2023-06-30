@@ -19,11 +19,12 @@ header{
 }
 
 header button{
-    padding: 5px;
-    border: 1px solid black;
+    padding: 15px;
+    color:black;
     border-radius: 5px;
-    background-color: lightblue;
+    background-color: #3498db;
     margin-right:30px;
+    font-size:14px;
 }
 
 *{
@@ -182,8 +183,7 @@ tbody tr:hover {
 }
 
 td button{
-    background-color: lightgreen;
-    padding: 5px;
+    padding: 15px;
     border-radius: 5px;
     padding-left: 10px;
     padding-right: 10px;
@@ -241,10 +241,16 @@ p{
     padding: 10px;
     padding-left: 15px;
     padding-right: 15px;
-    background-color: lightgreen;
-    border: 2px solid black;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.backBtn input {
+    background-color: #3498db;
+}
+
+.submitBtn input {
+    background-color: lightgreen;
 }
 
 .submitBtn input:hover, .backBtn input:hover{
@@ -254,6 +260,22 @@ p{
 .backBtn a:hover{
     background-color: transparent;
     cursor: pointer;
+}
+
+.btn-view-details {
+    background-color: lightgreen;
+    width: fit-content;
+    padding:10px;
+    color:black;
+    font-size:14px;
+}
+
+.btn-edit-details {
+    background-color: #3498db;
+    width: fit-content;
+    padding:10px;
+    color:black;
+    font-size:14px;
 }
 
 .view-details, .edit-details{
@@ -301,5 +323,10 @@ dialog table {
 h3, h2 {
     display:flex;
     justify-content: center;
-    border: 1px solid black;
+    border-bottom: 2px solid black;
+}
+
+.rating img{
+    width:20px;
+    height:20px;
 }

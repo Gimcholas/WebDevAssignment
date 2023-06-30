@@ -40,13 +40,13 @@ session_start();
                 <div class='course-details'>
                     <?php 
                     if ($_SESSION['usertype'] == "Admin") {
-                        echo "<a href='../admin/courseOverview.php'><button>Back</button></a>";
+                        echo "<a href='../admin/courseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
                     }
                     if ($_SESSION['usertype'] == "Provider") {
                         echo "<a href='courses.php'><button>Back</button></a>";
                     }
-                        echo "<a href='editCourse.php?edit&course=" .$_GET['course'] ."'><button>Edit</button></a>";
-                        echo "<a href='courseDetail.php?delete&course=" .$_GET['course'] ."' onclick='return confirmation();'><button>Delete Course</button></a>";
+                        echo "<a href='editCourse.php?edit&course=" .$_GET['course'] ."'><button style='background-color: lightgreen;'>Edit</button></a>";
+                        echo "<a href='courseDetail.php?delete&course=" .$_GET['course'] ."' onclick='return confirmation();'><button style='background-color: red;'>Delete Course</button></a>";
                     ?>
                     <div class='table-wrapper'>
                         <table>
@@ -106,8 +106,8 @@ session_start();
                         <td><?php echo $row['day']?></td>
                         <td><?php echo $row['status']?></td>
                         <td><?php echo $studentCount . "/" . $row['max_student_num']?></td>
-                        <td><a href='courseDetail.php?view&courseSection=<?php echo $row['course_section_id'] ?>'><button>Details</button></a></td>
-                        <td><a href='courseDetail.php?delete&courseSection=<?php echo $row['course_section_id'] ?>' onclick='return confirmation();'><button>Delete</button></a></td>
+                        <td><a href='courseDetail.php?view&courseSection=<?php echo $row['course_section_id'] ?>'><button style="background-color:lightgreen;">Details</button></a></td>
+                        <td><a href='courseDetail.php?delete&courseSection=<?php echo $row['course_section_id'] ?>' onclick='return confirmation();'><button style="background-color:red;">Delete</button></a></td>
                     <?php
                 }
             }
