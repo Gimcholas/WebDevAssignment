@@ -88,7 +88,7 @@ function generateDashboardCourseLink($eachCourse,$myCoursePage){
     }
 }
 
-function generateHTMLProfileDetail($title,$variable){
+function generateHTMLDetail($title,$variable){
     echo '<p><span class="title">'.$title.'</span><span class="colon">:</span>'.$variable.'</p>';
 }
 
@@ -109,7 +109,6 @@ function generateHTMLChangePassword($title,$inputName){
         <input id="'.$inputName.'" name="'.$inputName.'" placeholder = "'.$title.'" type="password" required>
     </p>';
 }
-
 
 function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "text",$attribute1 = "",$attribute2="",$attribute3=""){
     echo 
@@ -158,6 +157,12 @@ function generateFeedbackForm($formName,$title1,$inputName1,$title2,$inputName2,
 
 function generateCertificate($studentName,$courseTitle,$completeDate) {
     echo<<<HTML
+    <script>
+        *{ color-adjust: exact;
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact; 
+        }
+    </script>
     <div style="width:800px; height:600px;text-align:center;margin:10px;padding:20px; border: 5px solid black;background-color: #618597;">
         <div style="width:750px; height:550px;padding:20px; text-align:center; border: 3px solid black;background-color:white;">
             <span><img style="width:280px;height:auto;"src="../files/MMU_Logo.png"></span><br><br>
@@ -346,16 +351,16 @@ function createProfilePage(){
     HTML;
                     if ($_SESSION['usertype'] != "Admin") {
                         if($_SESSION['usertype'] == "Student" || $_SESSION['usertype'] == "Instructor"){
-                            generateHTMLProfileDetail("Training Provider",$profile["provider_username"]);
+                            generateHTMLDetail("Training Provider",$profile["provider_username"]);
                         }
 
-                        generateHTMLProfileDetail("Join on",$profile["joined_date"]);
-                        generateHTMLProfileDetail("Contact",$profile["contact_number"]);
-                        generateHTMLProfileDetail("Email",$profile["email"]);
+                        generateHTMLDetail("Join on",$profile["joined_date"]);
+                        generateHTMLDetail("Contact",$profile["contact_number"]);
+                        generateHTMLDetail("Email",$profile["email"]);
 
                         if($_SESSION['usertype'] == "Student"){
-                            generateHTMLProfileDetail("Date Of Birth",$profile["date_of_birth"]);
-                            generateHTMLProfileDetail("Academic Program",$profile["academic_program"]);
+                            generateHTMLDetail("Date Of Birth",$profile["date_of_birth"]);
+                            generateHTMLDetail("Academic Program",$profile["academic_program"]);
                         }
                     }
                     if ($_SESSION['usertype'] != "Admin") {
@@ -438,6 +443,7 @@ function createCourseDetailPage(){
         $username = $_SESSION['username'];
         $sql = "INSERT INTO announcement (course_section_id,username,title,content,upload_date_time) VALUES ('$course_section_id','$username','$title','$content','$formattedDateTime')";
         mysqli_query($connect,$sql);
+        $_POST = array();
         header("Refresh:0");
         exit;
     }
@@ -456,6 +462,28 @@ function createCourseDetailPage(){
                     max_student_num = '$edited_max_student_num', status = '$edited_status' 
                 WHERE course_section_id = $course_section_id";
         mysqli_query($connect,$sql);
+        $_POST = array();
+        header("Refresh:0");
+        exit;
+    }
+    else if(isset($_POST['submitCourseFeedbackForm'])){
+        $courseRating = $_POST['courseRating'];
+        $courseFeedback = $_POST['courseFeedback'];
+        $insert_sql = "INSERT INTO course_feedback (course_section_id,username,feedback,rating,date)
+                        VALUE ('$course_section_id', '".$_SESSION["username"]."','$courseFeedback','$courseRating',CURDATE())";
+        mysqli_query($connect,$insert_sql);
+        $_POST = array();
+        header("Refresh:0");
+        exit;
+    }
+    else if(isset($_POST['submitInstructorFeedbackForm'])){
+        $instructor_username = $course['username'];
+        $instructorRating = $_POST['instructorRating'];
+        $instructorFeedback = $_POST['instructorFeedback'];
+        $insert_sql = "INSERT INTO instructor_feedback (course_section_id,instructor_username,student_username,feedback,rating,date)
+                        VALUE ('$course_section_id','$instructor_username', '".$_SESSION["username"]."','$instructorFeedback','$instructorRating',CURDATE())";
+        mysqli_query($connect,$insert_sql);
+        $_POST = array();
         header("Refresh:0");
         exit;
     }
@@ -580,8 +608,9 @@ function createCourseDetailPage(){
                 $course_feedback_sql = "SELECT * FROM course_feedback 
                                 WHERE username = '".$_SESSION["username"]."'
                                 AND course_section_id = $course_section_id";
-                $course_feedback = mysqli_query($connect,$course_feedback_sql);
-                $course_feedback_count = mysqli_num_rows($course_feedback);
+                $course_feedback_all = mysqli_query($connect,$course_feedback_sql);
+                $course_feedback_count = mysqli_num_rows($course_feedback_all);
+                $course_feedback = mysqli_fetch_assoc($course_feedback_all);
                 $student_detail_sql = "SELECT * FROM student AS s
                                                 WHERE username = '".$_SESSION['username']."'";
                 $student_detail = mysqli_fetch_assoc(mysqli_query($connect,$student_detail_sql));
@@ -594,7 +623,8 @@ function createCourseDetailPage(){
                             generateFeedbackForm('courseFeedbackForm','Rating','courseRating','Feedback','courseFeedback','submitCourseFeedbackForm');
                             }
                         else {
-
+                            generateHTMLDetail("Rating",$course_feedback['rating']);
+                            generateHTMLDetail("Feedback",$course_feedback['feedback']);
                             }
                 echo<<<HTML
                         <h1>Instructor Feedback </h1>
@@ -602,16 +632,16 @@ function createCourseDetailPage(){
                         $instructor_feedback_sql = "SELECT * FROM instructor_feedback 
                                                 WHERE student_username = '".$_SESSION["username"]."' 
                                                 AND course_section_id = $course_section_id";
-                        $instructor_feedback = mysqli_query($connect,$course_feedback_sql);
-                        $instructor_feedback_count = mysqli_num_rows($course_feedback);
+                        $instructor_feedback_all = mysqli_query($connect,$instructor_feedback_sql);
+                        $instructor_feedback_count = mysqli_num_rows($instructor_feedback_all);
+                        $instructor_feedback = mysqli_fetch_assoc($instructor_feedback_all);
                         // no instructor feedback made yet
                         if($instructor_feedback_count == 0){
-                            generateFeedbackForm('instructorFeedbackForm','Rating','courseRating','Feedback','courseFeedback','submitInstructorFeedbackForm');
+                            generateFeedbackForm('instructorFeedbackForm','Rating','instructorRating','Feedback','instructorFeedback','submitInstructorFeedbackForm');
                         }
                         else {
-                            echo<<<HTML
-
-                            HTML;
+                            generateHTMLDetail("Rating",$instructor_feedback['rating']);
+                            generateHTMLDetail("Feedback",$instructor_feedback['feedback']);
                             }
                 echo<<<HTML
                     </div>
