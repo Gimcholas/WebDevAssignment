@@ -60,7 +60,7 @@ input, select{
     border-radius: 3px;
     position: relative;
     width: 70%;
-    /* margin-bottom: 25px; */
+    margin-bottom: 15px;
     align-items: center;
 
 }
@@ -121,8 +121,8 @@ form div{
 .errorMessageBox{
     position: absolute;
     text-align: center;
-    margin-top: -25px;
-    margin-left: 85px;
+    margin-top: -15px;
+    margin-left: 80px;
     color: red;
 }
 
