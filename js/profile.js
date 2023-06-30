@@ -21,8 +21,8 @@ const submitChangePWDButton = document.getElementById("submitChangePWD");
 const editProfileForm = document.getElementById("editProfileForm");
 const newPasswordForm = document.getElementById("newPasswordForm");
 
-const password = document.getElementById("newPassword");
-const passwordConfirm = document.getElementById("newPasswordConfirm");
+const newPassword = document.getElementById("newPassword");
+const newPasswordConfirm = document.getElementById("newPasswordConfirm");
 
 if (editButton != null) { // When usertype is student/instructor/training provider
     editButton.addEventListener("click",function(e){
@@ -49,12 +49,12 @@ cancelChangePWDButton.addEventListener("click", function(e) {
 })
 
 function check_password_input(){
-    if(password.value != passwordConfirm.value){
-        passwordConfirm.setCustomValidity("Password Don't Match");
+    if(newPassword.value != newPasswordConfirm.value){
+        newPasswordConfirm.setCustomValidity("Password Don't Match");
     }
     else{
-        passwordConfirm.setCustomValidity("");
+        newPasswordConfirm.setCustomValidity("");
     }
 }
-password.onchange = check_password_input;
-passwordconfirm.onkeyup = check_password_input;
+newPassword.onchange = check_password_input;
+newPasswordConfirm.onkeyup = check_password_input;
