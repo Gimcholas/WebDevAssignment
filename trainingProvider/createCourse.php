@@ -122,10 +122,10 @@
                 <div id="additionalSection"></div>
                 
                 <div class="addSection">
-                <input type="button" style="display:inline-block;" value="Add More Section" onclick="addSection()">
-                <input type="submit" style="display:inline-block;" value="Create Course" name="submit">
+                <input type="button" style="display:inline-block; background-color:lightgreen;" value="Add More Section" onclick="addSection()">
+                <input type="submit" style="display:inline-block; background-color:lightgreen;" value="Create Course" name="submit">
                     <?php if ($_SESSION["usertype"] == "Admin") {
-                        echo "<a href='../admin/courseOverview.php'><input type='button' style='display:inline-block;' value= 'Back'></a><br><br>";
+                        echo "<a href='../admin/courseOverview.php'><input type='button' style='display:inline-block; background-color:#3498db;' value= 'Back'></a><br><br>";
                     }
                     else {
                         echo "<a href='courses.php'><input type='button' style='display:inline-block;' value= 'Back'></a><br><br>";                
