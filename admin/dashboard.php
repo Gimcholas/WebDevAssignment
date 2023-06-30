@@ -929,7 +929,7 @@
             <div class="errorMessageBox" id="dateOfBirth-messageBox"></div><br>
             </div>
             <div class="input-box">
-            <input type="text" id-"academicProgram" name="academicProgram" placeholder="Academic Program">
+            <input type="text" id="academicProgram" name="academicProgram" placeholder="Academic Program">
             <div class="errorMessageBox" id="academicProgram-messageBox"></div><br>
             </div>
             `;

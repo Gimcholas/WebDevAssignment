@@ -114,3 +114,14 @@ nav:hover{
     /* background-color: red;
     color: orange; */
 }
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .Container {
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      width: 100%;
+    }
+  }

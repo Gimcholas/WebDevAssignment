@@ -9,8 +9,8 @@
 <html>
 <head> 
     <title>Add Course</title>
-    <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
-    <link rel='stylesheet' type="text/css" href=style.css>
+    <link rel="stylesheet" href="../navBar/navBarStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/createCourse.css">
     <script text="text/javascript" src="script.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src ="../js/navbar.js"></script></head>
@@ -19,146 +19,120 @@
 <body>
 <div class="Container">
     <div class="sidebar">
-        <?php include '../NavBar/NavBar.php'?>
+        <?php include '../navBar/navBar.php'?>
     </div>
-    <div class="content" id="content"> 
-    <form action="createCourse.php" method="post" id="courseForm" enctype="multipart/form-data">
-        <?php if($_SESSION["usertype"] == "Admin") {
-            // Show the select training provider
-                    echo "<div class='input-box'>";
-                    echo "<label for='providerUsername'>Provider Username </label>";
-                    echo "<select name='providerUsername' required >";
-                    echo "<option disabled selected value>Select A Training Provider</option>";
-                    echo "<?php"; 
-                    $sql = 'SELECT * FROM training_provider;';
-                    $result = mysqli_query($connect,$sql);
-                    $count = mysqli_num_rows($result);
-                    if ($count == 0) {
-                        ?>
-                        <option disabled selected value>No Training Provider Found</option>
+    <div class="content" id="content">
+        <header>
+            <h1>Create Course</h1>
+        </header>
+        <div class="Container1">
+            <form action="createCourse.php" method="post" id="courseForm" enctype="multipart/form-data">
+                <?php if($_SESSION["usertype"] == "Admin") {
+                    // Show the select training provider
+                            echo "<div class='input-box'>";
+                            echo "<label for='providerUsername'>Provider Username </label>";
+                            echo "<select name='providerUsername' required >";
+                            echo "<option disabled selected value>Select A Training Provider</option>";
+                            echo "<?php"; 
+                            $sql = 'SELECT * FROM training_provider;';
+                            $result = mysqli_query($connect,$sql);
+                            $count = mysqli_num_rows($result);
+                            if ($count == 0) {
+                                ?>
+                                <option disabled selected value>No Training Provider Found</option>
 
-                    <?php
-                    }
-                    while($row = mysqli_fetch_array($result)) {
+                            <?php
+                            }
+                            while($row = mysqli_fetch_array($result)) {
+                                ?>
+                                <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
+                                . $row["provider_name"]?></option> 
+                            <?php } 
                         ?>
-                        <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
-                        . $row["provider_name"]?></option> 
-                    <?php } 
+                    </select>
+                    </div>    
+                <?php
+                }
                 ?>
-            </select>
-            </div><br>    
-        <?php
-        }
-        ?>
 
-        <div class="input-box">
-        <label for="courseName">Course Name</label>
-        <input type="text" name="courseName" required> 
-        </div><br>
+                <div class="input-box">
+                <label for="courseName">Course Name</label>
+                <input type="text" name="courseName" required> 
+                </div>
 
-        <div class="input-box">
-        <label for="startDate">Start Date</label>
-        <input type="date" name="startDate" required> 
-        </div><br>
+                <div class="input-box">
+                <label for="startDate">Start Date</label>
+                <input type="date" name="startDate" required> 
+                </div>
 
-        <div class="input-box">
-        <label for="endDate">End Date</label>
-        <input type="date" name="endDate" required> 
-        </div><br>
+                <div class="input-box">
+                <label for="endDate">End Date</label>
+                <input type="date" name="endDate" required> 
+                </div>
 
-        <div class="input-box">
-        <label for="courseIntro">Course Introduction</label>
-        <!-- <input type="text" name="courseIntro" required>  -->
-        <textarea name="courseIntro" rows="5" cols="40"></textarea>
-        </div><br>
+                <div class="input-box">
+                <label for="courseIntro">Course Introduction</label>
+                <!-- <input type="text" name="courseIntro" required>  -->
+                <textarea name="courseIntro" rows="5" cols="40"></textarea>
+                </div>
 
-        <div class="input-box">
-        <label for="Course Image">Upload course image</label><br>
-        <input type="file" name="photo">
-        </div><br>
+                <div class="input-box" style="margin-right:50px;">
+                <label for="Course Image">Upload course image</label><br>
+                <input type="file" name="photo">
+                </div>
 
-        <hr><br>
-        <div id="courseSection">            
-            <div class="input-box">
-            <label for="sectionName">Section Name</label>
-            <input type="text" name="sectionName[]" required>
-            </div><br>
+                <div id="courseSection">            
+                    <div class="input-box">
+                    <label for="sectionName">Section Name</label>
+                    <input type="text" name="sectionName[]" required>
+                    </div>
 
 
-            <div class="input-box">
-            <label for="instructorUsername">Instructor Username</label>
-            <!-- <input type="text" name="instructorUsername[]" list="instructors" autocomplete="off" required/> -->
-            <select name="instructorUsername[]" id="originalSelector" required >
-            <?php 
-                    $sql = "SELECT * FROM instructor where provider_username" . "= '" . $_SESSION['username'] . "';";
-                    $result = mysqli_query($connect,$sql);
-                    $count = mysqli_num_rows($result);
-                    if ($count == 0) {
-                        echo $count;
+                    <div class="input-box">
+                    <label for="instructorUsername">Instructor Username</label>
+                    <!-- <input type="text" name="instructorUsername[]" list="instructors" autocomplete="off" required/> -->
+                    <select name="instructorUsername[]" id="originalSelector" required >
+                    <?php 
+                            $sql = "SELECT * FROM instructor where provider_username" . "= '" . $_SESSION['username'] . "';";
+                            $result = mysqli_query($connect,$sql);
+                            $count = mysqli_num_rows($result);
+                            if ($count == 0) {
+                                echo $count;
+                                ?>
+                                <option disabled selected value>No Available Instructors Found</option>
+
+                            <?php
+                            }
+                            while($row = mysqli_fetch_array($result)) {
+                                ?>
+                                <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
+                                . $row["first_name"] . " " . $row["last_name"]?></option> 
+                            <?php } 
                         ?>
-                        <option disabled selected value>No Available Instructors Found</option>
+                    </select>
+                    </div>
 
-                    <?php
+                    <div class="input-box">
+                        <label for="maxStudentNum">Maximum Student Allowed</label>
+                        <input type="number" name="maxStudentNum[]" required>
+                    </div>
+                    <hr>
+                </div>
+
+                <div id="additionalSection"></div>
+                
+                <div class="addSection">
+                <input type="button" style="display:inline-block;" value="Add More Section" onclick="addSection()">
+                <input type="submit" style="display:inline-block;" value="Create Course" name="submit">
+                    <?php if ($_SESSION["usertype"] == "Admin") {
+                        echo "<a href='../admin/courseOverview.php'><input type='button' style='display:inline-block;' value= 'Back'></a><br><br>";
                     }
-                    while($row = mysqli_fetch_array($result)) {
-                        ?>
-                        <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
-                        . $row["first_name"] . " " . $row["last_name"]?></option> 
-                    <?php } 
-                ?>
-            </select>
-            </div><br>
-
-            <!-- <div class="input-box">
-            <label for="startTime">Start Time</label>
-            <input type="time" name="startTime[]" required>
-            </div><br>
-
-            <div class="input-box">
-            <label for="endTime">End Time</label>
-            <input type="time" name="endTime[]" required>
-            </div><br>
-
-            <div class="input-box">
-            <label for="day">Day</label>
-            <select name="day[]" required>
-                <option value="">Choose a day</option>
-                <option value="Sunday">Sunday</option>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-            </select>    
-            </div><br> -->
-
-            <div class="input-box">
-                <label for="maxStudentNum">Maximum Student Allowed</label>
-                <input type="number" name="maxStudentNum[]" required>
-            </div><br>
+                    else {
+                        echo "<a href='courses.php'><input type='button' style='display:inline-block;' value= 'Back'></a><br><br>";                
+                    }?>
+                </div>
+            </form>
         </div>
-        <hr><br>
-        
-        <div id="additionalSection"></div>
-        
-        <div class="addSection">
-        <input type="button" value="Add More Section" onclick="addSection()">
-        </div>
-
-        <div class="submit">
-        <input type="submit" value="Create Course" name="submit">
-        </div>
-
-        <div class='back'>
-            <?php if ($_SESSION["usertype"] == "Admin") {
-                echo "<a href='../admin/courseOverview.php'><input type='button' value = 'Back'></a><br><br>";
-            }
-            else {
-                echo "<a href='courses.php'><input type='button' value = 'Back'></a><br><br>";                
-            }?>
-        </div>
-    </form>
     </div>
 </div>
 </body>
