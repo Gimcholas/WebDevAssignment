@@ -640,9 +640,10 @@
         else if($_SESSION["usertype"] == "Provider") {
             ?>
             <!-- Instructor Table -->
+            <h3>Instructors</h3>
             <div class='table-wrapper table-wrapper-half-height'>
             <table>
-                <caption>Instructors</caption>
+                <!-- <caption>Instructors</caption> -->
                 <thead>
                     <tr>
                         <th>Username</th>
@@ -680,9 +681,10 @@
             </div>
 
             <!-- Student Table -->
+            <h3>Students</h3>
             <div class='table-wrapper table-wrapper-half-height'>
             <table>
-                <caption>Students</caption>
+                <!-- <caption>Students</caption> -->
                 <thead>
                     <tr>
                         <th>Username</th>
