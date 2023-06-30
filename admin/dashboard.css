@@ -212,9 +212,6 @@ thead th{
     width: fit-content;
 }
 
-/* tbody td {
-    max-width: fit-content;
-} */
 #course-section-table thead th:nth-child(2) {
     word-wrap: break-word;
     max-width: 100px;
@@ -279,6 +276,13 @@ input:focus , select:focus{
 dialog {
     margin:auto;
     border: 1px solid black;
+}
+
+.view-details-modal{
+    margin:auto;
+    width:fit-content;
+    min-width: 100px;
+    padding:10px;
 }
 
 dialog::backdrop {
