@@ -4,139 +4,22 @@
         header("Location: ../login.php");
     }
     
-    // Validate Create Account Form and Edit Account Form 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['hiddenCreateAccount'] == "true") {
-        $allowSubmission=true;
+    // Validate Create Account Form and Edit Account Form
+    if(isset($_POST['hiddenCreateAccount'])) { 
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['hiddenCreateAccount'] == "true") {
+            $allowSubmission=true;
 
-        if(empty($_POST["username"])) {
-            $allowSubmission=false;
-        }
-
-        $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";
-        $result = mysqli_query($connect,$sql);
-        $count = mysqli_num_rows($result);
-        if($count > 0) {
-            $allowSubmission=false;
-            echo '<script>alert("username taken, try again with another username")</script>';
-        }
-
-        if(strlen($_POST["password"]) < 8) {
-            $allowSubmission=false;
-        }
-        if (!preg_match('/[A-Za-z]/', $_POST["password"]) || !preg_match('/[0-9]/', $_POST["password"])) {
-            $allowSubmission=false;
-        }
-        if(empty($_POST["usertype"])) {
-            $allowSubmission=false;
-        }
-
-        $contactNumber = NULL;
-        $email = NULL;            
-        if($_POST["usertype"] == "Provider") {
-            if(empty($_POST["providerName"])) 
+            if(empty($_POST["username"])) {
                 $allowSubmission=false;
-            if(!empty($_POST["contactNumber"])) {
-            $contactNumber = $_POST["contactNumber"];
             }
-            if(strlen($_POST['email']) > 0) {
-                if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-                    $allowSubmission=false;
-                }
-                else {
-                    $email = $_POST["email"];
-                } 
-            }            
-        }
-        if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
-            if(empty($_POST["provider"])) // Check the provider username is empty
-                $allowSubmission=false;
-            
-            // Check if the provider username is valid
-            $sql = "SELECT * FROM training_provider where username='" . $_POST["provider"] . "';";
+
+            $sql = "SELECT * FROM user where username='" . $_POST["username"] . "';";
             $result = mysqli_query($connect,$sql);
             $count = mysqli_num_rows($result);
-            if($count == 0) {
+            if($count > 0) {
                 $allowSubmission=false;
+                echo '<script>alert("username taken, try again with another username")</script>';
             }
-            if(empty($_POST["firstName"])) 
-                $allowSubmission=false;
-            if(empty($_POST["lastName"])) 
-                $allowSubmission=false;
-        }
-
-        if($_POST["usertype"] == "Student") {
-            if(empty($_POST["dateOfBirth"])) 
-                $allowSubmission=false;
-            if(empty($_POST["academicProgram"])) 
-                $allowSubmission=false;
-        }
-            
-
-        if($allowSubmission){            
-            //print_r($_POST);
-            $username = $_POST["username"];
-            $password = $_POST["password"];
-            $usertype = $_POST["usertype"];
-
-            $hashed_password = password_hash($password,PASSWORD_DEFAULT);
-            //echo $hashed_password;
-
-            $sql = "INSERT INTO user (username,password_hash,usertype) values ('$username','$hashed_password','$usertype')";
-            $abc = mysqli_query($connect,$sql);
-            if(!$abc)
-            $allowSubmission=false;
-            //else 
-                //echo 'Successful created a new account';
-            
-            if ($usertype != "Admin") {
-                if ($usertype == "Provider") {
-                        $providerName = $_POST["providerName"];
-                        $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
-                } 
-                else if ($usertype == "Student") {
-                    $firstName = $_POST["firstName"];
-                    $lastName = $_POST["lastName"];
-                    $dateOfBirth = $_POST["dateOfBirth"];
-                    $academicProgram = $_POST["academicProgram"];
-                    $providerUsername = $_POST["provider"];
-                    $contactNumber = $_POST["contactNumber"];
-                    $email = $_POST["email"];
-                    $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$providerUsername','$contactNumber','$email');";
-                }
-                else if ($usertype == "Instructor") {
-                    $firstName = $_POST["firstName"];
-                    $lastName = $_POST["lastName"];
-                    $providerUsername = $_POST["provider"];
-                    $contactNumber = $_POST["contactNumber"];
-                    $email = $_POST["email"];
-                    $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$providerUsername','$contactNumber','$email');";
-                }
-
-            
-                $abc2 = mysqli_query($connect,$sql2);
-
-                if(!$abc2)
-                $allowSubmission=false;
-            }
-            
-            
-            ?>
-
-                <script type="text/javascript">
-                    alert("Successful created a new account");
-                </script>
-        <?php
-        }
-    }
-    
-    if(isset($_POST['editAccount']) && $_POST['hiddenEditAccount'] == "true") {
-        $username = $_GET['username'];
-        $sql = "SELECT * FROM user where username='$username';";
-        $result = mysqli_query($connect,$sql);
-        $row = mysqli_fetch_assoc($result);
-        $usertype = $row['usertype'];
-        // User change password
-        if(!empty($_POST["password"])) {
 
             if(strlen($_POST["password"]) < 8) {
                 $allowSubmission=false;
@@ -144,9 +27,130 @@
             if (!preg_match('/[A-Za-z]/', $_POST["password"]) || !preg_match('/[0-9]/', $_POST["password"])) {
                 $allowSubmission=false;
             }
+            if(empty($_POST["usertype"])) {
+                $allowSubmission=false;
+            }
+
+            $contactNumber = NULL;
+            $email = NULL;            
+            if($_POST["usertype"] == "Provider") {
+                if(empty($_POST["providerName"])) 
+                    $allowSubmission=false;
+                if(!empty($_POST["contactNumber"])) {
+                $contactNumber = $_POST["contactNumber"];
+                }
+                if(strlen($_POST['email']) > 0) {
+                    if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+                        $allowSubmission=false;
+                    }
+                    else {
+                        $email = $_POST["email"];
+                    } 
+                }            
+            }
+            if($_POST["usertype"] == "Instructor" || $_POST["usertype"] == "Student") {
+                if(empty($_POST["provider"])) // Check the provider username is empty
+                    $allowSubmission=false;
+                
+                // Check if the provider username is valid
+                $sql = "SELECT * FROM training_provider where username='" . $_POST["provider"] . "';";
+                $result = mysqli_query($connect,$sql);
+                $count = mysqli_num_rows($result);
+                if($count == 0) {
+                    $allowSubmission=false;
+                }
+                if(empty($_POST["firstName"])) 
+                    $allowSubmission=false;
+                if(empty($_POST["lastName"])) 
+                    $allowSubmission=false;
+            }
+
+            if($_POST["usertype"] == "Student") {
+                if(empty($_POST["dateOfBirth"])) 
+                    $allowSubmission=false;
+                if(empty($_POST["academicProgram"])) 
+                    $allowSubmission=false;
+            }
+                
+
+            if($allowSubmission){            
+                //print_r($_POST);
+                $username = $_POST["username"];
+                $password = $_POST["password"];
+                $usertype = $_POST["usertype"];
+
+                $hashed_password = password_hash($password,PASSWORD_DEFAULT);
+                //echo $hashed_password;
+
+                $sql = "INSERT INTO user (username,password_hash,usertype) values ('$username','$hashed_password','$usertype')";
+                $abc = mysqli_query($connect,$sql);
+                if(!$abc) {
+                    echo mysqli_error($connect);
+                    die();
+                }
+                
+                if ($usertype != "Admin") {
+                    if ($usertype == "Provider") {
+                            $providerName = $_POST["providerName"];
+                            $sql2 = "INSERT INTO training_provider(username,provider_name,contact_number,email) values ('$username','$providerName','$contactNumber','$email');";
+                    } 
+                    else if ($usertype == "Student") {
+                        $firstName = $_POST["firstName"];
+                        $lastName = $_POST["lastName"];
+                        $dateOfBirth = $_POST["dateOfBirth"];
+                        $academicProgram = $_POST["academicProgram"];
+                        $providerUsername = $_POST["provider"];
+                        $contactNumber = $_POST["contactNumber"];
+                        $email = $_POST["email"];
+                        $sql2 = "INSERT INTO student(username,first_name,last_name,date_of_birth,academic_program,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$dateOfBirth','$academicProgram','$providerUsername','$contactNumber','$email');";
+                    }
+                    else if ($usertype == "Instructor") {
+                        $firstName = $_POST["firstName"];
+                        $lastName = $_POST["lastName"];
+                        $providerUsername = $_POST["provider"];
+                        $contactNumber = $_POST["contactNumber"];
+                        $email = $_POST["email"];
+                        $sql2 = "INSERT INTO instructor(username,first_name,last_name,provider_username,contact_number,email) values ('$username','$firstName','$lastName','$providerUsername','$contactNumber','$email');";
+                    }
+
+                
+                    $abc2 = mysqli_query($connect,$sql2);
+
+                    if(!$abc2) {
+                        echo mysqli_error($connect);
+                        die();
+                    }
+                    
+                }
+                
+                
+                ?>
+
+                    <script type="text/javascript">
+                        alert("Successful created a new account");
+                    </script>
+            <?php
+            }
+        }
+    }
+    
+    if(isset($_POST['hiddenEditAccount']) && $_POST['hiddenEditAccount'] == "true") {
+        $username = $_GET['username'];
+        $sql = "SELECT * FROM user where username='$username';";
+        $result = mysqli_query($connect,$sql);
+        $row = mysqli_fetch_assoc($result);
+        $usertype = $row['usertype'];
+        // User change password
+        if(!empty($_POST["newPassword"])) {
+            if(strlen($_POST["newPassword"]) < 8) {
+                $allowSubmission=false;
+            }
+            if (!preg_match('/[A-Za-z]/', $_POST["newPassword"]) || !preg_match('/[0-9]/', $_POST["newPassword"])) {
+                $allowSubmission=false;
+            }
             
             // Update password in the database
-            $password = $_POST["password"];
+            $password = $_POST["newPassword"];
             $hashed_password = password_hash($password,PASSWORD_DEFAULT);
             $sql = "UPDATE user SET password_hash = '" . $hashed_password . "' where username = " . "'" . $username . "';";
             $result = mysqli_query($connect,$sql);
@@ -157,7 +161,6 @@
         
     
         // Admin can only edit password
-    
     
     
         if($usertype == 'Instructor' || $usertype == 'Student' || $usertype == 'Provider') {
@@ -260,7 +263,7 @@
                 </div>
                 <div id="additionalFields"></div>
                 <div  class="operations-button">
-                    <input class="back" type="button" value = "Back" onclick="createAccountModal.close();">
+                    <input class="back" type="button" value = "Cancel" onclick="createAccountModal.close();">
                     <input class="submit" type="submit" name="createAccount" value="Create Account">
                     <input type="hidden" name="hiddenCreateAccount" id="createAccount" value="false">
                 </div>
@@ -284,29 +287,38 @@
                     <?php
                     if($usertype == 'Admin') {
                         // Allow to change password only
+                        echo '<input type="hidden" id="formType" value="Admin">';
                     }
                     else if($usertype == 'Instructor') {
+
                         // Allow to change password, firstname, lastname, contactnumber, email
                         $sql2 = "SELECT * FROM instructor where username='$username';";
                         $result2 = mysqli_query($connect,$sql2);
                         $row2 = mysqli_fetch_assoc($result2);
                         ?>
                         <div class="input-box">
-                        <label>First Name</label>
-                        <input type="text" name="firstName" placeholder="First Name" required value="<?php echo $row2['first_name']; ?>"><br><br>
+                        <!-- <label>First Name</label> -->
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name" value="<?php echo $row2['first_name']; ?>"><br>
+                        <div class="errorMessageBox" id="firstName-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Last Name</label>
-                        <input type="text" name="lastName" placeholder="Last Name" required value="<?php echo $row2['last_name']; ?>"><br><br>
+                        <!-- <label>Last Name</label> -->
+                        <input type="text" id="lastName" name="lastName" placeholder="Last Name" value="<?php echo $row2['last_name']; ?>"><br>
+                        <div class="errorMessageBox" id="lastName-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Contact Number</label>
-                        <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
+                        <!-- <label>Contact Number</label> -->
+                        <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br>
+                        <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Email</label>
-                        <input type="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br><br>
+                        <!-- <label>Email</label> -->
+                        <input type="email" id="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br>
+                        <div class="errorMessageBox" id="email-messageBox"></div><br>
                         </div>
+
+                        <!-- To let js know which type of user is being edited so it can validate input accordingly -->
+                        <input type="hidden" id="formType" value="Instructor">
                         <?php
                     }
                     else if($usertype == 'Student') {
@@ -316,29 +328,37 @@
                         $row2 = mysqli_fetch_assoc($result2);
                         ?>
                         <div class="input-box">
-                        <label>First Name</label>
-                        <input type="text" name="firstName" placeholder="First Name" required value="<?php echo $row2['first_name']; ?>"><br><br>
+                        <!-- <label>First Name</label> -->
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name" value="<?php echo $row2['first_name']; ?>"><br>
+                        <div class="errorMessageBox" id="firstName-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Last Name</label>
-                        <input type="text" name="lastName" placeholder="Last Name" required value="<?php echo $row2['last_name']; ?>"><br><br>
+                        <!-- <label>Last Name</label> -->
+                        <input type="text" id="lastName" name="lastName" placeholder="Last Name" value="<?php echo $row2['last_name']; ?>"><br>
+                        <div class="errorMessageBox" id="lastName-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Date Of Birth</label>
-                        <input type="date" name="dateOfBirth" required value="<?php echo $row2['date_of_birth']; ?>"><br><br>
+                        <!-- <label>Date Of Birth</label> -->
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" value="<?php echo $row2['date_of_birth']; ?>"><br>
+                        <div class="errorMessageBox" id="dateOfBirth-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Academic Program</label>
-                        <input type="text" name="academicProgram" placeholder="Academic Program" required value="<?php echo $row2['academic_program']; ?>"><br><br>
+                        <!-- <label>Academic Program</label> -->
+                        <input type="text" id="academicProgram" name="academicProgram" placeholder="Academic Program" value="<?php echo $row2['academic_program']; ?>"><br>
+                        <div class="errorMessageBox" id="academicProgram-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Contact Number</label>
-                        <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
+                        <!-- <label>Contact Number</label> -->
+                        <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br>
+                        <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Email</label>
-                        <input type="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br><br>
+                        <!-- <label>Email</label> -->
+                        <input type="email" id="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br>
+                        <div class="errorMessageBox" id="email-messageBox"></div><br>
                         </div>
+                        <!-- To let js know which type of user is being edited so it can validate input accordingly -->
+                        <input type="hidden" id="formType" value="Student">
                         <?php
                     }
                     else if($usertype == 'Provider') {
@@ -349,23 +369,30 @@
                         ?>
                         
                         <div class="input-box">
-                        <label>Provider Name</label>
-                        <input type="text" name="providerName" required value="<?php echo $row2['provider_name']; ?>"><br><br>
+                        <!-- <label>Provider Name</label> -->
+                        <input type="text" id="providerName" name="providerName" placeholder="Provider Name" value="<?php echo $row2['provider_name']; ?>"><br>
+                        <div class="errorMessageBox" id="providerName-messageBox"></div><br>
+                        
                         </div>
                         <div class="input-box">
-                        <label>Contact Number</label>
-                        <input type="tel" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br><br>
+                        <!-- <label>Contact Number</label> -->
+                        <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br>
+                        <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
                         </div>
                         <div class="input-box">
-                        <label>Email</label>
-                        <input type="email" name="email" placeholder="Email" value="<?php echo $row2['email']; ?>"><br><br>
+                        <!-- <label>Email</label> -->
+                        <input type="email" id="email" name="email" placeholder="Email" value="<?php echo $row2['email']; ?>"><br>
+                        <div class="errorMessageBox" id="email-messageBox"></div><br>
                         </div>
+                        <!-- To let js know which type of user is being edited so it can validate input accordingly -->
+                        <input type="hidden" id="formType" value="Provider">
                         <?php
                     }
                     
                     // Change password
                     ?>
                     <div class="input-box">
+                        <img src="../files/password_icon.png" alt="PwIcon">
                         <input type="password" name="newPassword" id="newPassword" placeholder="New Password"><br>
                         <div class="errorMessageBox" id="newPassword-messageBox"></div><br>
                     </div> 
@@ -393,7 +420,7 @@
             $result = mysqli_query($connect,$sql);
             $row = mysqli_fetch_assoc($result);
             echo "<dialog view-details-modal class='view-details'>";
-            echo "<button id='close-view'>X</button>";
+            echo "<button id='close-view'>&#10006;</button>";
             echo "<br><b>Profile Image</b><br>";
             if ($row["profile_image_path"] != NULL) {
                 ?>
@@ -450,7 +477,7 @@
                 echo "<br>";
                 
 
-                echo "<h3>Courses</h3>"; ?>
+                echo "<br><b>Courses</b><br>"; ?>
                 
                 <?php 
                 $sql = "SELECT * FROM instructor JOIN training_provider ON 
@@ -466,14 +493,17 @@
                 }
                 else {
                     ?>
-                    <table border="1">
-                    <tr>
-                        <th>Course ID</th>
-                        <th>Course Title</th>
-                        <th>Course Section</th>
-                        <th>Day</th>
-                        <th>Time</th>
-                    </tr>
+                    <table id="instructor-course-table">
+                    <thead>
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Title</th>
+                            <th>Course Section</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     <?php
                     while($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
@@ -483,8 +513,10 @@
                         echo "<td>" . $row["day"] . "</td>";
                         echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
                         echo "</tr>";
-                    }
-                    echo "</table>";
+                    }?>
+                    </tbody>
+                    </table>
+                    <?php
                 }
 
             }
@@ -528,26 +560,31 @@
                 if ($numOfRows == 0) {
                     echo "<p>No course found</p>";
                 }
-                else {
-                    echo "<table border='1'>";
-                    echo "<tr>";
-                    echo "<th>Course Title</th>";
-                    echo "<th>Course Section Name</th>";
-                    echo "<th>Day</th>";
-                    echo "<th>Time</th>";
-                    echo "<th>Completed Date</th>";
-                    echo "</tr>";
-                    
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>";
-                        echo "<td>" . $row["course_title"] . "</td>";
-                        echo "<td>" . $row["course_section_name"] . "</td>";
-                        echo "<td>" . $row["day"] . "</td>";
-                        echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
-                        echo "<td>" . $row["course_completed_date"] . "</td>";
-                        echo "</tr>";
-                    }
-                    echo "</table>";
+                else { ?>
+                    <table id="course-section-table">
+                    <thead>
+                        <tr>
+                        <th>Course Title</th>
+                        <th>Course Section Name</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Completed Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row["course_title"] . "</td>";
+                            echo "<td>" . $row["course_section_name"] . "</td>";
+                            echo "<td>" . $row["day"] . "</td>";
+                            echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                            echo "<td>" . $row["course_completed_date"] . "</td>";
+                            echo "</tr>";
+                        } ?>
+                    </tbody>
+                    </table>
+                    <?php
                 }
             }
             else if($row["usertype"] == "Provider") {
@@ -561,7 +598,8 @@
                 echo $row["contact_number"]; 
                 echo "<br><b>Email</b><br>";
                 echo $row["email"];
-                echo "<br>"; 
+                echo "<br>";
+                echo "<br><b>Courses</b><br>";
 
                 $sql = "SELECT * FROM course where provider_username = '" . $username . "';";
                 $result = mysqli_query($connect,$sql);
@@ -571,26 +609,31 @@
                 }
                 else {
                     ?>
-                    <table border="1">
-                    <tr>
-                        <th>Course ID</th>
-                        <th>Course Title</th>
-                        <th>Course Description</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        
-                    </tr>
+                    <table>
+                    <thead>
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Title</th>
+                            <th>Course Description</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row["course_id"]. "</td>";
+                            echo "<td>" . $row["course_title"]. "</td>";
+                            echo "<td>" . $row["course_description"] . "</td>";
+                            echo "<td>" . $row["start_date"] . "</td>";
+                            echo "<td>" . $row["end_date"] . "</td>";
+                            echo "</tr>";
+                        }?>
+                    </tbody>
+                    </table>
                     <?php
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>";
-                        echo "<td>" . $row["course_id"]. "</td>";
-                        echo "<td>" . $row["course_title"]. "</td>";
-                        echo "<td>" . $row["course_description"] . "</td>";
-                        echo "<td>" . $row["start_date"] . "</td>";
-                        echo "<td>" . $row["end_date"] . "</td>";
-                        echo "</tr>";
-                    }
-                    echo "</table>";
                 }
             }
             echo "</dialog>";
@@ -892,7 +935,7 @@
             <div class="errorMessageBox" id="dateOfBirth-messageBox"></div><br>
             </div>
             <div class="input-box">
-            <input type="text" id-"academicProgram" name="academicProgram" placeholder="Academic Program">
+            <input type="text" id="academicProgram" name="academicProgram" placeholder="Academic Program">
             <div class="errorMessageBox" id="academicProgram-messageBox"></div><br>
             </div>
             `;
@@ -1085,24 +1128,90 @@
             var allowSubmission = true;
 
             var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)/;
-            if (password.length < 8 || !passwordPattern.test(password)) {
-                if(password.length < 8) showErrorMessage("Password must be at least 8 characters", "newPassword");
-                else showErrorMessage("Password must include at least one letter and one number", "newPassword");
-                allowSubmission = false;
+            if (password.length > 0) {
+                if (password.length < 8 || !passwordPattern.test(password)) {
+                    if(password.length < 8) showErrorMessage("Password must be at least 8 characters", "newPassword");
+                    else showErrorMessage("Password must include at least one letter and one number", "newPassword");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "newPassword");
+                }
             }
-            else{
-                showErrorMessage("", "newPassword");
+
+            // For other usertype may have other editable
+            var usertype = document.getElementById("formType").value;
+
+            if(usertype=="Instructor" || usertype=="Student"){
+                var firstNameElement = document.getElementById("firstName");
+                var lastNameElement = document.getElementById("lastName");
+
+                var firstName = firstNameElement ? firstNameElement.value : "";
+                var lastName = lastNameElement ? lastNameElement.value : "";
+
+
+                if (firstName == "") {
+                    showErrorMessage("First name is required", "firstName");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "firstName");
+                }
+
+                if (lastName == "") {
+                    showErrorMessage("Last name is required", "lastName");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "lastName");
+                }
+            }
+
+            if(usertype=="Student"){
+                var dateOfBirthElement = document.getElementById("dateOfBirth");
+                var academicProgramElement = document.getElementById("academicProgram");
+
+                var dateOfBirth = dateOfBirthElement ? dateOfBirthElement.value : "";
+                var academicProgram = academicProgramElement ? academicProgramElement.value : "";
+
+                if (dateOfBirth == "") {
+                    showErrorMessage("Date of birth is required", "dateOfBirth");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "dateOfBirth");
+                }
+
+                if (academicProgram == "") {
+                    showErrorMessage("Academic program is required", "academicProgram");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "academicProgram");
+                }
+            }
+
+            if(usertype=="Provider"){
+                var providerNameElement = document.getElementById("providerName");
+
+                var providerName = providerNameElement ? providerNameElement.value : "";
+
+                if(providerName == ""){
+                    showErrorMessage("Provider Name is required", "providerName");
+                    allowSubmission = false;
+                }
+                else{
+                    showErrorMessage("", "providerName");
+                }
             }
 
             if(allowSubmission) {
                 document.getElementById("editAccount").value="true";
                 document.getElementById('resetPassword').submit();
-                alert("New Password Set");
             }
             else{
                 document.getElementById("editAccount").value="false";
             }
-
         }
 
     }

@@ -1,8 +1,5 @@
 :root {
     --text--theme--main   : Helvetica, Arial, Verdana;
-    --colour--theme--main : #a3d698;
-    --colour--theme--sub  : #9AD9B3;
-    --colour--theme--grey : #dddddd;
 }
 
 body{
@@ -17,7 +14,7 @@ body{
     flex-wrap: wrap;
     align-items : center;
     justify-content: left;
-    background-color: var(--colour--theme--sub);
+    background-color: #a3d698;
 }
 
 .container .left-side{
@@ -82,10 +79,12 @@ body{
 .title {
     display : inline-block;
     width : 12rem;
+    color:black;
 }
 
 .colon {
     margin-right: 1.5rem;
+    color:black;
 }
 
 form input {
@@ -95,7 +94,8 @@ form input {
 }
 
 #displayDIV h1, #editDIV h1, #newPasswordDIV h1{
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
+    color:black;
 }
 
 #displayDIV p, #editDIV p, #newPasswordDIV p{
@@ -104,6 +104,15 @@ form input {
 
 #displayDIV button, #editDIV button, #newPasswordDIV button{
     padding: 0.5rem;
-    border-radius: 6px;
     margin-right: 0.5rem;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#displayDIV button:hover, 
+#editDIV button:hover, 
+#newPasswordDIV button:hover{
+    background-color: aqua;
 }

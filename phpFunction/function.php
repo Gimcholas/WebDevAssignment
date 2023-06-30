@@ -222,7 +222,7 @@ function createProfilePage(){
         if(password_verify($oldPassword,$old_pass["password_hash"])){
             $newPassword = $_POST["newPassword"];
             $hashed_password = password_hash($newPassword,PASSWORD_DEFAULT);
-            $edit_password_sql = "UPDATE user SET password_hash =$hashed_password WHERE username = '".$_SESSION['username']."'";
+            $edit_password_sql = "UPDATE user SET password_hash = '" .$hashed_password ."' WHERE username = '".$_SESSION['username']."'";
             mysqli_query($connect, $edit_password_sql); 
             header("Refresh:0");
             exit;

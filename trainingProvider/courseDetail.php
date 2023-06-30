@@ -8,7 +8,7 @@ session_start();
 <head> 
     <title>Course Details</title>
     <link rel="stylesheet" href="../NavBar/NavBarStyle.css"/>
-    <link rel="stylesheet" href="courseDetail.css">
+    <link rel="stylesheet" href="../css/courseDetail.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src ="../js/navbar.js"></script></head>
     <script type="text/javascript">
@@ -26,6 +26,9 @@ session_start();
         <?php include '../NavBar/NavBar.php'?>
     </div>
     <div class="content" id="content"> 
+        <header>
+            <h1>Course Details</h1>
+        </header>
         <!-- do course details code here  -->
         <?php 
         if(isset($_GET["view"])) {
@@ -34,7 +37,6 @@ session_start();
                 $courseSectionResult = getCourseSectionsResult($_GET['course'],$connect);
                 ?>
                 <div class='course-details'>
-                    <h2>Course Details</h2>
                     <?php 
                     echo "<a href='editCourse.php?edit&course=" .$_GET['course'] ."'><button>Edit</button></a>";
                     echo "<a href='courseDetail.php?delete&course=" .$_GET['course'] ."' onclick='return confirmation();'><button>Delete Course</button></a>";

@@ -10,18 +10,20 @@ button:hover{
 header{
     font-family: 'Montserrat', sans-serif;
     background: #a3d698;
-    color: white;
-    padding: 1px 20px;
+    color: black;
+    padding: 25px 20px;
     font-size: 20px;
     margin-bottom: 10px;
+    display:flex;
+    justify-content: space-between;
 }
 
 header button{
     padding: 5px;
-    margin-bottom: 10px;
     border: 1px solid black;
     border-radius: 5px;
     background-color: lightblue;
+    margin-right:30px;
 }
 
 *{
@@ -73,6 +75,15 @@ form div{
 } 
 
 .input-box-user img, .input-box-pw img{
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 8px;
+    width: 30px;
+    height: 30px;
+    z-index: 2;
+}
+
+.input-box img {
     position: absolute;
     margin-top: 8px;
     margin-left: 8px;
@@ -138,7 +149,7 @@ form div{
     width:95%;
     margin-inline: auto;
     margin-bottom:30px;
-    /* margin-top: 30px; */
+    border: 2px solid black;
 }
 
 table caption {
@@ -198,6 +209,22 @@ thead th{
     padding-right: 20px;
     border-bottom: 2px solid black;
     text-align: left;
+    width: fit-content;
+}
+
+/* tbody td {
+    max-width: fit-content;
+} */
+#course-section-table thead th:nth-child(2) {
+    word-wrap: break-word;
+    max-width: 100px;
+}
+#course-section-table tbody td:nth-child(4) {
+    width:fit-content;
+}
+
+#instructor-course-table tbody td:nth-child(5) {
+    width:fit-content;
 }
 
 p{
@@ -232,8 +259,14 @@ p{
     cursor: pointer;
 }
 
-.view-details{
+.view-details, .edit-details{
     width: fit-content;
+    padding:10px;
+}
+
+/* Button to close the view details */
+#close-view {
+    float:right;
 }
 
 /*box shadow on focus (effect)*/
@@ -245,6 +278,7 @@ input:focus , select:focus{
 
 dialog {
     margin:auto;
+    border: 1px solid black;
 }
 
 dialog::backdrop {
@@ -252,7 +286,16 @@ dialog::backdrop {
     opacity: 50%;
 }
 
+dialog img {
+    max-height:20vh;
+}
+
+dialog table {
+    border: 1px solid black;
+}
+
 h3, h2 {
     display:flex;
     justify-content: center;
+    border: 1px solid black;
 }

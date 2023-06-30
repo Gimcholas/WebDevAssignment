@@ -22,7 +22,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
     </div>
     <div class="content" id="content"> 
         <header class="header-bar">
-            <h1>Courses<h1>
+            <h1>Courses Overview<h1>
         </header>
 
         <div class="left-panel">
