@@ -281,7 +281,7 @@
             $row = mysqli_fetch_assoc($result);
             $usertype = $row['usertype'];
             ?>
-            <dialog edit-account-modal>
+            <dialog edit-account-modal class='edit-account-modal'>
                 <h3>Edit Account Details</h3>
                 <form action='' method='POST' onsubmit="return mySubmitFunction(event)" id="resetPassword">
                     <?php
@@ -419,7 +419,7 @@
             $sql = "SELECT * FROM user where username='$username';";
             $result = mysqli_query($connect,$sql);
             $row = mysqli_fetch_assoc($result);
-            echo "<dialog view-details-modal class='view-details'>";
+            echo "<dialog view-details-modal class='view-details-modal'>";
             echo "<button id='close-view'>&#10006;</button>";
             echo "<br><b>Profile Image</b><br>";
             if ($row["profile_image_path"] != NULL) {
