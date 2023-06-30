@@ -145,7 +145,7 @@ function generateFeedbackForm($formName,$title1,$inputName1,$title2,$inputName2,
             </p>
 
             <p> 
-                <span class="title">{$title1}</span>
+                <span class="title">{$title2}</span>
                 <span class="colon">:</span>
                 <textarea name={$inputName2} maxlength ='100' required></textarea>
             </p>
