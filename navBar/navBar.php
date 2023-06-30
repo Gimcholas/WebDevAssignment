@@ -68,9 +68,9 @@
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../student/feedback.php'>";
+                        echo "<li><a href='../student/completedCourse.php'>";
                         echo "<i class='fas fa-bullhorn'></i>";
-                        echo "<span class='nav-item'>Feedback</span>";
+                        echo "<span class='nav-item'>Completed Course</span>";
                         echo "</a>";
                         echo "</li>";
 

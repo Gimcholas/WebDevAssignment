@@ -13,12 +13,16 @@ function registerCourseDashboard(){
     createCourseDashboard(false);
 }
 
-function createCourseDashboard($myCoursePage = true){
+function completedCourseDashboard(){
+    createCourseDashboard(true,true);
+}
+
+function createCourseDashboard($myCoursePage = true,$completed = false){
     global $connect;
     echo "<h1>";
     if ($_SESSION["usertype"]  == "Student"){
         if(!$myCoursePage){
-            echo "Register Course";
+            echo "Register For Course";
             // rules is set that only course that student have not register will be displayed and the course (any section in the course) must be open in order to be  display
             // for session testing
             $course_sql = "SELECT DISTINCT * FROM course
@@ -27,13 +31,25 @@ function createCourseDashboard($myCoursePage = true){
                                     AND (course_section_id 
                                         NOT IN (SELECT course_section_id FROM course_student WHERE username = '{$_SESSION['username']}'))) 
                             ORDER BY course_title";
+
         }
         else{
-            echo "My Course";
-            $course_sql = "SELECT * FROM course_student AS cst
-                            JOIN course_section AS csc ON csc.course_section_id = cst.course_section_id
-                            JOIN course AS c ON c.course_id = csc.course_id
-                            WHERE cst.username = '{$_SESSION['username']}'";
+            if($completed){
+                echo "Completed Course";
+                $course_sql = "SELECT * FROM course_student AS cst
+                                JOIN course_section AS csc ON csc.course_section_id = cst.course_section_id
+                                JOIN course AS c ON c.course_id = csc.course_id
+                                WHERE cst.username = '{$_SESSION['username']}' 
+                                    AND course_completed = 1";
+            }
+            else{
+                echo "My Course";
+                $course_sql = "SELECT * FROM course_student AS cst
+                                JOIN course_section AS csc ON csc.course_section_id = cst.course_section_id
+                                JOIN course AS c ON c.course_id = csc.course_id
+                                WHERE cst.username = '{$_SESSION['username']}' 
+                                    AND course_completed = 0";
+            }
         }
     }
     else if ($_SESSION["usertype"]  == "Instructor"){
