@@ -11,6 +11,7 @@ const newAnnouncementInput = document.getElementById("newAnnouncementInput");
 const hiddenAttributeNewAnnouncement = document.querySelectorAll(".hiddenAttributeNewAnnouncement");
 const cancelAnnouncementButton = document.getElementById("cancelAnnouncement");
 const newAnnouncementForm = document.getElementById("newAnnouncementForm");
+
 const toggleUpdateSection = document.getElementById("toggleUpdateSection");
 const hiddenUpdateSection = document.getElementById("hiddenUpdateSection");
 
@@ -22,7 +23,7 @@ const togglePrintCertificate = document.getElementById("printCertificate");
 const divShowingCertificate = document.querySelector(".divShowingCertificate");
 
 togglePrintCertificate.addEventListener("click",function(e){
-    var openWindow = window.open("", "title",  'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+    var openWindow = window.open("", "title",  'left=0,top=0,toolbar=0,scrollbars=0,status=0');
     openWindow.document.write(divShowingCertificate.innerHTML);
     openWindow.document.close();
     openWindow.focus();
