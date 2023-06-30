@@ -263,7 +263,7 @@
                 </div>
                 <div id="additionalFields"></div>
                 <div  class="operations-button">
-                    <input class="back" type="button" value = "Back" onclick="createAccountModal.close();">
+                    <input class="back" type="button" value = "Cancel" onclick="createAccountModal.close();">
                     <input class="submit" type="submit" name="createAccount" value="Create Account">
                     <input type="hidden" name="hiddenCreateAccount" id="createAccount" value="false">
                 </div>
@@ -392,6 +392,7 @@
                     // Change password
                     ?>
                     <div class="input-box">
+                        <img src="../files/password_icon.png" alt="PwIcon">
                         <input type="password" name="newPassword" id="newPassword" placeholder="New Password"><br>
                         <div class="errorMessageBox" id="newPassword-messageBox"></div><br>
                     </div> 

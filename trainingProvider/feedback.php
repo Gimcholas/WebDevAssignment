@@ -28,9 +28,9 @@
         echo "<td>".$row["course_title"]."</td>";
         echo "<td>".$row["rating"];
         for($i=0; $i<$row["rating"]; $i++)
-            echo "<img src='../files/star-orange.png' alt='star' width='15'>";
+            echo "<img src='../files/yellow-star.png' alt='star' width='15'>";
         for($i=0; $i<(5-$row["rating"]); $i++)
-            echo "<img src='../files/star-white.png' alt='star' width='15'>";
+            echo "<img src='../files/blank-star.png' alt='star' width='15'>";
         echo "</td>";
         echo "<td>".date("j/n/Y",strtotime($row["date"]))."</td>";
         echo "</tr>";
@@ -60,9 +60,9 @@
         echo "<td>".$row["instructor_username"]."</td>";
         echo "<td>".$row["rating"];
         for($i=0; $i<$row["rating"]; $i++)
-            echo "<img src='../files/star-orange.png' alt='star' width='15'>";
+            echo "<img src='../files/yellow-star.png' alt='star' width='15'>";
         for($i=0; $i<(5-$row["rating"]); $i++)
-            echo "<img src='../files/star-white.png' alt='star' width='15'>";
+            echo "<img src='../files/blank-star.png' alt='star' width='15'>";
         echo "</td>";
         echo "<td>".date("j/n/Y",strtotime($row["date"]))."</td>";
         echo "</tr>";
