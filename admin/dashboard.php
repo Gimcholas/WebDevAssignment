@@ -249,6 +249,7 @@
                     <div class="errorMessageBox" id="password-messageBox"></div><br>
                 </div>  
                 <div class="input-box">
+                    <img src="../files/user.png" alt="UserIcon">
                     <select name="usertype" id="usertype" onchange="updateForm()">
                         <option hidden disabled selected value>Select a usertype</option>
                         ?> 
