@@ -387,6 +387,7 @@
                     // Change password
                     ?>
                     <div class="input-box">
+                        <img src="../files/password_icon.png" alt="PwIcon">
                         <input type="password" name="newPassword" id="newPassword" placeholder="New Password"><br>
                         <div class="errorMessageBox" id="newPassword-messageBox"></div><br>
                     </div> 
