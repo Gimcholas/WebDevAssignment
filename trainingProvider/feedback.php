@@ -4,7 +4,10 @@
   
   function viewFeedback() {
     global $connect;
-    $sql= "SELECT * FROM course_feedback JOIN course on course_feedback.course_id = course.course_id WHERE course.provider_username ='". $_SESSION['username'] ."';";
+    $sql= "SELECT * FROM course_feedback JOIN course_section on 
+          course_feedback.course_section_id = course_section.course_section_id 
+          JOIN course on course_section.course_id = course.course_id 
+          WHERE course.provider_username ='". $_SESSION['username'] ."';";
     $result = mysqli_query($connect,$sql);
     ?>
     <div class="course-feedback">
