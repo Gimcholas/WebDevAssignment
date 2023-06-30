@@ -30,7 +30,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
                 <form action='../trainingProvider/createCourse.php' method='POST'>
                 <h3>Choose a training provider</h3>
                 <div class='input-box'>
-                <select name='providerUsername' required >
+                <select name='providerUsername' class="selectProvider" required >
                     <option disabled selected value>Select A Training Provider</option>
                     <?php
                     $sql = 'SELECT * FROM training_provider;';

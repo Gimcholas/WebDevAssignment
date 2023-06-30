@@ -133,15 +133,16 @@ button:hover {
 
 dialog {
     margin:auto;
-    padding: 10px;
 }
+
 dialog::backdrop {
     background-color: grey;
     opacity: 50%;
 }
 dialog form {
-    background-color: rgb(244, 244, 244);
-    padding:10px;
+    margin: 0px;
+    padding: 20px;
+    border: 2px solid black;
 }
 
 dialog form div {
@@ -152,21 +153,33 @@ dialog form div {
 
 #modal-button {
     display:flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 dialog form .back-btn {
     margin-right:10px;
     padding:5px 10px;
     width: fit-content;
-    background-color: grey;
+    background-color: red;
     color:white;
     border-radius: 10px;
+    border: 1px solid black;
+
 }
 dialog form .next-btn {
-    padding:5px 10px;
-    width: fit-content;
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
     background-color: #337ab7;
     color:white;
     border-radius: 10px;
+    border: 1px solid black;
+    font-size: 15px;
+}
+
+.selectProvider{
+    padding: 15px;
+    background-color: lightgray;
+    border-radius: 3px;
+    margin-bottom: 5px;
 }
