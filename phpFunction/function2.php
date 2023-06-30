@@ -8,4 +8,12 @@ function generateJavaScriptAlert($message) {
     HTML;
 }
 
+function setCustomMessage($elementName,$message){
+    echo <<<HTML
+    <script>
+        document.getElementById('{$elementName}').innerHTML = '{$message}';
+    </script>
+    HTML;
+}
+
 ?>

@@ -45,7 +45,7 @@
         $row = mysqli_fetch_assoc($result);
         if(isset($row['password_hash'])){
             if(password_verify($passwordInput,$row["password_hash"])) {
-                generateJavaScriptAlert("Login Successfully");
+
                 $_SESSION["username"] = $row["username"];
                 $_SESSION["usertype"] = $row["usertype"];
                 if($row["usertype"] == "Admin") { // Redirect user to admin page
