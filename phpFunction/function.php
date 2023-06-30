@@ -157,6 +157,12 @@ function generateFeedbackForm($formName,$title1,$inputName1,$title2,$inputName2,
 
 function generateCertificate($studentName,$courseTitle,$completeDate) {
     echo<<<HTML
+    <script>
+        *{ color-adjust: exact;
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact; 
+        }
+    </script>
     <div style="width:800px; height:600px;text-align:center;margin:10px;padding:20px; border: 5px solid black;background-color: #618597;">
         <div style="width:750px; height:550px;padding:20px; text-align:center; border: 3px solid black;background-color:white;">
             <span><img style="width:280px;height:auto;"src="../files/MMU_Logo.png"></span><br><br>
@@ -626,9 +632,9 @@ function createCourseDetailPage(){
                         $instructor_feedback_sql = "SELECT * FROM instructor_feedback 
                                                 WHERE student_username = '".$_SESSION["username"]."' 
                                                 AND course_section_id = $course_section_id";
-                        $instructor_feedback_all = mysqli_query($connect,$course_feedback_sql);
+                        $instructor_feedback_all = mysqli_query($connect,$instructor_feedback_sql);
                         $instructor_feedback_count = mysqli_num_rows($instructor_feedback_all);
-                        $instructor_feedback = mysqli_fetch_assoc($course_feedback_all);
+                        $instructor_feedback = mysqli_fetch_assoc($instructor_feedback_all);
                         // no instructor feedback made yet
                         if($instructor_feedback_count == 0){
                             generateFeedbackForm('instructorFeedbackForm','Rating','insrtructorRating','Feedback','instrutorFeedback','submitInstructorFeedbackForm');
