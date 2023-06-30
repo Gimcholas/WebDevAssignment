@@ -40,9 +40,9 @@ a {
 }
 
 button {
-    background-color: #337ab7;
+    background-color: #3498db;
     border-radius : 50px;
-    color: #fff;
+    color: black;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -125,6 +125,7 @@ button:hover {
 .course-details-box{
     margin: 0;
     padding: 5px;
+    border-top: 3px solid black;
     border-left: 3px solid black;
     border-right: 3px solid black;
     border-bottom: 3px solid black;

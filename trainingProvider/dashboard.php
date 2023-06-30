@@ -9,7 +9,7 @@
 <head>
 <title>Dashboard</title>
     <link rel="stylesheet" href="../navBar/navBarStyle.css"/>
-    <link rel="stylesheet" href="#"/>
+    <link rel="stylesheet" href="../css/tPdashboard.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src ="../js/navbar.js"></script></head>
 
@@ -21,7 +21,8 @@
     <div class="content" id="content"> 
         <header>
             <h1>Training Provider Dashboard</h1>
-            <?php 
+        </header>
+        <?php 
             $sql = "SELECT * FROM user INNER JOIN instructor on user.username = instructor.username WHERE provider_username = '". $_SESSION["username"] . "';";
             $result = mysqli_query($connect,$sql);
             $countInstructor = mysqli_num_rows($result);
@@ -52,7 +53,6 @@
             <a href="courses.php"><button>Manage Courses</button></a>
             <a href="../admin/dashboard.php"><button>Manage Accounts</button></a>
             <a href="feedback.php"><button>View Feedback</button></a>
-        </header>
     </div>
 </div>
 </body>
