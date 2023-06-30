@@ -399,7 +399,7 @@
                             <input type='submit' name='editAccount' value='Save'><br><br>
                         </div>
                     </div>
-                    <input type="hidden" name="hiddenEditAccount" id="editAccount" value="false">
+                    <input type="hidden" name=" " id="editAccount" value="false">
 
                 </form>
             </dialog>
@@ -414,7 +414,7 @@
             $result = mysqli_query($connect,$sql);
             $row = mysqli_fetch_assoc($result);
             echo "<dialog view-details-modal class='view-details'>";
-            echo "<button id='close-view'>X</button>";
+            echo "<button id='close-view'>&#10006;</button>";
             echo "<br><b>Profile Image</b><br>";
             if ($row["profile_image_path"] != NULL) {
                 ?>
@@ -471,7 +471,7 @@
                 echo "<br>";
                 
 
-                echo "<h3>Courses</h3>"; ?>
+                echo "<br><b>Courses</b><br>"; ?>
                 
                 <?php 
                 $sql = "SELECT * FROM instructor JOIN training_provider ON 
@@ -487,14 +487,17 @@
                 }
                 else {
                     ?>
-                    <table border="1">
-                    <tr>
-                        <th>Course ID</th>
-                        <th>Course Title</th>
-                        <th>Course Section</th>
-                        <th>Day</th>
-                        <th>Time</th>
-                    </tr>
+                    <table id="instructor-course-table">
+                    <thead>
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Title</th>
+                            <th>Course Section</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     <?php
                     while($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
@@ -504,8 +507,10 @@
                         echo "<td>" . $row["day"] . "</td>";
                         echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
                         echo "</tr>";
-                    }
-                    echo "</table>";
+                    }?>
+                    </tbody>
+                    </table>
+                    <?php
                 }
 
             }
@@ -549,26 +554,31 @@
                 if ($numOfRows == 0) {
                     echo "<p>No course found</p>";
                 }
-                else {
-                    echo "<table border='1'>";
-                    echo "<tr>";
-                    echo "<th>Course Title</th>";
-                    echo "<th>Course Section Name</th>";
-                    echo "<th>Day</th>";
-                    echo "<th>Time</th>";
-                    echo "<th>Completed Date</th>";
-                    echo "</tr>";
-                    
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>";
-                        echo "<td>" . $row["course_title"] . "</td>";
-                        echo "<td>" . $row["course_section_name"] . "</td>";
-                        echo "<td>" . $row["day"] . "</td>";
-                        echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
-                        echo "<td>" . $row["course_completed_date"] . "</td>";
-                        echo "</tr>";
-                    }
-                    echo "</table>";
+                else { ?>
+                    <table id="course-section-table">
+                    <thead>
+                        <tr>
+                        <th>Course Title</th>
+                        <th>Course Section Name</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Completed Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row["course_title"] . "</td>";
+                            echo "<td>" . $row["course_section_name"] . "</td>";
+                            echo "<td>" . $row["day"] . "</td>";
+                            echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                            echo "<td>" . $row["course_completed_date"] . "</td>";
+                            echo "</tr>";
+                        } ?>
+                    </tbody>
+                    </table>
+                    <?php
                 }
             }
             else if($row["usertype"] == "Provider") {
@@ -582,7 +592,8 @@
                 echo $row["contact_number"]; 
                 echo "<br><b>Email</b><br>";
                 echo $row["email"];
-                echo "<br>"; 
+                echo "<br>";
+                echo "<br><b>Courses</b><br>";
 
                 $sql = "SELECT * FROM course where provider_username = '" . $username . "';";
                 $result = mysqli_query($connect,$sql);
@@ -592,26 +603,31 @@
                 }
                 else {
                     ?>
-                    <table border="1">
-                    <tr>
-                        <th>Course ID</th>
-                        <th>Course Title</th>
-                        <th>Course Description</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        
-                    </tr>
+                    <table>
+                    <thead>
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Title</th>
+                            <th>Course Description</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row["course_id"]. "</td>";
+                            echo "<td>" . $row["course_title"]. "</td>";
+                            echo "<td>" . $row["course_description"] . "</td>";
+                            echo "<td>" . $row["start_date"] . "</td>";
+                            echo "<td>" . $row["end_date"] . "</td>";
+                            echo "</tr>";
+                        }?>
+                    </tbody>
+                    </table>
                     <?php
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>";
-                        echo "<td>" . $row["course_id"]. "</td>";
-                        echo "<td>" . $row["course_title"]. "</td>";
-                        echo "<td>" . $row["course_description"] . "</td>";
-                        echo "<td>" . $row["start_date"] . "</td>";
-                        echo "<td>" . $row["end_date"] . "</td>";
-                        echo "</tr>";
-                    }
-                    echo "</table>";
                 }
             }
             echo "</dialog>";
