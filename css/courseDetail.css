@@ -11,6 +11,14 @@ body{
     padding:0;
 }
 
+header{
+    font-family: 'Montserrat', sans-serif;
+    background: #a3d698;
+    color: black;
+    padding: 25px 20px;
+    font-size: 20px;
+}
+
 .announcement, #hiddenStudentList {
     padding : 1rem 2rem 1rem 4rem;
 }
