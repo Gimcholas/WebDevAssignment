@@ -37,7 +37,7 @@ dialog{
 }
 
 form{
-    background-color: lightgray;
+    background-color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -55,23 +55,29 @@ h2{
 }
 
 input, select{
-    padding: 20px 0px 20px 60px;
+    padding: 15px 0px 15px 60px;
     border: 1px solid #ccc;
     border-radius: 3px;
     position: relative;
     width: 70%;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     align-items: center;
 
 }
 form div{
     text-align: center;
 }
+
+.input-box-user, .input-box-pw, .input-box {
+    margin-block: 10px;
+} 
+
 .input-box-user img, .input-box-pw img{
     position: absolute;
     margin-top: 8px;
     margin-left: 8px;
-    width: 40px;
+    width: 30px;
+    height: 30px;
     z-index: 2;
 }
 
@@ -82,20 +88,34 @@ form div{
 
 .operations-button input{
     font-size: 20px;
-    background-color: lightgreen;
-    border: 1px solid black;
     margin: 0px;
     margin-left: 30px;
     margin-bottom: 20px;
-    margin-top: 30px;
-    padding: 20px;
+    margin-top: 15px;
+    padding: 10px;
     font-weight: bold;
     width: fit-content;
+    border-radius: 15px;
+    cursor: pointer;
 }
 
-.operations-button input:hover{
-    cursor: pointer;
-    background-color: rgb(154, 150, 150);
+.operations-button input.back {
+    border: 1px solid black;
+    background-color: white;
+    color:black;
+}
+
+.operations-button input.back:hover {
+    border: 1px solid black;
+    background-color: rgb(240, 240, 240);
+    color:black;
+}
+.operations-button input.submit {
+    background-color:#4681f4;
+    color:white;
+}
+.operations-button input.submit:hover {
+    background-color:#3c34ae;
 }
 
 .errorMessageBox{
@@ -106,19 +126,37 @@ form div{
     color: red;
 }
 
-table{
-    width: 70%;
+.table-wrapper-full-height {
+    max-height: 80vh;
+}
+
+.table-wrapper-half-height {
+    max-height: 40vh;
+}
+.table-wrapper {
+    overflow-y: auto;
+    width:95%;
+    margin-inline: auto;
     margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 30px;
+}
+
+table caption {
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-align: left;
+}
+
+table{
+    width: 100%;
     background-color: white;
     border-collapse: collapse;
     border-radius: 10px;
 }
 
 thead{
-    background-color: orange;    
+    background-color: orange;
+    top:0px;
+    position: sticky;    
 }
 
 tbody tr:nth-child(even){
@@ -145,13 +183,18 @@ td{
     padding-right: 20px;
 }
 
+td:nth-last-child(2), td:last-child {
+    padding-left:0px;
+    width:0px;
+}
+
 thead th{
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
     border-bottom: 2px solid black;
-
+    text-align: left;
 }
 
 p{
@@ -199,4 +242,14 @@ input:focus , select:focus{
 
 dialog {
     margin:auto;
+}
+
+dialog::backdrop {
+    background-color: grey;
+    opacity: 50%;
+}
+
+h3, h2 {
+    display:flex;
+    justify-content: center;
 }
