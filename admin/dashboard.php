@@ -129,7 +129,7 @@
         }
     }
     
-    if($_POST['hiddenEditAccount'] == "true") {
+    if(isset($_POST['hiddenEditAccount']) && $_POST['hiddenEditAccount'] == "true") {
         $username = $_GET['username'];
         $sql = "SELECT * FROM user where username='$username';";
         $result = mysqli_query($connect,$sql);
