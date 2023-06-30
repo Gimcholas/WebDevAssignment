@@ -127,7 +127,7 @@ form div{
 }
 
 .table-wrapper-full-height {
-    max-height: 80vh;
+    max-height: 70vh;
 }
 
 .table-wrapper-half-height {
@@ -137,13 +137,16 @@ form div{
     overflow-y: auto;
     width:95%;
     margin-inline: auto;
-    margin-top: 30px;
+    margin-bottom:30px;
+    /* margin-top: 30px; */
 }
 
 table caption {
     font-weight: bold;
     font-size: 1.5rem;
     text-align: left;
+    top:0px;
+    position:sticky;
 }
 
 table{
