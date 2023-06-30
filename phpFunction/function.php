@@ -1,6 +1,7 @@
 <?php
 
 include '../db_connect.php';
+include 'function2.php';
 if(isset($_SESSION['usertype'])) {
     if($_SESSION['usertype'] != "Admin" || $_SESSION['usertype'] != "Provider" || $_SESSION['usertype'] != "Instructor" || $_SESSION['usertype'] != "Student"){
     header("Location: ../login.php");
@@ -12,12 +13,16 @@ function registerCourseDashboard(){
     createCourseDashboard(false);
 }
 
-function createCourseDashboard($myCoursePage = true){
+function completedCourseDashboard(){
+    createCourseDashboard(true,true);
+}
+
+function createCourseDashboard($myCoursePage = true,$completed = false){
     global $connect;
     echo "<h1>";
     if ($_SESSION["usertype"]  == "Student"){
         if(!$myCoursePage){
-            echo "Register Course";
+            echo "Register For Course";
             // rules is set that only course that student have not register will be displayed and the course (any section in the course) must be open in order to be  display
             // for session testing
             $course_sql = "SELECT DISTINCT * FROM course
@@ -26,13 +31,25 @@ function createCourseDashboard($myCoursePage = true){
                                     AND (course_section_id 
                                         NOT IN (SELECT course_section_id FROM course_student WHERE username = '{$_SESSION['username']}'))) 
                             ORDER BY course_title";
+
         }
         else{
-            echo "My Course";
-            $course_sql = "SELECT * FROM course_student AS cst
-                            JOIN course_section AS csc ON csc.course_section_id = cst.course_section_id
-                            JOIN course AS c ON c.course_id = csc.course_id
-                            WHERE cst.username = '{$_SESSION['username']}'";
+            if($completed){
+                echo "Completed Course";
+                $course_sql = "SELECT * FROM course_student AS cst
+                                JOIN course_section AS csc ON csc.course_section_id = cst.course_section_id
+                                JOIN course AS c ON c.course_id = csc.course_id
+                                WHERE cst.username = '{$_SESSION['username']}' 
+                                    AND course_completed = 1";
+            }
+            else{
+                echo "My Course";
+                $course_sql = "SELECT * FROM course_student AS cst
+                                JOIN course_section AS csc ON csc.course_section_id = cst.course_section_id
+                                JOIN course AS c ON c.course_id = csc.course_id
+                                WHERE cst.username = '{$_SESSION['username']}' 
+                                    AND course_completed = 0";
+            }
         }
     }
     else if ($_SESSION["usertype"]  == "Instructor"){
@@ -144,12 +161,20 @@ function createProfilePage(){
         exit;
     }
     if (isset($_POST["submitChangePWD"])){
-        $password = $_POST["newPassword"];
-        $hashed_password = password_hash($password,PASSWORD_DEFAULT);
-        $edit_password_sql = "UPDATE user SET password_hash =$hashed_password WHERE username = '".$_SESSION['username']."'";
-        mysqli_query($connect, $edit_password_sql); 
-        header("Refresh:0");
-        exit;
+        $oldPassword = $_POST["oldPassword"];
+        $old_pass = mysqli_fetch_assoc(mysqli_query($connect,"SELECT password_hash FROM user WHERE username = '".$_SESSION['username']."'"));
+
+        if(password_verify($oldPassword,$old_pass["password_hash"])){
+            $newPassword = $_POST["newPassword"];
+            $hashed_password = password_hash($newPassword,PASSWORD_DEFAULT);
+            $edit_password_sql = "UPDATE user SET password_hash =$hashed_password WHERE username = '".$_SESSION['username']."'";
+            mysqli_query($connect, $edit_password_sql); 
+            header("Refresh:0");
+            exit;
+        }
+        else{
+            generateJavaScriptAlert("Old password is wrong");
+        }
     }
 
     if (isset($_FILES["uploadedPicture"])){
@@ -164,40 +189,44 @@ function createProfilePage(){
         // better handle error in javascript ??
         // // Verify file extension
         if(!array_key_exists(pathinfo($filename, PATHINFO_EXTENSION), $allowed)) 
-            die("Error: Please select a valid file format.");
+            generateJavaScriptAlert("Error: Please select a valid file format.");
     
-        // // Verify file size - 5MB maximum
-        $maxsize = 5 * 1024 * 1024;
-        if($filesize > $maxsize) 
-            die("Error: File size is larger than the allowed limit.");
-    
-        // Verify MYME type of the file
-        if(in_array($filetype, $allowed)){
-            $newFileName = $_SESSION["username"];
-            if ($filetype == "image/jpg") {
-                $newFileName .= ".jpg";
-            }
-            else if ($filetype == "image/jpeg") {
-                $newFileName .= ".jpeg";
-            }
-            else if ($filetype == "image/png") {
-                $newFileName .= ".png";
-            }
-
-            $imagePath = $imageFolderPath . $newFileName;
-            if(file_exists($imagePath)){
-                echo $filename . " is already exists.";  
-                chmod($imagePath,0755);
-                unlink($imagePath);
-            }
-            move_uploaded_file($_FILES["uploadedPicture"]["tmp_name"], $imagePath);
-        }
         else{
-            die ("Invalid FileType. Please try again."); }
+            // // Verify file size - 5MB maximum
+            $maxsize = 5 * 1024 * 1024;
+            if($filesize > $maxsize) 
+                generateJavaScriptAlert("Error: File size is larger than the allowed limit.");
         
-        $insertpath_sql = "UPDATE user SET profile_image_path = '$imagePath' WHERE username = '".$_SESSION['username']."'";
-        mysqli_query($connect,$insertpath_sql); 
-        header("Location: " . $_SERVER['PHP_SELF']);
+            else{
+                // Verify MYME type of the file
+                if(in_array($filetype, $allowed)){
+                    $newFileName = $_SESSION["username"];
+                    if ($filetype == "image/jpg") {
+                        $newFileName .= ".jpg";
+                    }
+                    else if ($filetype == "image/jpeg") {
+                        $newFileName .= ".jpeg";
+                    }
+                    else if ($filetype == "image/png") {
+                        $newFileName .= ".png";
+                    }
+
+                    $imagePath = $imageFolderPath . $newFileName;
+                    if(file_exists($imagePath)){
+                        echo $filename . " is already exists.";  
+                        chmod($imagePath,0755);
+                        unlink($imagePath);
+                    }
+                    move_uploaded_file($_FILES["uploadedPicture"]["tmp_name"], $imagePath);
+                    $insertpath_sql = "UPDATE user SET profile_image_path = '$imagePath' WHERE username = '".$_SESSION['username']."'";
+                    mysqli_query($connect,$insertpath_sql); 
+                    header("Location: " . $_SERVER['PHP_SELF']);
+                }
+                else{
+                    generateJavaScriptAlert("Invalid FileType. Please try again."); 
+                }
+            }
+        }
     }
 
     
@@ -710,6 +739,12 @@ function createEnrollmentPage(){
 
 }
 
+function createStudentFeedbackPage(){
+    global $connect;
+    echo<<<HTML
+
+    HTML;
+}
 function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
     session_start();
     echo <<<HTML
