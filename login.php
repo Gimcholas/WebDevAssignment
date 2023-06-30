@@ -1,6 +1,8 @@
-<?php include 'db_connect.php'; 
-session_start()
-;?>
+<?php 
+    include 'db_connect.php';
+    include 'phpFunction/function2.php';
+    session_start();
+?>
 
 <!DOCTYPE html>
 <html>
@@ -18,7 +20,7 @@ session_start()
             </div>
 
         <!-- right part div -->
-            <form action="login.php" method="POST">
+            <form action="" method="POST">
                 <div class = "rightdiv">            
                     <h2>Sign In</h2>
                     <input type="text" name="username" placeholder = "Username" required>
@@ -34,35 +36,37 @@ session_start()
 
 <?php
     if (isset($_POST["LoginBtn"])) {
-
         $usernameInput = $_POST["username"];
         $passwordInput = $_POST["password"];
-        echo $usernameInput.$passwordInput;
+
         $sql = "select * from user where username='$usernameInput'";
         $result = mysqli_query($connect,$sql); 
 
         $row = mysqli_fetch_assoc($result);
-        
-        if(password_verify($passwordInput,$row["password_hash"])) {
-            echo "Login successfully";
-            $_SESSION["username"] = $row["username"];
-            $_SESSION["usertype"] = $row["usertype"];
-            if($row["usertype"] == "Admin") { // Redirect user to admin page
-                header("Location: admin/dashboard.php");
+        if(isset($row['password_hash'])){
+            if(password_verify($passwordInput,$row["password_hash"])) {
+                generateJavaScriptAlert("Login Successfully");
+                $_SESSION["username"] = $row["username"];
+                $_SESSION["usertype"] = $row["usertype"];
+                if($row["usertype"] == "Admin") { // Redirect user to admin page
+                    header("Location: admin/dashboard.php");
+                }
+                else if ($row["usertype"] == "Student"){
+                    header("Location: student/dashboard.php");
+                }
+                else if ($row["usertype"] == "Instructor"){
+                    header("Location: instructor/dashboard.php");
+                }
+                else if ($row["usertype"] == "Provider"){
+                    header("Location: trainingProvider/dashboard.php");
+                }
             }
-            else if ($row["usertype"] == "Student"){
-                header("Location: student/dashboard.php");
-            }
-            else if ($row["usertype"] == "Instructor"){
-                header("Location: instructor/dashboard.php");
-            }
-            else if ($row["usertype"] == "Provider"){
-                echo "Success";
-                header("Location: trainingProvider/dashboard.php");
+            else{
+                generateJavaScriptAlert("Login Failed");
             }
         }
         else {
-            echo "Login Failed";
+            generateJavaScriptAlert("Login Failed");
         }
     }    
 ?>
