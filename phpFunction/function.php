@@ -480,7 +480,7 @@ function createCourseDetailPage(){
         $instructor_username = $course['username'];
         $instructorRating = $_POST['instructorRating'];
         $instructorFeedback = $_POST['instructorFeedback'];
-        $insert_sql = "INSERT INTO instructor_feedback (course_section_id,instructor_username,username,feedback,rating,date)
+        $insert_sql = "INSERT INTO instructor_feedback (course_section_id,instructor_username,student_username,feedback,rating,date)
                         VALUE ('$course_section_id','$instructor_username', '".$_SESSION["username"]."','$instructorFeedback','$instructorRating',CURDATE())";
         mysqli_query($connect,$insert_sql);
         $_POST = array();
@@ -637,7 +637,7 @@ function createCourseDetailPage(){
                         $instructor_feedback = mysqli_fetch_assoc($instructor_feedback_all);
                         // no instructor feedback made yet
                         if($instructor_feedback_count == 0){
-                            generateFeedbackForm('instructorFeedbackForm','Rating','insrtructorRating','Feedback','instrutorFeedback','submitInstructorFeedbackForm');
+                            generateFeedbackForm('instructorFeedbackForm','Rating','instructorRating','Feedback','instructorFeedback','submitInstructorFeedbackForm');
                         }
                         else {
                             generateHTMLDetail("Rating",$instructor_feedback['rating']);
