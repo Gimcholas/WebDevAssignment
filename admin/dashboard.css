@@ -138,7 +138,7 @@ form div{
     width:95%;
     margin-inline: auto;
     margin-bottom:30px;
-    /* margin-top: 30px; */
+    border: 2px solid black;
 }
 
 table caption {
@@ -198,6 +198,22 @@ thead th{
     padding-right: 20px;
     border-bottom: 2px solid black;
     text-align: left;
+    width: fit-content;
+}
+
+/* tbody td {
+    max-width: fit-content;
+} */
+#course-section-table thead th:nth-child(2) {
+    word-wrap: break-word;
+    max-width: 100px;
+}
+#course-section-table tbody td:nth-child(4) {
+    width:fit-content;
+}
+
+#instructor-course-table tbody td:nth-child(5) {
+    width:fit-content;
 }
 
 p{
@@ -232,8 +248,14 @@ p{
     cursor: pointer;
 }
 
-.view-details{
+.view-details, .edit-details{
     width: fit-content;
+    padding:10px;
+}
+
+/* Button to close the view details */
+#close-view {
+    float:right;
 }
 
 /*box shadow on focus (effect)*/
@@ -245,11 +267,20 @@ input:focus , select:focus{
 
 dialog {
     margin:auto;
+    border: 1px solid black;
 }
 
 dialog::backdrop {
     background-color: grey;
     opacity: 50%;
+}
+
+dialog img {
+    max-height:20vh;
+}
+
+dialog table {
+    border: 1px solid black;
 }
 
 h3, h2 {
