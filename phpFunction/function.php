@@ -1,10 +1,12 @@
 <?php
 
 include '../db_connect.php';
-if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "Provider" 
-    or isset($_SESSION['usertype']) != "Instructor" or isset($_SESSION['usertype']) != "Student") {
+if(isset($_SESSION['usertype'])) {
+    if($_SESSION['usertype'] != "Admin" || $_SESSION['usertype'] != "Provider" || $_SESSION['usertype'] != "Instructor" || $_SESSION['usertype'] != "Student"){
     header("Location: ../login.php");
-  }
+    }
+}
+
 
 function registerCourseDashboard(){
     createCourseDashboard(false);
@@ -712,7 +714,7 @@ function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
     session_start();
     echo <<<HTML
         <!DOCTYPE html>
-        <html>image.png
+        <html>
         <head> 
         <title>$title</title>
         <link rel="stylesheet" href="../navBar/navBarStyle.css"/>
