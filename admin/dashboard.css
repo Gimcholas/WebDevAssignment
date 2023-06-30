@@ -14,14 +14,16 @@ header{
     padding: 25px 20px;
     font-size: 20px;
     margin-bottom: 10px;
+    display:flex;
+    justify-content: space-between;
 }
 
 header button{
     padding: 5px;
-    margin-bottom: 10px;
     border: 1px solid black;
     border-radius: 5px;
     background-color: lightblue;
+    margin-right:30px;
 }
 
 *{
