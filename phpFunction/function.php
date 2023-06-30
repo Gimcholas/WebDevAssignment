@@ -2,12 +2,12 @@
 
 include '../db_connect.php';
 include 'function2.php';
+
 if(isset($_SESSION['usertype'])) {
     if($_SESSION['usertype'] != "Admin" || $_SESSION['usertype'] != "Provider" || $_SESSION['usertype'] != "Instructor" || $_SESSION['usertype'] != "Student"){
     header("Location: ../login.php");
     }
 }
-
 
 function registerCourseDashboard(){
     createCourseDashboard(false);
@@ -25,12 +25,11 @@ function createCourseDashboard($myCoursePage = true,$completed = false){
             echo "Register For Course";
             // rules is set that only course that student have not register will be displayed and the course (any section in the course) must be open in order to be  display
             // for session testing
-            $course_sql = "SELECT DISTINCT * FROM course
-                            WHERE course_id 
-                                IN (SELECT course_id FROM course_section WHERE status = 'Open' 
-                                    AND (course_section_id 
-                                        NOT IN (SELECT course_section_id FROM course_student WHERE username = '{$_SESSION['username']}'))) 
-                            ORDER BY course_title";
+            $student_training_provider_sql = "SELECT * FROM student WHERE username = '".$_SESSION['username']."'";
+            $student_training_provider = mysqli_fetch_assoc(mysqli_query($connect,$student_training_provider_sql));
+            
+            $course_sql = "SELECT DISTINCT * FROM course WHERE (provider_username = '".$student_training_provider['provider_username']."') AND (course_id IN (SELECT course_id FROM course_section WHERE status = 'Open' AND (course_section_id NOT IN (SELECT course_section_id FROM course_student WHERE username = '".$_SESSION['username']."')))) ORDER BY course_title";
+
 
         }
         else{
@@ -111,6 +110,7 @@ function generateHTMLChangePassword($title,$inputName){
     </p>';
 }
 
+
 function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "text",$attribute1 = "",$attribute2="",$attribute3=""){
     echo 
     '<p> 
@@ -118,6 +118,61 @@ function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "te
         <span class="colon">:</span>
         <input type="'.$inputType.'" name="'.$inputName.'" value = "'.$value.'" required ' .$attribute1.' ' .$attribute1.' ' .$attribute1.'>
     </p>';
+}
+
+function generateFeedbackForm($formName,$title1,$inputName1,$title2,$inputName2,$submitForm){
+    echo<<<HTML
+        <form name="{$formName}" method="post" action="">
+
+            <p> 
+                <span class="title">{$title1}</span>
+                <span class="colon">:</span>
+                    <div class="{$inputName1}">
+                        <input type="radio" id="star5" name="{$inputName1}" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+
+                        <input type="radio" id="star4" name="{$inputName1}" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+
+                        <input type="radio" id="star3" name="{$inputName1}" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+
+                        <input type="radio" id="star2" name="{$inputName1}" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+
+                        <input type="radio" id="star1" name="{$inputName1}" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                    </div>
+            </p>
+
+            <p> 
+                <span class="title">{$title1}</span>
+                <span class="colon">:</span>
+                <textarea name={$inputName2} maxlength ='100' required></textarea>
+            </p>
+
+            <button type="submit" name={$submitForm}>Submit</button>
+        </form>
+    HTML;
+}
+
+function generateCertificate($studentName,$courseTitle,$completeDate) {
+    echo<<<HTML
+    <div style="width:800px; height:600px;text-align:center;margin:10px;padding:20px; border: 5px solid black;background-color: #618597;">
+        <div style="width:750px; height:550px;padding:20px; text-align:center; border: 3px solid black;background-color:white;">
+            <span><img style="width:280px;height:auto;"src="../files/MMU_Logo.png"></span><br><br>
+            <span style="font-size:55px; font-weight:bold;">Certificate of Completion</span>
+            <br><br>
+            <span style="font-size:25px"><i>This is to certify that</i></span>
+            <br><br>
+            <span style="font-size:30px"><b>{$studentName}</b></span><br/><br/>
+            <span style="font-size:25px"><i>has completed the course</i></span> <br/><br/>
+            <span style="font-size:30px">$courseTitle</span> <br/><br/>
+            <span style="font-size:25px"><i>on</i></span><br><br>
+            <span style="font-size:30px">$completeDate</span>
+        </div>
+    </div>
+    HTML;
 }
 
 function createProfilePage(){
@@ -367,6 +422,12 @@ function createCourseDetailPage(){
                     JOIN course_section AS cs ON cs.course_section_id = $course_section_id
                     WHERE c.course_id = $course_id";
     $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
+
+
+    if ($_SESSION["usertype"]  == "Student"){
+        $check_course_complete_sql = "SELECT * FROM course_student WHERE username = '".$_SESSION['username']."' AND course_section_id = '".$course_section_id."'";
+        $check_course_complete = mysqli_fetch_assoc(mysqli_query($connect,$check_course_complete_sql));
+    }
     
     if(isset($_POST['makeAnnouncement'])){
         $datetime = new Datetime();
@@ -431,74 +492,144 @@ function createCourseDetailPage(){
                     </div>
     HTML;
                     }
+                    if($_SESSION["usertype"] == "Student"){
+                        if($check_course_complete["course_completed"]){
+                            echo<<<HTML
+                                <div>
+                                    <button type='submit' id="toggleFeedback" style = "display:block;">Feedback</button>
+                                </div>
+                                <div>
+                                    <button type='submit' id="toggleCertificate" style = "display:block;">Certificate</button>
+                                </div>
+                            HTML;
+                        }
+                    }
+
+                    
     echo<<<HTML
             </div>
         </div>
 
+        <!-- Course Description (in hidden form trigger when user click on button) -->
         <div id = "hiddenDetail"  style="display: none;">
-        <h3>
-            Course Description
-        </h3>
-        <p>
-            {$course["course_description"]}
-        </p> 
-        <h3>
-            Section Description
-        </h3>
-        <p>
-            {$course["description"]}
-        </p>
+            <h3>Course Description</h3>
+            <p>{$course["course_description"]}</p> 
+            <h3>Section Description</h3>
+            <p>{$course["description"]}</p>
         </div>
-        <div id="hiddenStudentList" style="display:none;">
-        <h1> Students <h1>
-    HTML;
-            $student_list_sql = "   SELECT * FROM course_student as a 
-                                    JOIN student as s ON a.username = s.username 
-                                    JOIN user as u ON a.username = u.username 
-                                    WHERE course_section_id = $course_section_id 
-                                    ORDER BY s.last_name, s.first_name";
-            $student_list = mysqli_query($connect,$student_list_sql);
-            $student_count = mysqli_num_rows($student_list);
 
-            if($student_count == 0){
-    echo<<<HTML
-                <p>No student found</p>
     HTML;
-                }
-            else {
-                while($each_student = mysqli_fetch_array($student_list)){
-    echo<<<HTML
-            <div class="each-student">
-                <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                <p>
-                    {$each_student['first_name']} {$each_student['last_name']}
-                </p>
+        // Two button section to view student list and update course for instructor only
+        if ($_SESSION["usertype"]  == "Instructor"){
+            echo<<<HTML
+                <div id="hiddenStudentList" style="display:none;">
+                <h1> Students <h1>
+            HTML;
+                    $student_list_sql = "   SELECT * FROM course_student as a 
+                                            JOIN student as s ON a.username = s.username 
+                                            JOIN user as u ON a.username = u.username 
+                                            WHERE course_section_id = $course_section_id 
+                                            ORDER BY s.last_name, s.first_name";
+                    $student_list = mysqli_query($connect,$student_list_sql);
+                    $student_count = mysqli_num_rows($student_list);
 
-            </div>
-    HTML;
-                }
+                    if($student_count == 0){
+            echo<<<HTML
+                        <p>No student found</p>
+            HTML;
+                        }
+                    else {
+                        while($each_student = mysqli_fetch_array($student_list)){
+            echo<<<HTML
+                    <div class="each-student">
+                        <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                <p>
+                            {$each_student['first_name']} {$each_student['last_name']}
+                        </p>
+
+                    </div>
+            HTML;
+                        }
+                    }
+            echo<<<HTML
+                </div>
+
+                <div id="hiddenUpdateSection" style="display:none;">
+                <h1> Edit Section Information </h1>
+                    <form name= "editSectionForm" method="post" action="">
+            HTML;
+                    $course_section_detail_sql = "SELECT * FROM course_section
+                                                WHERE course_section_id = $course_section_id"; 
+                    $course_section_detail = mysqli_fetch_assoc(mysqli_query($connect, $course_section_detail_sql));
+
+                        generateHTMLEditCourseSection("Name","edited_course_section_name",$course_section_detail["course_section_name"]);
+                        generateHTMLEditCourseSection("Description","edited_description",$course_section_detail["description"]);
+                        generateHTMLEditCourseSection("Day","edited_day",$course_section_detail["day"]);
+                        generateHTMLEditCourseSection("Start Time","edited_start_time",$course_section_detail["start_time"],"time");
+                        generateHTMLEditCourseSection("End Time","edited_end_time",$course_section_detail["end_time"],"time");
+                        generateHTMLEditCourseSection("Maximum Student Number","edited_max_student_num",$course_section_detail["max_student_num"],"number",'min = "1"');
+                        generateHTMLEditCourseSection("Section Status","edited_status",$course_section_detail["status"]);
+            echo<<<HTML
+                        <input type="submit" name="submitEditSectionForm"/>
+                    </form>
+                </div>
+            HTML;
+        }
+
+        if($_SESSION["usertype"] == "Student"){
+            if($check_course_complete["course_completed"]){
+                $course_feedback_sql = "SELECT * FROM course_feedback 
+                                WHERE username = '".$_SESSION["username"]."'
+                                AND course_section_id = $course_section_id";
+                $course_feedback = mysqli_query($connect,$course_feedback_sql);
+                $course_feedback_count = mysqli_num_rows($course_feedback);
+                $student_detail_sql = "SELECT * FROM student AS s
+                                                WHERE username = '".$_SESSION['username']."'";
+                $student_detail = mysqli_fetch_assoc(mysqli_query($connect,$student_detail_sql));
+                echo<<<HTML
+                    <div id="hiddenFeedback" style="display:none;">
+                        <h1>Course Feedback </h1>
+                HTML;
+                        if($course_feedback_count == 0){
+                            // no course feedback made yet
+                            generateFeedbackForm('courseFeedbackForm','Rating','courseRating','Feedback','courseFeedback','submitCourseFeedbackForm');
+                            }
+                        else {
+
+                            }
+                echo<<<HTML
+                        <h1>Instructor Feedback </h1>
+                HTML;
+                        $instructor_feedback_sql = "SELECT * FROM instructor_feedback 
+                                                WHERE student_username = '".$_SESSION["username"]."' 
+                                                AND course_section_id = $course_section_id";
+                        $instructor_feedback = mysqli_query($connect,$course_feedback_sql);
+                        $instructor_feedback_count = mysqli_num_rows($course_feedback);
+                        // no instructor feedback made yet
+                        if($instructor_feedback_count == 0){
+                            generateFeedbackForm('instructorFeedbackForm','Rating','courseRating','Feedback','courseFeedback','submitInstructorFeedbackForm');
+                        }
+                        else {
+                            echo<<<HTML
+
+                            HTML;
+                            }
+                echo<<<HTML
+                    </div>
+
+                <div id="hiddenCertificate" style="display:none;">
+                    <h1> Certificate </h1>
+                    <button id="printCertificate">Print Certificate</button>
+                    <div class="divShowingCertificate">
+                HTML;
+                        generateCertificate($student_detail['first_name']." ".$student_detail['last_name'],$course['course_title'],$check_course_complete['course_completed_date']); 
+                echo<<<HTML
+                    </div>
+                    
+                </div>
+                HTML;
             }
-    echo<<<HTML
-        </div>
-
-        <div id="hiddenUpdateSection" style="display:none;">
-        <h1> Edit Section Information </h1>
-            <form name= "editSectionForm" method="post" action="">
-    HTML;
-            $course_section_detail_sql = "SELECT * FROM course_section
-                                        WHERE course_section_id = $course_section_id"; 
-            $course_section_detail = mysqli_fetch_assoc(mysqli_query($connect, $course_section_detail_sql));
-
-                generateHTMLEditCourseSection("Name","edited_course_section_name",$course_section_detail["course_section_name"]);
-                generateHTMLEditCourseSection("Description","edited_description",$course_section_detail["description"]);
-                generateHTMLEditCourseSection("Day","edited_day",$course_section_detail["day"]);
-                generateHTMLEditCourseSection("Start Time","edited_start_time",$course_section_detail["start_time"],"time");
-                generateHTMLEditCourseSection("End Time","edited_end_time",$course_section_detail["end_time"],"time");
-                generateHTMLEditCourseSection("Maximum Student Number","edited_max_student_num",$course_section_detail["max_student_num"],"number",'min = "1"');
-                generateHTMLEditCourseSection("Section Status","edited_status",$course_section_detail["status"]);
-    echo<<<HTML
-                <input type="submit" name="submitEditSectionForm"/>
-            </form>
-        </div>
+        }
+        echo<<<HTML
 
 
         <div class="announcement" style="display: block;"  id="hiddenAnnouncement">
@@ -739,12 +870,6 @@ function createEnrollmentPage(){
 
 }
 
-function createStudentFeedbackPage(){
-    global $connect;
-    echo<<<HTML
-
-    HTML;
-}
 function generatePage($title,$function,$anyCodeOnHead="",$anyCodeInsideBody=""){
     session_start();
     echo <<<HTML
