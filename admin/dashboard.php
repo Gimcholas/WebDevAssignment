@@ -259,7 +259,7 @@
                 </div>
                 <div id="additionalFields"></div>
                 <div  class="operations-button">
-                    <input class="back" type="button" value = "Back" onclick="createAccountModal.close();">
+                    <input class="back" type="button" value = "Cancel" onclick="createAccountModal.close();">
                     <input class="submit" type="submit" name="createAccount" value="Create Account">
                     <input type="hidden" name="hiddenCreateAccount" id="createAccount" value="false">
                 </div>
