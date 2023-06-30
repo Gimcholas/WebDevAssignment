@@ -60,9 +60,15 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
             <div class="ongoing-course">
                 <h1>Ongoing Courses</h1>
                 <div class="display-course-container">
-                    <!-- <a href="../trainingProvider/createCourse.php"><button>Add Course</button><a> -->
-                    <a onclick='selectProvider()'><button>Add Course</button><a>
-                    <?php 
+                    <?php if($_SESSION["usertype"] == "Admin") { ?>
+                        <a onclick='selectProvider()'><button>Add Course</button><a>
+                    <?php
+                    }
+                    else if($_SESSION["usertype"] == "Provider") { ?>
+                        <a href="../trainingProvider/createCourse.php"><button>Add Course</button><a>
+                    <?php
+                    }
+
                     //Get the ongoing course
                     if($_SESSION['usertype'] == "Admin") {
                         $sql = "SELECT * FROM course WHERE end_date > '" . date("Y-m-d") . "';";
@@ -166,7 +172,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
 
 <script>
     const selectProviderModal = document.querySelector("[selectInstructorModal]");
-    
+
     function closeModal() {
         selectProviderModal.close();
     }

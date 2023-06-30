@@ -27,33 +27,7 @@
         </header>
         <div class="Container1">
             <form action="createCourse.php" method="post" id="courseForm" enctype="multipart/form-data">
-                <?php if($_SESSION["usertype"] == "Admin") {
-                    // Show the select training provider
-                            echo "<div class='input-box'>";
-                            echo "<label for='providerUsername'>Provider Username </label>";
-                            echo "<select name='providerUsername' required >";
-                            echo "<option disabled selected value>Select A Training Provider</option>";
-                            echo "<?php"; 
-                            $sql = 'SELECT * FROM training_provider;';
-                            $result = mysqli_query($connect,$sql);
-                            $count = mysqli_num_rows($result);
-                            if ($count == 0) {
-                                ?>
-                                <option disabled selected value>No Training Provider Found</option>
-
-                            <?php
-                            }
-                            while($row = mysqli_fetch_array($result)) {
-                                ?>
-                                <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
-                                . $row["provider_name"]?></option> 
-                            <?php } 
-                        ?>
-                    </select>
-                    </div>    
-                <?php
-                }
-                ?>
+                
 
                 <div class="input-box">
                 <label for="courseName">Course Name</label>
@@ -93,9 +67,15 @@
                     <!-- <input type="text" name="instructorUsername[]" list="instructors" autocomplete="off" required/> -->
                     <select name="instructorUsername[]" id="originalSelector" required >
                     <?php 
-                            $sql = "SELECT * FROM instructor where provider_username" . "= '" . $_SESSION['username'] . "';";
+                            if($_SESSION['usertype'] == 'Admin') {
+                                $sql = "SELECT * FROM instructor where provider_username" . "= '" . $_POST['providerUsername'] . "';";
+                            }
+                            else if($_SESSION['usertype'] == 'Provider') {
+                                $sql = "SELECT * FROM instructor where provider_username" . "= '" . $_SESSION['username'] . "';";
+                            }
                             $result = mysqli_query($connect,$sql);
                             $count = mysqli_num_rows($result);
+                            echo $count;
                             if ($count == 0) {
                                 echo $count;
                                 ?>
@@ -103,7 +83,7 @@
 
                             <?php
                             }
-                            while($row = mysqli_fetch_array($result)) {
+                            while($row = mysqli_fetch_assoc($result)) {
                                 ?>
                                 <option value="<?php echo $row["username"] ?>"><?php echo $row["username"] . " - " 
                                 . $row["first_name"] . " " . $row["last_name"]?></option> 
@@ -122,10 +102,10 @@
                 <div id="additionalSection"></div>
                 
                 <div class="addSection">
-                <input type="button" style="display:inline-block;" value="Add More Section" onclick="addSection()">
-                <input type="submit" style="display:inline-block;" value="Create Course" name="submit">
+                <input type="button" style="display:inline-block; background-color:lightgreen;" value="Add More Section" onclick="addSection()">
+                <input type="submit" style="display:inline-block; background-color:lightgreen;" value="Create Course" name="submit">
                     <?php if ($_SESSION["usertype"] == "Admin") {
-                        echo "<a href='../admin/courseOverview.php'><input type='button' style='display:inline-block;' value= 'Back'></a><br><br>";
+                        echo "<a href='../admin/courseOverview.php'><input type='button' style='display:inline-block; background-color:#3498db;' value= 'Back'></a><br><br>";
                     }
                     else {
                         echo "<a href='courses.php'><input type='button' style='display:inline-block;' value= 'Back'></a><br><br>";                
@@ -159,15 +139,6 @@
         if(empty($_POST['endDate'])) {
             die("End date is required"); 
         }
-        
-        echo $_POST['courseName']; 
-        echo "<br>";
-        echo $_POST['startDate'];
-        echo "<br>";
-        echo $_POST['endDate'];
-        echo "<br>";
-        echo $_POST['courseIntro'];
-        echo "<br><br>";
 
         $imagePath = NULL;
         // Upload image
@@ -191,7 +162,6 @@
         
             // Verify MYME type of the file
             if(in_array($filetype, $allowed)){
-                echo "Old filename: " . $filename;
                 $newFileName = uniqid();
                 if ($filetype == "image/jpg") {
                     $newFileName .= ".jpg";
@@ -209,8 +179,6 @@
                 else {
                     $imagePath = $imageFolderPath . $newFileName;
                     move_uploaded_file($_FILES["photo"]["tmp_name"], $imagePath);
-                    
-
                 }
                  
             } else{
@@ -220,7 +188,7 @@
         if($_SESSION['usertype'] == "Admin") {
             $sql1 = "INSERT into course(provider_username, course_title, course_description, start_date, end_date,course_image_path) values ('" . $_POST['providerUsername'] . "', '" . $_POST['courseName'] . "', '" . $_POST['courseIntro'] . "', '" . $_POST['startDate'] . "', '" . $_POST['endDate'] . "', '" . $imagePath ."');";
         }
-        else if ($_SESSION['usertype'] == "Admin") {
+        else if ($_SESSION['usertype'] == "Provider") {
             $sql1 = "INSERT into course(provider_username, course_title, course_description, start_date, end_date,course_image_path) values ('" . $_SESSION['username'] . "', '" . $_POST['courseName'] . "', '" . $_POST['courseIntro'] . "', '" . $_POST['startDate'] . "', '" . $_POST['endDate'] . "', '" . $imagePath ."');";
         }
         
@@ -233,7 +201,6 @@
         $courseID = mysqli_insert_id($connect); // Get the course_ID from the last query
         
         for($i=0; $i<count($_POST['sectionName']); $i++) {
-            echo count($_POST['sectionName']);
             if(empty($_POST['instructorUsername'][$i])) {
                 die("Instructor username is required"); 
             }
@@ -250,11 +217,7 @@
             $result = mysqli_query($connect,$sql2);
             if(!$result) {
                 die('Cannot enter data'.mysqli_error($connect));
-            }
-            echo "sectionName" . $i . ":" . $_POST['sectionName'][$i] . "<br>";
-            echo "instructorUsername" . $i . ":" . $_POST['instructorUsername'][$i] . "<br>";
-            echo "maxStudentNum" .  $i . ":" . $_POST['maxStudentNum'][$i] . "<br><br>";
-            
+            }            
         }
 
         

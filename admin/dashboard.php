@@ -238,7 +238,7 @@
             <form action="" method="POST" onsubmit="return mySubmitFunction(event)" id="form">
                 <h3>Create New Account</h3>
                 <div class="input-box-user">
-                    <img src="../files/defaultProfileImage.jpg" alt="UserIcon">
+                    <img src="../files/name.png" alt="UserIcon">
                     <input type="text" id="username" name="username" placeholder="Username">
                     <div class="errorMessageBox" id="username-messageBox"></div><br>
 
@@ -249,6 +249,7 @@
                     <div class="errorMessageBox" id="password-messageBox"></div><br>
                 </div>  
                 <div class="input-box">
+                    <img src="../files/user.png" alt="UserIcon">
                     <select name="usertype" id="usertype" onchange="updateForm()">
                         <option hidden disabled selected value>Select a usertype</option>
                         ?> 
@@ -281,9 +282,9 @@
             $row = mysqli_fetch_assoc($result);
             $usertype = $row['usertype'];
             ?>
-            <dialog edit-account-modal class='edit-account-modal'>
-                <h3>Edit Account Details</h3>
+            <dialog edit-account-modal>
                 <form action='' method='POST' onsubmit="return mySubmitFunction(event)" id="resetPassword">
+                    <h3>Edit Account Details</h3>
                     <?php
                     if($usertype == 'Admin') {
                         // Allow to change password only
@@ -298,23 +299,27 @@
                         ?>
                         <div class="input-box">
                         <!-- <label>First Name</label> -->
+                        <img src="../files/name.png" alt="UserIcon">
                         <input type="text" id="firstName" name="firstName" placeholder="First Name" value="<?php echo $row2['first_name']; ?>"><br>
-                        <div class="errorMessageBox" id="firstName-messageBox"></div><br>
+                        <div class="errorMessageBox" id="firstName-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Last Name</label> -->
+                        <img src="../files/name.png" alt="UserIcon">
                         <input type="text" id="lastName" name="lastName" placeholder="Last Name" value="<?php echo $row2['last_name']; ?>"><br>
-                        <div class="errorMessageBox" id="lastName-messageBox"></div><br>
+                        <div class="errorMessageBox" id="lastName-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Contact Number</label> -->
+                        <img src="../files/call.png" alt="UserIcon">
                         <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br>
-                        <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
+                        <div class="errorMessageBox" id="contactNumber-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Email</label> -->
+                        <img src="../files/email.png" alt="UserIcon">
                         <input type="email" id="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br>
-                        <div class="errorMessageBox" id="email-messageBox"></div><br>
+                        <div class="errorMessageBox" id="email-messageBox"></div>
                         </div>
 
                         <!-- To let js know which type of user is being edited so it can validate input accordingly -->
@@ -329,33 +334,39 @@
                         ?>
                         <div class="input-box">
                         <!-- <label>First Name</label> -->
+                        <img src="../files/name.png" alt="UserIcon">
                         <input type="text" id="firstName" name="firstName" placeholder="First Name" value="<?php echo $row2['first_name']; ?>"><br>
-                        <div class="errorMessageBox" id="firstName-messageBox"></div><br>
+                        <div class="errorMessageBox" id="firstName-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Last Name</label> -->
+                        <img src="../files/name.png" alt="UserIcon">
                         <input type="text" id="lastName" name="lastName" placeholder="Last Name" value="<?php echo $row2['last_name']; ?>"><br>
-                        <div class="errorMessageBox" id="lastName-messageBox"></div><br>
+                        <div class="errorMessageBox" id="lastName-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Date Of Birth</label> -->
+                        <img src="../files/calendar.png" alt="UserIcon">
                         <input type="date" id="dateOfBirth" name="dateOfBirth" value="<?php echo $row2['date_of_birth']; ?>"><br>
-                        <div class="errorMessageBox" id="dateOfBirth-messageBox"></div><br>
+                        <div class="errorMessageBox" id="dateOfBirth-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Academic Program</label> -->
+                        <img src="../files/course.png" alt="UserIcon">
                         <input type="text" id="academicProgram" name="academicProgram" placeholder="Academic Program" value="<?php echo $row2['academic_program']; ?>"><br>
-                        <div class="errorMessageBox" id="academicProgram-messageBox"></div><br>
+                        <div class="errorMessageBox" id="academicProgram-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Contact Number</label> -->
+                        <img src="../files/call.png" alt="UserIcon">
                         <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br>
-                        <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
+                        <div class="errorMessageBox" id="contactNumber-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Email</label> -->
+                        <img src="../files/email.png" alt="UserIcon">
                         <input type="email" id="email" name="email" placeholder="Contact Email" value="<?php echo $row2['email']; ?>"><br>
-                        <div class="errorMessageBox" id="email-messageBox"></div><br>
+                        <div class="errorMessageBox" id="email-messageBox"></div>
                         </div>
                         <!-- To let js know which type of user is being edited so it can validate input accordingly -->
                         <input type="hidden" id="formType" value="Student">
@@ -370,19 +381,22 @@
                         
                         <div class="input-box">
                         <!-- <label>Provider Name</label> -->
+                        <img src="../files/name.png" alt="UserIcon">
                         <input type="text" id="providerName" name="providerName" placeholder="Provider Name" value="<?php echo $row2['provider_name']; ?>"><br>
-                        <div class="errorMessageBox" id="providerName-messageBox"></div><br>
+                        <div class="errorMessageBox" id="providerName-messageBox"></div>
                         
                         </div>
                         <div class="input-box">
                         <!-- <label>Contact Number</label> -->
+                        <img src="../files/call.png" alt="UserIcon">
                         <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number" value="<?php echo $row2['contact_number']; ?>"><br>
-                        <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
+                        <div class="errorMessageBox" id="contactNumber-messageBox"></div>
                         </div>
                         <div class="input-box">
                         <!-- <label>Email</label> -->
+                        <img src="../files/email.png" alt="UserIcon">
                         <input type="email" id="email" name="email" placeholder="Email" value="<?php echo $row2['email']; ?>"><br>
-                        <div class="errorMessageBox" id="email-messageBox"></div><br>
+                        <div class="errorMessageBox" id="email-messageBox"></div>
                         </div>
                         <!-- To let js know which type of user is being edited so it can validate input accordingly -->
                         <input type="hidden" id="formType" value="Provider">
@@ -394,7 +408,7 @@
                     <div class="input-box">
                         <img src="../files/password_icon.png" alt="PwIcon">
                         <input type="password" name="newPassword" id="newPassword" placeholder="New Password"><br>
-                        <div class="errorMessageBox" id="newPassword-messageBox"></div><br>
+                        <div class="errorMessageBox" id="newPassword-messageBox"></div>
                     </div> 
                     
                     <div class="buttons">
@@ -419,7 +433,7 @@
             $sql = "SELECT * FROM user where username='$username';";
             $result = mysqli_query($connect,$sql);
             $row = mysqli_fetch_assoc($result);
-            echo "<dialog view-details-modal class='view-details-modal'>";
+            echo "<dialog view-details-modal class='view-details'>";
             echo "<button id='close-view'>&#10006;</button>";
             echo "<br><b>Profile Image</b><br>";
             if ($row["profile_image_path"] != NULL) {
@@ -431,7 +445,7 @@
             }
             else {
                 ?>
-                <img src="../files/defaultProfileImage.jpg" alt = "Profile image">
+                <img src="../files/name.png" alt = "Profile image">
                 <?php
             }
             echo "<br><b>Username</b><br>";
@@ -450,9 +464,9 @@
                 echo "<div class=rating>";
                 echo "<b>Rating</b>";
                 for($i=0; $i<$numOfStars; $i++)
-                    echo "<img src='../files/star-orange.png' alt='star'>";
+                    echo "<img src='../files/yellow-star.png' alt='star'>";
                 for($i=0; $i<(5-$numOfStars); $i++)
-                    echo "<img src='../files/star-white.png' alt='star'>";
+                    echo "<img src='../files/blank-star.png' alt='star'>";
             
                 echo " (" . $row["amount"] . ")";
                 echo "</div>"; 
@@ -667,10 +681,10 @@
                             <td><?php echo $row["usertype"]; ?></td>
                             <td><?php echo $row["joined_date"]; ?></td>
                             <!-- <td><a href="accountDetail.php?view&username=<?php echo $row["username"];?>">Details</a></td> -->
-                            <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button class="view-details">Details</button></a></td>
+                            <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button class="btn-view-details">Details</button></a></td>
 
                             <!-- <td><a href="editAccount.php?edit&username=<?php echo $row["username"];?>">Edit</a></td> -->
-                            <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button class="edit-details">Edit</button></a></td>
+                            <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button class="btn-edit-details">Edit</button></a></td>
                         </tr>
                     <?php 
                     } ?>
@@ -816,8 +830,8 @@
     );
 
     const createAccountButton = document.querySelector("[create-account-button]");
-    const viewDetailsButton = document.getElementsByClassName('view-details');
-    const editDetailsButton = document.getElementsByClassName("edit-details");
+    const viewDetailsButton = document.getElementsByClassName('btn-view-details');
+    const editDetailsButton = document.getElementsByClassName("btn-edit-details");
     const closeViewDetailsBtn = document.getElementById("close-view");
     
     const createAccountModal = document.querySelector("[create-account]");
