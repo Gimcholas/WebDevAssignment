@@ -399,7 +399,7 @@
                             <input type='submit' name='editAccount' value='Save'><br><br>
                         </div>
                     </div>
-                    <input type="hidden" name=" " id="editAccount" value="false">
+                    <input type="hidden" name="hiddenEditAccount" id="editAccount" value="false">
 
                 </form>
             </dialog>
