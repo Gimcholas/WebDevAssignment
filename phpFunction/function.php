@@ -852,6 +852,16 @@ function createEnrollmentPage(){
         $insert_sql = "INSERT INTO course_student (course_section_id, username) VALUES ('$course_section_id', '".$_SESSION["username"]."');";
         $output = mysqli_query($connect,$insert_sql);
         if($output){
+            $count_all_student_in_section_sql = "SELECT * FROM course_student WHERE course_section_id = $course_section_id";
+            $all_student_in_section = mysqli_query($connect,$count_all_student_in_section_sql);
+            $count_all_student_in_section = mysqli_num_rows($all_student_in_section);
+
+            $max_student_sql = "SELECT max_student_num FROM course_section WHERE course_section_id = $course_section_id";
+            $max_student = mysqli_fetch_assoc(mysqli_query($connect,$max_student_sql));
+            if($count_all_student_in_section>=$max_student['max_student_num']){
+                $update_sql = "UPDATE course_section SET status = 'Closed' WHERE course_section_id = $course_section_id";
+                mysqli_query($connect,$update_sql);
+            }
             header("Location: dashboard.php");
         }
     }
