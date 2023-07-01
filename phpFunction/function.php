@@ -900,10 +900,10 @@ function createEnrollmentPage(){
         </div>
 
         <div clsss="sectionDetails">
-            <h1>
+            <h1 id="specialH1">
                 Course Section
             </h1>
-
+            <div id="allInstructors">
         HTML;
                 while($each_section = mysqli_fetch_assoc($course_section)){
         echo<<<HTML
@@ -911,7 +911,7 @@ function createEnrollmentPage(){
 
                 <img src="{$each_section['profile_image_path']}" alt = "{$each_section['first_name']} {$each_section['last_name']}">
 
-                <h3>
+                <h3 id="instructorName">
                     {$each_section['first_name']} {$each_section['last_name']}
                 </h3>
 
@@ -988,11 +988,12 @@ function createEnrollmentPage(){
                     }
 
         echo<<<HTML
-            </div>            
+            </div>                        
         HTML;
         }
 
         echo<<<HTML
+        </div>
         </div>            
         HTML;
     }
