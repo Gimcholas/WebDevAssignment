@@ -1,12 +1,12 @@
 <?php
 
 	include '../phpFunction/function.php';
-	function yourFunction() {
+	function instructorViewFeedback() {
 		global $connect;
 		$sql= "SELECT * FROM course_feedback JOIN course_section on
 				course_feedback.course_section_id = course_section.course_section_id
 				JOIN course on course_section.course_id = course.course_id
-				WHERE course.provider_username ='". $_SESSION['username'] ."';";
+				WHERE course_section.username ='". $_SESSION['username'] ."';";
 		$result = mysqli_query($connect,$sql);
 		?>
 		<link rel="stylesheet" href="feedback.css"/>
@@ -40,7 +40,7 @@
 		</div>
 
 		<?php
-		$sql= "SELECT * FROM instructor_feedback JOIN instructor on instructor_feedback.instructor_username = instructor.username WHERE instructor.provider_username ='". $_SESSION['username'] ."';";
+		$sql= "SELECT * FROM instructor_feedback JOIN instructor on instructor_feedback.instructor_username = instructor.username WHERE instructor.username ='". $_SESSION['username'] ."';";
 		$result = mysqli_query($connect,$sql);
 		?>
 		<hr>
@@ -74,5 +74,5 @@
 		</div>
 		<?php
 }
-	generatePage("YourTitle",'yourFunction','<link rel="stylesheet" type="text/css" href="../css/yourcss.css">','<script src ="../js/yourjs.js"></script>');
+	generatePage("Feedback",'instructorViewFeedback','<link rel="stylesheet" type="text/css" href="../instructor/feedback.css">','');
 ?>
