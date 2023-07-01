@@ -23,7 +23,7 @@ function addSection() {
         <input type="number" name="maxStudentNum[]" required>\
     </div><br>\
     `;
-    const html2 = ` <input type="button" value="Remove Section" onclick="removeSection(`+counter +`)">\
+    const html2 = ` <input type="button" style='background-color:lightgreen;' value="Remove Section" onclick="removeSection(`+counter +`)">\
                     </div>\
                     <hr><br>`;
     

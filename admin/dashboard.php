@@ -705,7 +705,7 @@
         else if($_SESSION["usertype"] == "Provider") {
             ?>
             <!-- Instructor Table -->
-            <h3>Instructors</h3>
+            <h4>Instructors</h4>
             <div class='table-wrapper table-wrapper-half-height'>
             <table>
                 <!-- <caption>Instructors</caption> -->
@@ -735,8 +735,8 @@
                         <td><?php echo $row["contact_number"]; ?></td>
                         <td><?php echo $row["email"]; ?></td>
                         <td><?php echo $row["joined_date"]; ?></td>
-                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>">Details</a></td>
-                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>">Edit</a></td>
+                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button style="background-color:lightgreen;">Details</button></a></td>
+                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button style="background-color:#3498db;">Edit</button></a></td>
                     </tr>
                     <?php
                     }
@@ -746,7 +746,7 @@
             </div>
 
             <!-- Student Table -->
-            <h3>Students</h3>
+            <h4>Students</h4>
             <div class='table-wrapper table-wrapper-half-height'>
             <table>
                 <!-- <caption>Students</caption> -->
@@ -780,8 +780,8 @@
                         <td><?php echo $row["contact_number"]; ?></td>
                         <td><?php echo $row["email"]; ?></td>
                         <td><?php echo $row["joined_date"]; ?></td>
-                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>">Details</a></td>
-                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>">Edit</a></td>
+                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button style="background-color:lightgreen;">Details</button></a></td>
+                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button style="background-color:#3498db;">Edit</button></a></td>
                     </tr>
                     <?php
                     }
