@@ -611,24 +611,28 @@ function createCourseDetailPage(){
                         while($each_student = mysqli_fetch_array($student_list)){
             echo<<<HTML
                     <div class="each-student">
-                        <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                
-                        <p>
-                            {$each_student['first_name']} {$each_student['last_name']}
-                        </p>
+                        <div id="leftOnEachStudent">
+                            <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                
+                            <p>
+                                {$each_student['first_name']} {$each_student['last_name']}
+                            </p>
+                        </div>
             HTML;
                         if($each_student['course_completed']==1){
             
             echo<<<HTML
+                        <div id="rightOnEachStudent">
                             <p> Completed</p>
-
+                        </div>
             HTML;
                         }
                         else{
             echo<<<HTML
+                        <div id="rightOnEachStudent">
                         <form method="post" action="">
-                            <button type="submit" name="submitStudentCompleteCourse" value="{$each_student['username']}">Complete Course</button>
+                            <button type="submit" name="submitStudentCompleteCourse" value="{$each_student['username']}">Complete</button>
                         </form>
-                    </div>
+                        </div>
             HTML;
                             }
                         }
