@@ -40,11 +40,8 @@
 
 .instructor-list .instructor {
     display : flex;
-    justify-content: middle;
-    align-items : center;
     flex-wrap : wrap;
     padding:1rem;
-    margin:auto;
     width :50%;
     margin-bottom: 2rem;
 }
