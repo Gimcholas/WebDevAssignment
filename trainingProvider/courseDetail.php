@@ -57,6 +57,7 @@ session_start();
                                     <th>Course Description</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
+                                    <th>Provider Username</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,6 +67,7 @@ session_start();
                                     <td><?php echo $course['course_description'] ?></td>
                                     <td><?php echo $course['start_date'] ?></td>
                                     <td><?php echo $course['end_date'] ?></td>
+                                    <td><?php echo $course['provider_username'] ?></td>
                                 </tr>
                             </tbody>
                         </table>
