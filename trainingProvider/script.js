@@ -1,16 +1,6 @@
 counter = 1;
 totalAmount = 1;
 
-
-    
-// function getSectionHtml() {
-//     console.log("Test");
-//     var sectionHtml = document.getElementById("courseSection");
-//     console.log(sectionHtml);
-//     sectionHtml.innerHTML+=html; 
-// }
-
-
 function addSection() {
     counter+=1;
     totalAmount+=1;
