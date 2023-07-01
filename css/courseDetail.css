@@ -65,6 +65,9 @@ header{
     height : 1.8rem;
     border-radius: 300rem;
     margin-right : 1.5rem;
+    object-fit : fill;
+    border : 0.2px solid black;
+    box-shadow : 1px 1px 8px #000000    
 }
 
 .bottom h3{
@@ -137,6 +140,9 @@ header{
     height : 2.5rem;
     border-radius: 300rem;
     margin-right : 1.5rem;
+    object-fit : fill;
+    border : 0.2px solid black;
+    box-shadow : 1px 1px 8px #000000;
 }
 
 #hiddenStudentList .each-student p {
