@@ -239,12 +239,14 @@
                 <h3>Create New Account</h3>
                 <div class="input-box-user">
                     <img src="../files/name.png" alt="UserIcon">
-                    <input type="text" id="username" name="username" placeholder="Username">
+                    <a href="#" title="Username has to be less than 20 character" style='cursor:default;'><img src="../files/questionMark.png" class="question-mark" alt="&quest;"></a>
+                    <input type="text" id="username" name="username" placeholder="Username" maxlength="20">
                     <div class="errorMessageBox" id="username-messageBox"></div><br>
 
                 </div>
                 <div class="input-box-pw">
                     <img src="../files/password_icon.png" alt="PwIcon">
+                    <a href="#" title="Password should be more than 8 characters with letters and numbers" style='cursor:default;'><img src="../files/questionMark.png" class="question-mark" alt="&quest;"></a>
                     <input type="password" id="password" name="password" placeholder="Password">
                     <div class="errorMessageBox" id="password-messageBox"></div><br>
                 </div>  
@@ -406,7 +408,7 @@
                     // Change password
                     ?>
                     <div class="input-box">
-                        <img src="../files/password_icon.png" alt="PwIcon">
+                        <a href="#" title="Password should be more than 8 characters with letters and numbers" style='cursor:default;'><img src="../files/password_icon.png" alt="PwIcon"></a>
                         <input type="password" name="newPassword" id="newPassword" placeholder="New Password"><br>
                         <div class="errorMessageBox" id="newPassword-messageBox"></div>
                     </div> 
