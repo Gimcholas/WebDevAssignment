@@ -111,8 +111,15 @@ form input {
     border-radius: 10px;
 }
 
-#displayDIV button:hover, 
-#editDIV button:hover, 
-#newPasswordDIV button:hover{
-    background-color: aqua;
+#displayDIV button {
+    background-color: #3498db
 }
+
+#cancelChangePWD{
+    background-color: red
+}
+
+#submitChangePWD{
+    background-color: #3498db
+}
+
