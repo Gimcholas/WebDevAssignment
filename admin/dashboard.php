@@ -525,7 +525,11 @@
                         echo "<td>" . $row["course_title"]. "</td>";
                         echo "<td>" . $row["course_section_name"] . "</td>";
                         echo "<td>" . $row["day"] . "</td>";
-                        echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                        if ($row["start_time"] == null) {
+                            echo "<td></td>";
+                        } else {
+                            echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                        }
                         echo "</tr>";
                     }?>
                     </tbody>
@@ -592,7 +596,11 @@
                             echo "<td>" . $row["course_title"] . "</td>";
                             echo "<td>" . $row["course_section_name"] . "</td>";
                             echo "<td>" . $row["day"] . "</td>";
-                            echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                            if ($row["start_time"] == null) {
+                                echo "<td></td>";
+                            } else {
+                                echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                            }
                             echo "<td>" . $row["course_completed_date"] . "</td>";
                             echo "</tr>";
                         } ?>
@@ -883,7 +891,6 @@
 
     function updateForm() {
         const usertypeSelected = document.getElementById("usertype").value;
-        // console.log(usertypeSelected);
         
         const additionalForm = document.getElementById("additionalFields");
         additionalForm.innerHTML = "";
