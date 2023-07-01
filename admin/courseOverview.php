@@ -24,7 +24,9 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
         <header class="header-bar">
             <h1>Courses Overview<h1>
         </header>
-        <dialog selectInstructorModal>
+
+        <!-- Dialog for create course select training provider -->
+        <dialog selectProviderModal>
             <?php if($_SESSION["usertype"] == "Admin") { ?>
                 <!-- Show the select training provider -->
                 <form action='../trainingProvider/createCourse.php' method='POST'>
@@ -56,6 +58,8 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
             <?php
             } ?>
         </dialog>
+
+        <!-- Display the list of courses -->
         <div class="left-panel">
             <div class="ongoing-course">
                 <h1>Ongoing Courses</h1>
@@ -101,6 +105,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
             </div>
         </div>
 
+        <!-- Display the details of a course -->
         <div class="right-panel">
         <?php
             if(isset($_GET['course'])) {
@@ -118,6 +123,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
                             echo "<p>Course Description: ". $row['course_description']."</p>";
                             echo "<p>Start Date: ". $row['start_date']."</p>";
                             echo "<p>End Date: ". $row['end_date']."</p>";
+                            echo "<p>Provider Username: ". $row['provider_username']."</p>";
                             echo "<a href='../trainingProvider/courseDetail.php?view&course=". $row['course_id'] . "'><button>View More Details</button></a>";
                         ?>
                     </div>
@@ -129,25 +135,6 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
                 if (!$result2) {
                     echo "Failed";
                 }
-                // $result = getCourseSectionsResult($_GET['course'],$connect);
-                // while ($row2 = mysqli_fetch_assoc($result)) {
-                //     echo "<div class='course-section-details'>";
-                //     echo "<p>Course Section ID: ". $row2['course_section_id']."</p>";
-                //     echo "<p>Course Section Name: ". $row2['course_section_name']."</p>";
-                //     echo "<p>Instructor Username: ". $row2['username']."</p>";
-                //     echo "<p>Instructor Name: ". $row2['first_name']. " " . $row2['last_name'] . "</p>";
-                //     echo "<p>Start Time: ". $row2['start_time'] ."</p>";
-                //     echo "<p>End Time: ". $row2['end_time'] . "</p>";
-                //     echo "<p>Day: ". $row2['day'] . "</p>";
-                //     echo "<p>Status: ". $row2['status'] ."</p>";
-                //     echo "<p>Maximum Students Allowed: ". $row2['max_student_num'] . "</p>";
-                    
-
-                //     echo "<p>Course Section ID: ". $row['course_section_id']."</p>";
-                //     echo "</div>";
-                //     echo "<hr>";
-                // }
-
             }
             ?>
         </div>
@@ -171,7 +158,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
 ?>
 
 <script>
-    const selectProviderModal = document.querySelector("[selectInstructorModal]");
+    const selectProviderModal = document.querySelector("[selectProviderModal]");
 
     function closeModal() {
         selectProviderModal.close();

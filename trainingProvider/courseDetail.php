@@ -40,10 +40,10 @@ session_start();
                 <div class='course-details'>
                     <?php 
                     if ($_SESSION['usertype'] == "Admin") {
-                        echo "<a href='../admin/courseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
+                        echo "<a href='../admin/tableCourseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
                     }
                     if ($_SESSION['usertype'] == "Provider") {
-                        echo "<a href='courses.php'><button>Back</button></a>";
+                        echo "<a href='../admin/courseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
                     }
                         echo "<a href='editCourse.php?edit&course=" .$_GET['course'] ."'><button style='background-color: lightgreen;'>Edit</button></a>";
                         echo "<a href='courseDetail.php?delete&course=" .$_GET['course'] ."' onclick='return confirmation();'><button style='background-color: red;'>Delete Course</button></a>";
@@ -57,6 +57,7 @@ session_start();
                                     <th>Course Description</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
+                                    <th>Provider Username</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,6 +67,7 @@ session_start();
                                     <td><?php echo $course['course_description'] ?></td>
                                     <td><?php echo $course['start_date'] ?></td>
                                     <td><?php echo $course['end_date'] ?></td>
+                                    <td><?php echo $course['provider_username'] ?></td>
                                 </tr>
                             </tbody>
                         </table>

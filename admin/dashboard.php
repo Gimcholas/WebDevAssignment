@@ -525,7 +525,11 @@
                         echo "<td>" . $row["course_title"]. "</td>";
                         echo "<td>" . $row["course_section_name"] . "</td>";
                         echo "<td>" . $row["day"] . "</td>";
-                        echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                        if ($row["start_time"] == null) {
+                            echo "<td></td>";
+                        } else {
+                            echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                        }
                         echo "</tr>";
                     }?>
                     </tbody>
@@ -592,7 +596,11 @@
                             echo "<td>" . $row["course_title"] . "</td>";
                             echo "<td>" . $row["course_section_name"] . "</td>";
                             echo "<td>" . $row["day"] . "</td>";
-                            echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                            if ($row["start_time"] == null) {
+                                echo "<td></td>";
+                            } else {
+                                echo "<td>" . date("h:i:a",strtotime($row["start_time"])) . " - " . date("h:i:a",strtotime($row["end_time"])) ."</td>";
+                            }
                             echo "<td>" . $row["course_completed_date"] . "</td>";
                             echo "</tr>";
                         } ?>
@@ -697,7 +705,7 @@
         else if($_SESSION["usertype"] == "Provider") {
             ?>
             <!-- Instructor Table -->
-            <h3>Instructors</h3>
+            <h4>Instructors</h4>
             <div class='table-wrapper table-wrapper-half-height'>
             <table>
                 <!-- <caption>Instructors</caption> -->
@@ -727,8 +735,8 @@
                         <td><?php echo $row["contact_number"]; ?></td>
                         <td><?php echo $row["email"]; ?></td>
                         <td><?php echo $row["joined_date"]; ?></td>
-                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>">Details</a></td>
-                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>">Edit</a></td>
+                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button style="background-color:lightgreen;">Details</button></a></td>
+                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button style="background-color:#3498db;">Edit</button></a></td>
                     </tr>
                     <?php
                     }
@@ -738,7 +746,7 @@
             </div>
 
             <!-- Student Table -->
-            <h3>Students</h3>
+            <h4>Students</h4>
             <div class='table-wrapper table-wrapper-half-height'>
             <table>
                 <!-- <caption>Students</caption> -->
@@ -772,8 +780,8 @@
                         <td><?php echo $row["contact_number"]; ?></td>
                         <td><?php echo $row["email"]; ?></td>
                         <td><?php echo $row["joined_date"]; ?></td>
-                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>">Details</a></td>
-                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>">Edit</a></td>
+                        <td><a href="dashboard.php?view&username=<?php echo $row["username"];?>"><button style="background-color:lightgreen;">Details</button></a></td>
+                        <td><a href="dashboard.php?edit&username=<?php echo $row["username"];?>"><button style="background-color:#3498db;">Edit</button></a></td>
                     </tr>
                     <?php
                     }
@@ -883,7 +891,6 @@
 
     function updateForm() {
         const usertypeSelected = document.getElementById("usertype").value;
-        // console.log(usertypeSelected);
         
         const additionalForm = document.getElementById("additionalFields");
         additionalForm.innerHTML = "";

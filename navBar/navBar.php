@@ -24,7 +24,7 @@
                         echo "</a>";
                         echo "</li>";
 
-                        echo "<li><a href='../admin/courseOverview.php'>";
+                        echo "<li><a href='../admin/tableCourseOverview.php'>";
                         echo "<i class='fas fa-server'></i>";
                         echo "<span class='nav-item'>Course Overview</span>";
                         echo "</a>";
