@@ -84,6 +84,13 @@ form div{
     z-index: 2;
 }
 
+img.question-mark {
+    margin-top: 13px;
+    margin-left: 320px;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+}
 .input-box img {
     position: absolute;
     margin-top: 8px;
