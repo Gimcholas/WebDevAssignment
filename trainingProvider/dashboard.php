@@ -85,9 +85,14 @@
                     <h3><?php echo $countCourse ?></h3> 
                 </div>
             </div> -->
-            <a href="../admin/courseOverview.php"><button>Manage Courses</button></a>
-            <a href="../admin/dashboard.php"><button>Manage Accounts</button></a>
-            <a href="feedback.php"><button>View Feedback</button></a>
+
+            <hr class="pointy-hr">
+            
+            <div class="operationsBtn">
+                <a href="../admin/courseOverview.php"><button>Manage Courses</button></a>
+                <a href="../admin/dashboard.php"><button>Manage Accounts</button></a>
+                <a href="feedback.php"><button>View Feedback</button></a>
+            </div>
     </div>
 </div>
 </body>
