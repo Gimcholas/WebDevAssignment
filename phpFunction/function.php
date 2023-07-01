@@ -69,7 +69,7 @@ function retrieveEachDashboardCourse($result,$myCoursePage){
     while($eachCourse = mysqli_fetch_array($result)){
         echo '<div class="class-child">';
             echo '<a href = "'.generateDashboardCourseLink($eachCourse,$myCoursePage).'">';
-                echo '<img src = "'.$eachCourse["course_image_path"].'" alt = "'.$eachCourse["course_title"].'"/>';
+                echo '<div class="courseImage"><img src = "'.$eachCourse["course_image_path"].'" alt = "'.$eachCourse["course_title"].'"/></div>';
                 echo '<h2>';
                     echo $eachCourse["course_title"];
                 echo '</h2>';
@@ -122,31 +122,28 @@ function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "te
 function generateFeedbackForm($formName,$title1,$inputName1,$title2,$inputName2,$submitForm){
     echo<<<HTML
         <form name="{$formName}" method="post" action="">
-
+            <h3 class="title">{$title1}:</h3>
             <p> 
-                <span class="title">{$title1}</span>
-                <span class="colon">:</span>
-                    <div class="{$inputName1}">
-                        <input type="radio" id="star5" name="{$inputName1}" value="5" />
-                        <label for="star5" title="text">5 stars</label>
+                <div class="{$inputName1}">
+                    <input type="radio" id="{$inputName1}5" name="{$inputName1}" value="5" />
+                    <label for="{$inputName1}5" title="text">5</label>
 
-                        <input type="radio" id="star4" name="{$inputName1}" value="4" />
-                        <label for="star4" title="text">4 stars</label>
+                    <input type="radio" id="{$inputName1}4" name="{$inputName1}" value="4" />
+                    <label for="{$inputName1}4" title="text"></label>
 
-                        <input type="radio" id="star3" name="{$inputName1}" value="3" />
-                        <label for="star3" title="text">3 stars</label>
+                    <input type="radio" id="{$inputName1}3" name="{$inputName1}" value="3" />
+                    <label for="{$inputName1}3" title="text"></label>
 
-                        <input type="radio" id="star2" name="{$inputName1}" value="2" />
-                        <label for="star2" title="text">2 stars</label>
+                    <input type="radio" id="{$inputName1}2" name="{$inputName1}" value="2" />
+                    <label for="{$inputName1}2" title="text"></label>
 
-                        <input type="radio" id="star1" name="{$inputName1}" value="1" />
-                        <label for="star1" title="text">1 star</label>
-                    </div>
+                    <input type="radio" id="{$inputName1}1" name="{$inputName1}" value="1" />
+                    <label for="{$inputName1}1" title="text"></label>
+                </div>
             </p>
-
+            <br>
+            <h3 class="title">{$title2}:</h3>
             <p> 
-                <span class="title">{$title2}</span>
-                <span class="colon">:</span>
                 <textarea name={$inputName2} maxlength ='100' required></textarea>
             </p>
 
@@ -616,6 +613,8 @@ function createCourseDetailPage(){
                 $student_detail = mysqli_fetch_assoc(mysqli_query($connect,$student_detail_sql));
                 echo<<<HTML
                     <div id="hiddenFeedback" style="display:none;">
+                        <div id="allFeedback">
+                        <div id="courseFeedback">
                         <h1>Course Feedback </h1>
                 HTML;
                         if($course_feedback_count == 0){
@@ -627,6 +626,8 @@ function createCourseDetailPage(){
                             generateHTMLDetail("Feedback",$course_feedback['feedback']);
                             }
                 echo<<<HTML
+                        </div>
+                        <div id="instructorFeedback">
                         <h1>Instructor Feedback </h1>
                 HTML;
                         $instructor_feedback_sql = "SELECT * FROM instructor_feedback 
@@ -645,14 +646,18 @@ function createCourseDetailPage(){
                             }
                 echo<<<HTML
                     </div>
+                        </div>
+                    </div>
 
                 <div id="hiddenCertificate" style="display:none;">
                     <h1> Certificate </h1>
-                    <button id="printCertificate">Print Certificate</button>
-                    <div class="divShowingCertificate">
+                    <div id="certificateContent">
+                        <div class="divShowingCertificate">
                 HTML;
-                        generateCertificate($student_detail['first_name']." ".$student_detail['last_name'],$course['course_title'],$check_course_complete['course_completed_date']); 
+                            generateCertificate($student_detail['first_name']." ".$student_detail['last_name'],$course['course_title'],$check_course_complete['course_completed_date']); 
                 echo<<<HTML
+                        </div>
+                        <button type="button" id="printCertificate">Print Certificate</button>
                     </div>
                     
                 </div>
