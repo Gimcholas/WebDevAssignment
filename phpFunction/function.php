@@ -131,11 +131,19 @@ function generateHTMLChangePassword($title,$inputName){
 
 function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "text",$attribute1 = "",$attribute2="",$attribute3=""){
     echo 
-    '<p> 
+    '<h3> 
         <span class="title">'.$title.'</span>
         <span class="colon">:</span>
         <input type="'.$inputType.'" name="'.$inputName.'" value = "'.$value.'" required ' .$attribute1.' ' .$attribute1.' ' .$attribute1.'>
-    </p>';
+    </h3>';
+}
+function generateOptionHTMLEditCourseSection($title,$inputName,$options){
+    echo 
+    '<h3> 
+        <span class="title">'.$title.'</span>
+        <span class="colon">:</span>
+        <select name = "'.$inputName.'" id="'.$inputName.'" >'.$options.'</select>
+    </h3>';
 }
 
 function generateFeedbackForm($formName,$title1,$inputName1,$title2,$inputName2,$submitForm){
@@ -435,6 +443,15 @@ function createProfilePage(){
     HTML;
 }
 
+function returnOption($data,$value){
+    if($data==$value) {
+        return "<option value='".$value."' selected>".$value."</option> ";
+    }
+    else{
+        return "<option value='".$value."' >".$value."</option> ";
+    }
+}
+
 function createCourseDetailPage(){
     global $connect;
     $course_section_id = $_GET['section'];
@@ -607,11 +624,19 @@ function createCourseDetailPage(){
 
                         generateHTMLEditCourseSection("Name","edited_course_section_name",$course_section_detail["course_section_name"]);
                         generateHTMLEditCourseSection("Description","edited_description",$course_section_detail["description"]);
-                        generateHTMLEditCourseSection("Day","edited_day",$course_section_detail["day"]);
+                        generateOptionHTMLEditCourseSection("Day","edited_day",
+                                            returnOption($course_section_detail["day"],'Monday')
+                                            .returnOption($course_section_detail["day"],'Tuesday')
+                                            .returnOption($course_section_detail["day"],'Wednesday')
+                                            .returnOption($course_section_detail["day"],'Thursday')
+                                            .returnOption($course_section_detail["day"],'Friday')
+                                            .returnOption($course_section_detail["day"],'Saturday')
+                                            .returnOption($course_section_detail["day"],'Sunday'));
                         generateHTMLEditCourseSection("Start Time","edited_start_time",$course_section_detail["start_time"],"time");
                         generateHTMLEditCourseSection("End Time","edited_end_time",$course_section_detail["end_time"],"time");
                         generateHTMLEditCourseSection("Maximum Student Number","edited_max_student_num",$course_section_detail["max_student_num"],"number",'min = "1"');
-                        generateHTMLEditCourseSection("Section Status","edited_status",$course_section_detail["status"]);
+                        $options = returnOption($course_section_detail["status"],'Open').returnOption($course_section_detail["status"],'Closed');
+                        generateOptionHTMLEditCourseSection("Section Status","edited_status",$options);
             echo<<<HTML
                         <input type="submit" name="submitEditSectionForm"/>
                     </form>
@@ -695,7 +720,7 @@ function createCourseDetailPage(){
     echo<<<HTML
             <form id = "newAnnouncementForm" method="POST" action="">
                 <input id="newAnnouncementInput" placeholder="New announcement Title" name= "title" required> </input>
-                <textarea class="hiddenAttributeNewAnnouncement" style="display: none;" oninput="autoExpand(this)" name="content" placeholder="New announcement Content" required></textarea>
+                <textarea id="contentTextArea" class="hiddenAttributeNewAnnouncement" style="display: none;" oninput="autoExpand(this)" name="content" placeholder="New announcement Content" required></textarea>
                 <div class="hiddenAttributeNewAnnouncement" style="display: none;" >
                     <div id="hidden-right-left">
                         <button type="button" id =  "cancelAnnouncement">Cancel</button>
@@ -827,6 +852,17 @@ function createEnrollmentPage(){
         $insert_sql = "INSERT INTO course_student (course_section_id, username) VALUES ('$course_section_id', '".$_SESSION["username"]."');";
         $output = mysqli_query($connect,$insert_sql);
         if($output){
+            $count_all_student_in_section_sql = "SELECT * FROM course_student WHERE course_section_id = $course_section_id";
+            $all_student_in_section = mysqli_query($connect,$count_all_student_in_section_sql);
+            $count_all_student_in_section = mysqli_num_rows($all_student_in_section);
+
+            $max_student_sql = "SELECT max_student_num FROM course_section WHERE course_section_id = $course_section_id";
+            $max_student = mysqli_fetch_assoc(mysqli_query($connect,$max_student_sql));
+            if($count_all_student_in_section>=$max_student['max_student_num']){
+                $update_sql = "UPDATE course_section SET status = 'Closed' WHERE course_section_id = $course_section_id";
+                mysqli_query($connect,$update_sql);
+                generateJavaScriptAlert("Successfully Enrolled");
+            }
             header("Location: dashboard.php");
         }
     }
@@ -843,8 +879,29 @@ function createEnrollmentPage(){
         $course_section = mysqli_query($connect,$course_section_sql); 
     
         echo<<<HTML
+
+            
+        <div class="banner">
+            <div class="left-panel">
+                <div class="image-container">
+                    <img src="{$course['course_image_path']}" alt="Course img"/>
+                </div>
+
+                <div class="left-right-panel">
+                    <h1>
+                        {$course['course_title']}
+                    </h1>
+                    <p>
+                        {$course["start_date"]} - {$course["end_date"]}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div clsss="sectionDetails">
             <h1>
-                {$course['course_title']}
+                Course Section
             </h1>
 
         HTML;
@@ -872,37 +929,51 @@ function createEnrollmentPage(){
         echo<<<HTML
                     <button open-modal="{$each_section['course_section_id']}">Enroll</button>
 
-                    <dialog dialog-modal class="dialog-container dialog-{$each_section['course_section_id']}">
+                    <dialog dialog-modal id="dialog-box" class="dialog-container dialog-{$each_section['course_section_id']}">
                         <form method="post" action="">
+                            <h2>Enrollment Confirmation</h2>
                             <p>
-                                Course : {$course['course_title']}
+                                <span class="title">Course</span>
+                                <span class="colon">:</span>
+                                {$course['course_title']}
                             </p>
 
                             <p>
-                                Section : {$each_section['course_section_name']}
+                                <span class="title">Section</span>
+                                <span class="colon">:</span>
+                                {$each_section['course_section_name']}
                             </p>
 
                             <p>
-                                Lecturer : {$each_section['first_name']} {$each_section['last_name']}
+                                <span class="title">Lecturer</span>
+                                <span class="colon">:</span>
+                                {$each_section['first_name']} {$each_section['last_name']}
                             </p>
 
                             <p>
-                                Duration : {$course['start_date']} - {$course['end_date']}
+                                <span class="title">Duration</span>
+                                <span class="colon">:</span>
+                                {$course['start_date']} - {$course['end_date']}
                             </p>
 
                             <p>
-                                Date : {$each_section['day']}
+                                <span class="title">Day</span>
+                                <span class="colon">:</span>
+                                {$each_section['day']}
                             </p>
 
                             <p>
-                                Time : {$each_section['start_time']} - {$each_section['end_time']}
+                                <span class="title">Time</span>
+                                <span class="colon">:</span>
+                                {$each_section['start_time']} - {$each_section['end_time']}
                             </p>
 
-                            <p> </p>
+                            <br>
 
                             <p>
                                 Do you really want to enroll this course?
                             </p>
+                            <br>
 
                             <button type="submit" formmethod="dialog">Cancel </button>
                             <button type="submit" method = "post" name='confirmation' value= '{$each_section["course_section_id"]}'>Confirm</button>
@@ -917,9 +988,13 @@ function createEnrollmentPage(){
                     }
 
         echo<<<HTML
-            </div>
+            </div>            
         HTML;
         }
+
+        echo<<<HTML
+        </div>            
+        HTML;
     }
 
 }

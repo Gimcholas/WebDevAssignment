@@ -1,43 +1,81 @@
-:root {
-    --text--theme--main   : Helvetica, Arial, Verdana;
-    --colour--theme--main : #a3d698;
-    --colour--theme--sub  : #9AD9B3;
-}
-
-* {
-    margin : 0;
-    padding : 0;
-    font-family: var(--text--theme--main);
-}
-
-body { 
-    margin : 2rem 3rem;
-}
-body .instructor-list{ 
-    margin-top: 2rem;
+.instructor-list{ 
     display: flex;
     justify-content: left;
     align-items : center;
     flex-wrap : wrap;
 }
 
-body .instructor-list h3,button{ 
+.instructor-list h3,button{ 
     margin-left: 3rem;
 }
 
-body .instructor-list img{ 
+.instructor-list img{ 
     width : 100px;
     height : 100px;
     border-radius: 200px;
+    background-color: white;
 }
 
-body .instructor-list button, body .instructor-list h3{ 
+.instructor-list button, body .instructor-list h3{ 
     width : 100px;
     height : 30px;
     border-radius:5px;
 }
 
+.instructor-list button{
+    background-color : white;
+    border-radius:5px;
+    box-shadow : 1px 1px 8px #000000;
+    border : 0.8px solid black;
+}
+.instructor-list button:hover{
+    transform: translateX(0.1rem);
+    transform: translateY(0.1rem);
+    transition: transform 0.25s;
+}
+
 .dialog-container {
     margin: auto;
     padding : 5rem;
+}
+
+h1,.instructor-list{
+    width : 100%;
+    margin : 1rem 2rem 1rem 4rem;
+}
+
+h1{
+    margin-bottom:3rem;
+}
+
+#dialog-box{
+    border-radius : 5px;
+    border : 1px solid black;
+    padding: 4rem;
+}
+
+#dialog-box::backdrop {
+    backdrop-filter: blur(20rem);
+}
+
+#dialog-box p{
+    margin-bottom: 1rem;
+}
+#dialog-box br{
+    margin-bottom: 2rem;
+}
+
+#dialog-box h2{
+    margin-bottom: 3rem;
+}
+
+.title {
+    display : inline-block;
+    width : 6rem;
+    color:black;
+}
+
+.colon {
+    margin-right: 3rem;
+    color:black;
 }
