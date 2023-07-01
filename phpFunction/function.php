@@ -611,7 +611,8 @@ function createCourseDetailPage(){
                         while($each_student = mysqli_fetch_array($student_list)){
             echo<<<HTML
                     <div class="each-student">
-                        <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                <p>
+                        <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                
+                        <p>
                             {$each_student['first_name']} {$each_student['last_name']}
                         </p>
             HTML;
@@ -624,18 +625,22 @@ function createCourseDetailPage(){
                         }
                         else{
             echo<<<HTML
-                    <form method="post" action="">
-                        <button type="submit" name="submitStudentCompleteCourse" value="{$each_student['username']}">Complete Course</button>
-                    </form>
+                        <form method="post" action="">
+                            <button type="submit" name="submitStudentCompleteCourse" value="{$each_student['username']}">Complete Course</button>
+                        </form>
                     </div>
             HTML;
                             }
                         }
                     }
             echo<<<HTML
+                    </div>
                 </div>
 
-                <div id="hiddenUpdateSection" style="display:none;">
+            HTML;
+            echo<<<HTML
+
+            <div id="hiddenUpdateSection" style="display:none;">
                 <h1> Edit Section Information </h1>
                     <form name= "editSectionForm" method="post" action="">
             HTML;
@@ -661,7 +666,7 @@ function createCourseDetailPage(){
             echo<<<HTML
                         <input type="submit" name="submitEditSectionForm"/>
                     </form>
-                </div>
+            </div>
             HTML;
         }
 
