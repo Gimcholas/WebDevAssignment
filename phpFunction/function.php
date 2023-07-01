@@ -861,6 +861,7 @@ function createEnrollmentPage(){
             if($count_all_student_in_section>=$max_student['max_student_num']){
                 $update_sql = "UPDATE course_section SET status = 'Closed' WHERE course_section_id = $course_section_id";
                 mysqli_query($connect,$update_sql);
+                generateJavaScriptAlert("Successfully Enrolled");
             }
             header("Location: dashboard.php");
         }
@@ -878,8 +879,29 @@ function createEnrollmentPage(){
         $course_section = mysqli_query($connect,$course_section_sql); 
     
         echo<<<HTML
+
+            
+        <div class="banner">
+            <div class="left-panel">
+                <div class="image-container">
+                    <img src="{$course['course_image_path']}" alt="Course img"/>
+                </div>
+
+                <div class="left-right-panel">
+                    <h1>
+                        {$course['course_title']}
+                    </h1>
+                    <p>
+                        {$course["start_date"]} - {$course["end_date"]}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div clsss="sectionDetails">
             <h1>
-                {$course['course_title']}
+                Course Section
             </h1>
 
         HTML;
@@ -907,37 +929,51 @@ function createEnrollmentPage(){
         echo<<<HTML
                     <button open-modal="{$each_section['course_section_id']}">Enroll</button>
 
-                    <dialog dialog-modal class="dialog-container dialog-{$each_section['course_section_id']}">
+                    <dialog dialog-modal id="dialog-box" class="dialog-container dialog-{$each_section['course_section_id']}">
                         <form method="post" action="">
+                            <h2>Enrollment Confirmation</h2>
                             <p>
-                                Course : {$course['course_title']}
+                                <span class="title">Course</span>
+                                <span class="colon">:</span>
+                                {$course['course_title']}
                             </p>
 
                             <p>
-                                Section : {$each_section['course_section_name']}
+                                <span class="title">Section</span>
+                                <span class="colon">:</span>
+                                {$each_section['course_section_name']}
                             </p>
 
                             <p>
-                                Lecturer : {$each_section['first_name']} {$each_section['last_name']}
+                                <span class="title">Lecturer</span>
+                                <span class="colon">:</span>
+                                {$each_section['first_name']} {$each_section['last_name']}
                             </p>
 
                             <p>
-                                Duration : {$course['start_date']} - {$course['end_date']}
+                                <span class="title">Duration</span>
+                                <span class="colon">:</span>
+                                {$course['start_date']} - {$course['end_date']}
                             </p>
 
                             <p>
-                                Date : {$each_section['day']}
+                                <span class="title">Day</span>
+                                <span class="colon">:</span>
+                                {$each_section['day']}
                             </p>
 
                             <p>
-                                Time : {$each_section['start_time']} - {$each_section['end_time']}
+                                <span class="title">Time</span>
+                                <span class="colon">:</span>
+                                {$each_section['start_time']} - {$each_section['end_time']}
                             </p>
 
-                            <p> </p>
+                            <br>
 
                             <p>
                                 Do you really want to enroll this course?
                             </p>
+                            <br>
 
                             <button type="submit" formmethod="dialog">Cancel </button>
                             <button type="submit" method = "post" name='confirmation' value= '{$each_section["course_section_id"]}'>Confirm</button>
@@ -952,9 +988,13 @@ function createEnrollmentPage(){
                     }
 
         echo<<<HTML
-            </div>
+            </div>            
         HTML;
         }
+
+        echo<<<HTML
+        </div>            
+        HTML;
     }
 
 }
