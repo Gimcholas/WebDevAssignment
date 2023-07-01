@@ -37,9 +37,8 @@
             ?>
 
             <div id="root">
-                <div class="container pt-5">
-                    <div class="row align-items-strech">
-                        <div class="c-dashboardInfo col-lg-3 col-md-6">
+                <div class="main-dashboard-container">
+                        <div class="c-dashboardInfo">
                             <div class="wrap">
                                 <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Student
                                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -49,7 +48,7 @@
                                     <span class="hind-font caption-12 c-dashboardInfo__count"><?php echo $countStudent ?></span>
                             </div>
                         </div>
-                        <div class="c-dashboardInfo col-lg-3 col-md-6">
+                        <div class="c-dashboardInfo">
                             <div class="wrap">
                                 <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Instructor
                                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -59,7 +58,7 @@
                                     <span class="hind-font caption-12 c-dashboardInfo__count"><?php echo $countInstructor ?></span>
                             </div>
                         </div>
-                        <div class="c-dashboardInfo col-lg-3 col-md-6">
+                        <div class="c-dashboardInfo">
                             <div class="wrap">
                                 <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Course
                                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -69,7 +68,6 @@
                                     <span class="hind-font caption-12 c-dashboardInfo__count"><?php echo $countCourse ?></span>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
 
