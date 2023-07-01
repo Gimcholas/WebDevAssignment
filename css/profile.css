@@ -1,5 +1,5 @@
-:root {
-    --text--theme--main   : Helvetica, Arial, Verdana;
+*{
+    font-family: 'Montserrat', sans-serif;
 }
 
 body{
@@ -9,12 +9,14 @@ body{
 }
 
 .container {
+    margin: 1.5rem 1rem 2.5rem 1.5rem;
     padding : 2rem 3rem;
     display : flex;
     flex-wrap: wrap;
     align-items : center;
     justify-content: left;
     background-color: #a3d698;
+    box-shadow : 1px 1px 8px #000000
 }
 
 .container .left-side{
