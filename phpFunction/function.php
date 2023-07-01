@@ -754,7 +754,7 @@ function createCourseDetailPage(){
                     <div class="upper-left">
                         <img src="{$profile_image['profile_image_path']}" alt="{$author_name['first_name']} {$author_name['last_name']}">
                         <h3>
-                            {$author_name['first_name']} {$author_name['last_name']};
+                            {$author_name['first_name']} {$author_name['last_name']}
                         </h3>
                     </div>
                     <h3>
