@@ -131,11 +131,19 @@ function generateHTMLChangePassword($title,$inputName){
 
 function generateHTMLEditCourseSection($title,$inputName,$value,$inputType = "text",$attribute1 = "",$attribute2="",$attribute3=""){
     echo 
-    '<p> 
+    '<h3> 
         <span class="title">'.$title.'</span>
         <span class="colon">:</span>
         <input type="'.$inputType.'" name="'.$inputName.'" value = "'.$value.'" required ' .$attribute1.' ' .$attribute1.' ' .$attribute1.'>
-    </p>';
+    </h3>';
+}
+function generateOptionHTMLEditCourseSection($title,$inputName,$options){
+    echo 
+    '<h3> 
+        <span class="title">'.$title.'</span>
+        <span class="colon">:</span>
+        <select name = "'.$inputName.'" id="'.$inputName.'" >'.$options.'</select>
+    </h3>';
 }
 
 function generateFeedbackForm($formName,$title1,$inputName1,$title2,$inputName2,$submitForm){
@@ -435,6 +443,15 @@ function createProfilePage(){
     HTML;
 }
 
+function returnOption($data,$value){
+    if($data==$value) {
+        return "<option value='".$value."' selected>".$value."</option> ";
+    }
+    else{
+        return "<option value='".$value."' >".$value."</option> ";
+    }
+}
+
 function createCourseDetailPage(){
     global $connect;
     $course_section_id = $_GET['section'];
@@ -607,11 +624,19 @@ function createCourseDetailPage(){
 
                         generateHTMLEditCourseSection("Name","edited_course_section_name",$course_section_detail["course_section_name"]);
                         generateHTMLEditCourseSection("Description","edited_description",$course_section_detail["description"]);
-                        generateHTMLEditCourseSection("Day","edited_day",$course_section_detail["day"]);
+                        generateOptionHTMLEditCourseSection("Day","edited_day",
+                                            returnOption($course_section_detail["day"],'Monday')
+                                            .returnOption($course_section_detail["day"],'Tuesday')
+                                            .returnOption($course_section_detail["day"],'Wednesday')
+                                            .returnOption($course_section_detail["day"],'Thursday')
+                                            .returnOption($course_section_detail["day"],'Friday')
+                                            .returnOption($course_section_detail["day"],'Saturday')
+                                            .returnOption($course_section_detail["day"],'Sunday'));
                         generateHTMLEditCourseSection("Start Time","edited_start_time",$course_section_detail["start_time"],"time");
                         generateHTMLEditCourseSection("End Time","edited_end_time",$course_section_detail["end_time"],"time");
                         generateHTMLEditCourseSection("Maximum Student Number","edited_max_student_num",$course_section_detail["max_student_num"],"number",'min = "1"');
-                        generateHTMLEditCourseSection("Section Status","edited_status",$course_section_detail["status"]);
+                        $options = returnOption($course_section_detail["status"],'Open').returnOption($course_section_detail["status"],'Closed');
+                        generateOptionHTMLEditCourseSection("Section Status","edited_status",$options);
             echo<<<HTML
                         <input type="submit" name="submitEditSectionForm"/>
                     </form>
@@ -695,7 +720,7 @@ function createCourseDetailPage(){
     echo<<<HTML
             <form id = "newAnnouncementForm" method="POST" action="">
                 <input id="newAnnouncementInput" placeholder="New announcement Title" name= "title" required> </input>
-                <textarea class="hiddenAttributeNewAnnouncement" style="display: none;" oninput="autoExpand(this)" name="content" placeholder="New announcement Content" required></textarea>
+                <textarea id="contentTextArea" class="hiddenAttributeNewAnnouncement" style="display: none;" oninput="autoExpand(this)" name="content" placeholder="New announcement Content" required></textarea>
                 <div class="hiddenAttributeNewAnnouncement" style="display: none;" >
                     <div id="hidden-right-left">
                         <button type="button" id =  "cancelAnnouncement">Cancel</button>
