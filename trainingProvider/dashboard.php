@@ -1,8 +1,6 @@
 <?php 
     include "../db_connect.php";
     session_start();
-    //$_SESSION["username"] = "Huawei";
-
 ?>
 
 <html>
