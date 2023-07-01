@@ -56,17 +56,11 @@
                         $newFileName .= ".png";
                     }
 
-                    if(file_exists($imageFolderPath . $filename)){
-                        echo $filename . " is already exists.";  
-                    }
-                    else {
-                        $imagePath = $imageFolderPath . $newFileName;
-                        move_uploaded_file($_FILES["photo"]["tmp_name"], $imagePath);
-                        
+                    $imagePath = $imageFolderPath . $newFileName;
+                    move_uploaded_file($_FILES["photo"]["tmp_name"], $imagePath);
 
-                    }
-
-                    $sql = "UPDATE course SET(course_image_path = '" . $imagePath . "') WHERE course_id = " .$_POST["course_id"] . ";";
+                    $sql = "UPDATE course SET course_image_path = '" . $imagePath . "' WHERE course_id =".$_POST["courseID"].";";
+                    echo $sql;
                     $result = mysqli_query($connect,$sql);
                     if(!$result) {
                         die('Cannot enter data'.mysqli_error($connect));
