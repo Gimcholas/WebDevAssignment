@@ -661,6 +661,66 @@
             echo "</dialog>";
         }?>
 
+        <!-- Display numbers of each usertype -->
+        <?php
+            $sql = "SELECT * FROM user where usertype = 'Admin';";
+            $result = mysqli_query($connect,$sql);
+            $countAdmin = mysqli_num_rows($result);
+
+            $sql = "SELECT * FROM instructor;";
+            $result = mysqli_query($connect,$sql);
+            $countInstructor = mysqli_num_rows($result);
+
+            $sql = "SELECT * FROM student;";
+            $result = mysqli_query($connect,$sql);
+            $countStudent = mysqli_num_rows($result);
+
+            $sql = "SELECT * FROM training_provider;";
+            $result = mysqli_query($connect,$sql);
+            $countProvider = mysqli_num_rows($result);
+
+            ?>
+            <div class="bottomPanel">
+            <?php
+            if ($_SESSION['usertype'] == 'Admin') {
+                $sql = "SELECT * FROM user;";
+            
+                $result = mysqli_query($connect,$sql);
+                $count = mysqli_num_rows($result);
+            ?>
+            <div class="num-count-card">
+                <div class="userColor"></div>
+                <p class="title">Number of Users:</p>
+                <p class="data"><?php echo $count; ?></p>
+            </div>
+            <div class="num-count-card">
+                <div class="adminColor"></div>
+                <p class="title">Number of Admins:</p>
+                <p class="data"><?php echo $countAdmin; ?></p>
+            </div>
+            <div class="num-count-card">
+                <div class="providerColor"></div>
+                <p class="title">Number of Providers:</p>
+                <p class="data"><?php echo $countProvider; ?></p>
+            </div>
+
+            <?php 
+        } ?>
+
+        
+            <div class="num-count-card">
+                <div class="instructorColor"></div>
+                <p class="title">Number of instructor:</p>
+                <p class="data"><?php echo $countInstructor; ?></p>
+            </div>
+
+            <div class="num-count-card">
+                <div class="studentColor"></div>
+                <p class="title">Number of student:</p>
+                <p class="data"><?php echo $countStudent; ?></p>
+            </div>
+        </div>
+
         <?php
         // User table
         if ($_SESSION["usertype"] == "Admin") {
@@ -793,45 +853,7 @@
         }
         ?>
       
-        <!-- Display numbers of each usertype -->
-        <?php
-            $sql = "SELECT * FROM user where usertype = 'Admin';";
-            $result = mysqli_query($connect,$sql);
-            $countAdmin = mysqli_num_rows($result);
 
-            $sql = "SELECT * FROM instructor;";
-            $result = mysqli_query($connect,$sql);
-            $countInstructor = mysqli_num_rows($result);
-
-            $sql = "SELECT * FROM student;";
-            $result = mysqli_query($connect,$sql);
-            $countStudent = mysqli_num_rows($result);
-
-            $sql = "SELECT * FROM training_provider;";
-            $result = mysqli_query($connect,$sql);
-            $countProvider = mysqli_num_rows($result);
-
-            if ($_SESSION['usertype'] == 'Admin') {
-            ?>
-            <p>Number of users: <?php echo $count; ?></p>
-            <p>Number of admin: <?php echo $countAdmin; ?></p>
-            <p>Number of training provider: <?php echo $countProvider; ?></p>
-            <?php 
-        } ?>
-
-        <div class="bottomPanel">
-            <div class="numInstructor">
-                <div class="instructorColor"></div>
-                <p class="title">Number of instructor:</p>
-                <p class="data"><?php echo $countInstructor; ?></p>
-            </div>
-
-            <div class="numStudent">
-                <div class="studentColor"></div>
-                <p class="title">Number of student:</p>
-                <p class="data"><?php echo $countStudent; ?></p>
-            </div>
-        </div>
         
     </div>
 </body>
