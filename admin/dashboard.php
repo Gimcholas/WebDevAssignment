@@ -227,7 +227,7 @@
                 echo "<h1>Admin Dashboard</h1>";
             } 
             else if ($_SESSION["usertype"] == "Provider") {
-                echo "<h1>Training Provider Dashboard</h1>";
+                echo "<h1>Manage Accounts</h1>";
             }
             ?>
             <button create-account-button>Add Account</button>

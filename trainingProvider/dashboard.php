@@ -36,7 +36,44 @@
             $countCourse = mysqli_num_rows($result);
             ?>
 
-            <div class="information">
+            <div id="root">
+                <div class="container pt-5">
+                    <div class="row align-items-strech">
+                        <div class="c-dashboardInfo col-lg-3 col-md-6">
+                            <div class="wrap">
+                                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Student
+                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
+                                    </path>
+                                </h4>
+                                    <span class="hind-font caption-12 c-dashboardInfo__count"><?php echo $countStudent ?></span>
+                            </div>
+                        </div>
+                        <div class="c-dashboardInfo col-lg-3 col-md-6">
+                            <div class="wrap">
+                                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Instructor
+                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
+                                    </path>
+                                </h4>
+                                    <span class="hind-font caption-12 c-dashboardInfo__count"><?php echo $countInstructor ?></span>
+                            </div>
+                        </div>
+                        <div class="c-dashboardInfo col-lg-3 col-md-6">
+                            <div class="wrap">
+                                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Course
+                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
+                                    </path>
+                                </h4>
+                                    <span class="hind-font caption-12 c-dashboardInfo__count"><?php echo $countCourse ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="information">
                 <div class="student-card">
                     <h3>Total Student</h3>
                     <h3><?php echo $countStudent ?></h3>
@@ -49,7 +86,7 @@
                     <h3>Total Courses</h3>
                     <h3><?php echo $countCourse ?></h3> 
                 </div>
-            </div>
+            </div> -->
             <a href="../admin/courseOverview.php"><button>Manage Courses</button></a>
             <a href="../admin/dashboard.php"><button>Manage Accounts</button></a>
             <a href="feedback.php"><button>View Feedback</button></a>
