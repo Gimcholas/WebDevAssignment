@@ -520,6 +520,14 @@ function createCourseDetailPage(){
         header("Refresh:0");
         exit;
     }
+    else if(isset($_POST['submitStudentCompleteCourse'])){
+        $update_sql = "UPDATE course_student SET course_completed = '1', course_completed_date='".date("Y-m-d")."' WHERE username = '".$_POST['submitStudentCompleteCourse']."' AND course_section_id = $course_section_id";
+        mysqli_query($connect,$update_sql);
+        generateJavaScriptAlert("Successfully Updated");
+        $_POST = array();
+        header("Refresh:0");
+        exit;
+    }
 
     echo<<<HTML
         <div class="banner">
@@ -590,7 +598,7 @@ function createCourseDetailPage(){
                                             JOIN student as s ON a.username = s.username 
                                             JOIN user as u ON a.username = u.username 
                                             WHERE course_section_id = $course_section_id 
-                                            ORDER BY s.last_name, s.first_name";
+                                            ORDER BY a.course_completed,s.last_name, s.first_name";
                     $student_list = mysqli_query($connect,$student_list_sql);
                     $student_count = mysqli_num_rows($student_list);
 
@@ -606,9 +614,22 @@ function createCourseDetailPage(){
                         <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                <p>
                             {$each_student['first_name']} {$each_student['last_name']}
                         </p>
+            HTML;
+                        if($each_student['course_completed']==1){
+            
+            echo<<<HTML
+                            <p> Completed</p>
 
+            HTML;
+                        }
+                        else{
+            echo<<<HTML
+                    <form method="post" action="">
+                        <button type="submit" name="submitStudentCompleteCourse" value="{$each_student['username']}">Complete Course</button>
+                    </form>
                     </div>
             HTML;
+                            }
                         }
                     }
             echo<<<HTML
@@ -789,11 +810,10 @@ function createRegisterCoursePage(){
     $course_sql = "SELECT * FROM course WHERE course_id = $course_id";
     $course = mysqli_fetch_assoc(mysqli_query($connect,$course_sql));
 
-    $course_section_sql = "SELECT * FROM course_section AS cs
-                            JOIN instructor AS i ON i.username = cs.username
-                            JOIN user AS u ON u.username = cs.username
+    $unique_instructor_sql = "SELECT DISTINCT (cs.username) 
+                            FROM course_section AS cs
                             where cs.course_id = $course_id";
-    $course_section = mysqli_query($connect,$course_section_sql); 
+    $unique_instructor = mysqli_query($connect,$unique_instructor_sql); 
 
     echo<<<HTML
     <div class="banner">
@@ -830,7 +850,13 @@ function createRegisterCoursePage(){
     <div class= "instructor-list">
     <h2>Course Instructor</h2>
     HTML;
-            while($section = mysqli_fetch_assoc($course_section)){
+            while($unique = mysqli_fetch_assoc($unique_instructor)){
+                $section_sql = "SELECT *
+                                FROM course_section AS cs
+                                JOIN instructor AS i ON i.username = cs.username
+                                JOIN user AS u ON u.username = cs.username
+                                where cs.username = '".$unique['username']."'";
+                $section = mysqli_fetch_assoc(mysqli_query($connect,$section_sql)); 
     echo<<<HTML
             <div class = "instructor">
                 <img src="{$section['profile_image_path']}" alt = "{$section['first_name']} {$section['last_name']}">
