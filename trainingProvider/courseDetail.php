@@ -40,7 +40,7 @@ session_start();
                 <div class='course-details'>
                     <?php 
                     if ($_SESSION['usertype'] == "Admin") {
-                        echo "<a href='../admin/courseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
+                        echo "<a href='../admin/tableCourseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
                     }
                     if ($_SESSION['usertype'] == "Provider") {
                         echo "<a href='../admin/courseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
