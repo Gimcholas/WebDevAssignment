@@ -1,5 +1,5 @@
 function autoExpand(e){
-    e.style.height = '2 rem';
+    e.style.height = '2rem';
     e.style.height = (e.scrollHeight) + "px";
 }
 
@@ -68,6 +68,7 @@ cancelAnnouncementButton.addEventListener("click", function(e) {
         newAnnouncementForm.reset();
         f.style.display = "none";
     });
+
 });
 
 newAnnouncementInput.addEventListener("click", function(e) {
@@ -76,6 +77,7 @@ newAnnouncementInput.addEventListener("click", function(e) {
             f.style.display = "block";
         } 
     });
+    document.getElementById("contentTextArea").style.height = '2rem';
 });
 
 if ( window.history.replaceState ) {
