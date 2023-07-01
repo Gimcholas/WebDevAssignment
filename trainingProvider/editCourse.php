@@ -60,7 +60,6 @@
                     move_uploaded_file($_FILES["photo"]["tmp_name"], $imagePath);
 
                     $sql = "UPDATE course SET course_image_path = '" . $imagePath . "' WHERE course_id =".$_POST["courseID"].";";
-                    echo $sql;
                     $result = mysqli_query($connect,$sql);
                     if(!$result) {
                         die('Cannot enter data'.mysqli_error($connect));
