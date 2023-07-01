@@ -79,6 +79,7 @@ body {
     transform: translateY(0.1rem);
     transform: translateX(0.1rem);
     transition: transform 0.25s;
+    background-color: antiquewhite;
 }
 
 #hiddenDetail {

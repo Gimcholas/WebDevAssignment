@@ -35,10 +35,18 @@ header{
     box-shadow : 1px 1px 8px #000000
 }
 
-.each-announcement:hover,#printCertificate:hover{
+#printCertificate:hover{
     transform: translateY(0.1rem);
     transform: translateX(0.5rem);
     transition: transform 0.25s;
+    background-color: antiquewhite;
+}
+.each-announcement:hover{
+    transform: translateY(0.1rem);
+    transform: translateX(0.5rem);
+    transition: transform 0.25s;
+    padding:2rem;
+    background-color: antiquewhite;
 }
 
 .each-announcement .upper, .each-announcement .upper-left{
