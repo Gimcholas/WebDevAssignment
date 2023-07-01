@@ -27,7 +27,7 @@
             die("End date is required"); 
         }
 
-        $imagePath = NULL;
+        $imagePath = "../files/MMU_Logo.png";
         // Upload image
         if(isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0){
             // Directory where the images are stored
@@ -67,7 +67,6 @@
                 echo "Error: There was a problem uploading your file. Please try again."; 
             }
         }
-        echo "<script>alert('Line 81 ' + '" . $imagePath . "')</script>";
         if($_SESSION['usertype'] == "Admin") {
             $sql1 = "INSERT into course(provider_username, course_title, course_description, start_date, end_date,course_image_path) values ('" . $_POST['providerUsername'] . "', '" . $_POST['courseName'] . "', '" . $_POST['courseIntro'] . "', '" . $_POST['startDate'] . "', '" . $_POST['endDate'] . "', '" . $imagePath ."');";
         }

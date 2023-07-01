@@ -319,9 +319,9 @@
                     <div id="additionalSection"></div>
                 
                     <div class="addSection">
-                        <input type="button" style="display:inline-block;" value="Add More Section" onclick="addSection()">     
-                        <input type="submit" style="display:inline-block;" name="updateCourse" value="Save">
-                        <a href="courseDetail.php?view&course=<?php echo $_GET["course"]?>"><input type="button" style="display:inline-block;" value="Cancel"></a>
+                        <input type="button" style="display:inline-block; background-color:lightgreen; color:black;" value="Add More Section" onclick="addSection()">     
+                        <input type="submit" style="display:inline-block; background-color:lightgreen; color:black;" name="updateCourse" value="Save">
+                        <a href="courseDetail.php?view&course=<?php echo $_GET["course"]?>"><input type="button" style="display:inline-block; background-color:red; color:black;" value="Cancel"></a>
                     </div>
                     
                     </form>

@@ -108,7 +108,7 @@ session_start();
                         <td><?php echo $row['day']?></td>
                         <td><?php echo $row['status']?></td>
                         <td><?php echo $studentCount . "/" . $row['max_student_num']?></td>
-                        <td><a href='courseDetail.php?view&courseSection=<?php echo $row['course_section_id'] ?>'><button style="background-color:lightgreen;">Details</button></a></td>
+                        <td><a href='enrollStudentList.php?view&courseSection=<?php echo $row['course_section_id'] ?>'><button style="background-color:lightgreen;">Details</button></a></td>
                         <td><a href='courseDetail.php?delete&courseSection=<?php echo $row['course_section_id'] ?>' onclick='return confirmation();'><button style="background-color:red;">Delete</button></a></td>
                     <?php
                 }
