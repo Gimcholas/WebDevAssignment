@@ -24,14 +24,21 @@ header{
 }
 
 .announcement h1,#hiddenStudentList h1{
-    margin-bottom: 0.2rem;
+    margin-bottom: 2rem;
 }
 
 .each-announcement {
-    background-color: var(--colour--theme--grey);
+    background-color: white;
     margin-bottom: 1.5rem;
     border-radius: 11px;
     padding : 0.5rem 2rem;
+    box-shadow : 1px 1px 8px #000000
+}
+
+.each-announcement:hover{
+    transform: translateY(0.1rem);
+    transform: translateX(0.5rem);
+    transition: transform 0.25s;
 }
 
 .each-announcement .upper, .each-announcement .upper-left{
@@ -71,7 +78,7 @@ header{
     margin-bottom : 1rem;
     text-align: center;
     align-items: middle;
-    background-color: var(--colour--theme--grey--light);
+    background-color: white;
 }
 
 #newAnnouncementForm #hidden-right-left button{

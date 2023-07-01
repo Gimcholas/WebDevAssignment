@@ -82,9 +82,8 @@ body {
 }
 
 
-@media (max-width: 500px) {
+@media (max-width: 768px) {
 
-	
 	img {
 		width : 90%;
 		height : auto;
@@ -95,7 +94,6 @@ body {
 	}
 
   
-
 	.rightdiv {
 		height: 80%;
 	    width: 100%;
