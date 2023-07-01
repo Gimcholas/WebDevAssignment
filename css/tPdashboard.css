@@ -17,7 +17,7 @@ header{
   position: relative;
   overflow: hidden;
   padding: 40px 25px 20px;
-  height: 35%;
+  height: 100%;
 }
 .c-dashboardInfo__title{
   color: #6c6c6c;
@@ -85,4 +85,13 @@ header{
   /* CSS for button links */
   a {
     text-decoration: none;
+  }
+
+  .container {
+    display: inline;
+  }
+
+  .main-dashboard-container {
+    display:flex;
+    justify-content: space-around;
   }
