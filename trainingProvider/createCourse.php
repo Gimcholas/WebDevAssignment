@@ -108,7 +108,7 @@
                         echo "<a href='../admin/courseOverview.php'><input type='button' style='display:inline-block; background-color:#3498db;' value= 'Back'></a><br><br>";
                     }
                     else {
-                        echo "<a href='courses.php'><input type='button' style='display:inline-block;' value= 'Back'></a><br><br>";                
+                        echo "<a href='../admin/courseOverview.php'><input type='button' style='display:inline-block; background-color:#3498db;' value= 'Back'></a><br><br>";                
                     }?>
                 </div>
             </form>

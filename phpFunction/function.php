@@ -393,8 +393,8 @@ function createProfilePage(){
                         }
     echo<<<HTML
 
-                    <button type="button" id = "cancelEdit">Cancel</button>
-                    <button type="submit" id = "submitEdit" name = "submitEdit">Edit</button>
+                    <button type="button" id = "cancelEdit" style="background-color:red;">Cancel</button>
+                    <button type="submit" id = "submitEdit" name = "submitEdit" style="background-color:#3498db;">Edit</button>
 
                 </form>
             </div>
@@ -409,8 +409,8 @@ function createProfilePage(){
                         generateHTMLChangePassword("New Password","newPassword");
                         generateHTMLChangePassword("Re-enter New Password","newPasswordConfirm");
     echo<<<HTML
-                    <button type="button" id = "cancelChangePWD">Cancel</button>
-                    <button type="submit" id = "submitChangePWD" name = "submitChangePWD">Edit</button>
+                    <button type="button" id = "cancelChangePWD" style="background-color:red;">Cancel</button>
+                    <button type="submit" id = "submitChangePWD" name = "submitChangePWD" style="background-color:#3498db;">Edit</button>
 
                 </form>
             </div>

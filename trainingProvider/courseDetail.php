@@ -43,7 +43,7 @@ session_start();
                         echo "<a href='../admin/courseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
                     }
                     if ($_SESSION['usertype'] == "Provider") {
-                        echo "<a href='courses.php'><button>Back</button></a>";
+                        echo "<a href='../admin/courseOverview.php'><button style='background-color: #3498db;'>Back</button></a>";
                     }
                         echo "<a href='editCourse.php?edit&course=" .$_GET['course'] ."'><button style='background-color: lightgreen;'>Edit</button></a>";
                         echo "<a href='courseDetail.php?delete&course=" .$_GET['course'] ."' onclick='return confirmation();'><button style='background-color: red;'>Delete Course</button></a>";

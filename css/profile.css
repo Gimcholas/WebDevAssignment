@@ -100,6 +100,7 @@ form input {
 
 #displayDIV p, #editDIV p, #newPasswordDIV p{
     margin-bottom: 1rem;
+    color:black;
 }
 
 #displayDIV button, #editDIV button, #newPasswordDIV button{
