@@ -61,6 +61,11 @@ label{
     transition: transform 0.25s;
 }
 
+#courseFeedback p img,#instructorFeedback p img{
+    width:2rem;
+    height:2rem;
+}
+
 textarea{
     width : 20rem;
     box-shadow : 1px 1px 8px #000000;
