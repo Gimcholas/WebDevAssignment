@@ -339,17 +339,29 @@ h4 {
     justify-content: space-evenly;
 }
 
+.userColor{
+    height: 8px;
+    background: linear-gradient(to right, #007bff,#4d94ff);
+}   
+
+.adminColor{
+    height: 8px;
+    background: linear-gradient(to right, #800080, #c678ff);
+}   
+.providerColor{
+    height: 8px;
+    background: linear-gradient(to right, #008000, #00b300);
+}   
 .instructorColor{
     height: 8px;
-    background: linear-gradient(to right, #2196F3, #4FC3F7);
+    background: linear-gradient(to right, #ff6600, #ff9933);
 }
-
 .studentColor{
     height: 8px;
-    background: linear-gradient(to right, #FFA500, #FFC400);
-}
+    background: linear-gradient(to right, #19319d, #94b7e5);
+}   
 
-.numInstructor, .numStudent{
+.num-count-card{
     width: 220px;
     text-align: center;
     font-weight: bold;
@@ -361,7 +373,7 @@ h4 {
     margin-bottom: 30px;
 }
 
-.numInstructor p, .numStudent p{
+.num-count-card p{
     width: fit-content;
 }
 
