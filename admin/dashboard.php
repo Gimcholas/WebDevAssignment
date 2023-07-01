@@ -819,8 +819,20 @@
             <?php 
         } ?>
 
-        <p>Number of instructor: <?php echo $countInstructor; ?></p>
-        <p>Number of student: <?php echo $countStudent; ?></p>
+        <div class="bottomPanel">
+            <div class="numInstructor">
+                <div class="instructorColor"></div>
+                <p class="title">Number of instructor:</p>
+                <p class="data"><?php echo $countInstructor; ?></p>
+            </div>
+
+            <div class="numStudent">
+                <div class="studentColor"></div>
+                <p class="title">Number of student:</p>
+                <p class="data"><?php echo $countStudent; ?></p>
+            </div>
+        </div>
+        
     </div>
 </body>
 
