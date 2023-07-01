@@ -539,7 +539,7 @@ function createCourseDetailPage(){
         </div>
 
         <!-- Course Description (in hidden form trigger when user click on button) -->
-        <div id = "hiddenDetail"  style="display: none;">
+        <div id = "hiddenDetail" class=""  style="display: none;">
             <h3>Course Description</h3>
             <p>{$course["course_description"]}</p> 
             <h3>Section Description</h3>
