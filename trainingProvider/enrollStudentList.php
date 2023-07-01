@@ -25,6 +25,7 @@
         <div class="content" id="content"> 
             <header>
                 <h1>Student Enrollment List</h1>
+                <button onclick='history.back()'>Back</button>
             </header>
             <?php
             if(isset($_GET["view"]) && isset($_GET["courseSection"])) {
