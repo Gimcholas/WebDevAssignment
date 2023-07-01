@@ -27,7 +27,7 @@
             die("End date is required"); 
         }
 
-        $imagePath = NULL;
+        $imagePath = "../files/MMU_Logo.png";
         // Upload image
         if(isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0){
             // Directory where the images are stored
