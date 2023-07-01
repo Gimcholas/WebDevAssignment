@@ -57,6 +57,9 @@ body h1{
     height: 65%;
     padding :0;
     margin : 0;
+    text-align: center;
+    justify-content : center;
+    justify-content: middle;
 }
 
 .courseImage img{
