@@ -957,19 +957,23 @@
             </div>`;
 
         const nameInputHtml = `<div class="input-box">
+            <img src="../files/name.png" alt="UserIcon">
             <input type="text" id="firstName" name="firstName" placeholder="First Name">
             <div class="errorMessageBox" id="firstName-messageBox"></div><br>
             </div>
             <div class="input-box">
+            <img src="../files/name.png" alt="UserIcon">
             <input type="text" id="lastName" name="lastName" placeholder="Last Name">
             <div class="errorMessageBox" id="lastName-messageBox"></div><br>
             </div>`;
             
         const contactInputHtml = `<div class="input-box">
+            <img src="../files/call.png" alt="UserIcon">
             <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number">
             <div class="errorMessageBox" id="contactNumber-messageBox"></div><br>
             </div>
             <div class="input-box">
+            <img src="../files/email.png" alt="UserIcon">
             <input type="email" id="email" name="email" placeholder="Contact Email">
             <div class="errorMessageBox" id="email-messageBox"></div><br>
             </div>`;
@@ -977,6 +981,7 @@
         if (usertypeSelected == "Provider") {
             const html = 
             `<div class="input-box">
+            <img src="../files/name.png" alt="UserIcon">
             <input type="text" id="providerName" name="providerName" placeholder="Provider Name">
             <div class="errorMessageBox" id="providerName-messageBox"></div><br>
             </div>`;
@@ -988,10 +993,12 @@
         else if (usertypeSelected == "Student") {
             const html = 
             `<div class="input-box">
+            <img src="../files/calendar.png" alt="UserIcon">
             <input type="date" id="dateOfBirth" name="dateOfBirth">
             <div class="errorMessageBox" id="dateOfBirth-messageBox"></div><br>
             </div>
             <div class="input-box">
+            <img src="../files/course.png" alt="UserIcon">
             <input type="text" id="academicProgram" name="academicProgram" placeholder="Academic Program">
             <div class="errorMessageBox" id="academicProgram-messageBox"></div><br>
             </div>
