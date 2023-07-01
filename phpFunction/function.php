@@ -92,6 +92,25 @@ function generateHTMLDetail($title,$variable){
     echo '<p><span class="title">'.$title.'</span><span class="colon">:</span>'.$variable.'</p>';
 }
 
+function generateHTMLFeedbackDetail($variable){
+    echo '<h3>Feedback:</h3><p>'.$variable.'</p>';
+}
+function generateHTMLStarDetail($variable){
+    echo '<h3>Rating:</h3><p>';
+    $count = 5;
+    while($count!=0){
+        if($variable > 0){
+            echo '<img src="../files/yellow-star.png" alt="yellow-star">';
+        }
+        else{
+            echo '<img src="../files/blank-star.png" alt="blank-star">';  
+        }
+        $variable = $variable-1;
+        $count = $count - 1;
+    }
+    echo '</p>';
+}
+
 function generateHTMLEditProfile($title,$inputName,$value,$inputType = "text"){
     echo 
     '<p> 
@@ -622,8 +641,8 @@ function createCourseDetailPage(){
                             generateFeedbackForm('courseFeedbackForm','Rating','courseRating','Feedback','courseFeedback','submitCourseFeedbackForm');
                             }
                         else {
-                            generateHTMLDetail("Rating",$course_feedback['rating']);
-                            generateHTMLDetail("Feedback",$course_feedback['feedback']);
+                            generateHTMLStarDetail($course_feedback['rating']);
+                            generateHTMLFeedbackDetail($course_feedback['feedback']);
                             }
                 echo<<<HTML
                         </div>
@@ -641,8 +660,8 @@ function createCourseDetailPage(){
                             generateFeedbackForm('instructorFeedbackForm','Rating','instructorRating','Feedback','instructorFeedback','submitInstructorFeedbackForm');
                         }
                         else {
-                            generateHTMLDetail("Rating",$instructor_feedback['rating']);
-                            generateHTMLDetail("Feedback",$instructor_feedback['feedback']);
+                            generateHTMLStarDetail($instructor_feedback['rating']);
+                            generateHTMLFeedbackDetail($instructor_feedback['feedback']);
                             }
                 echo<<<HTML
                     </div>
