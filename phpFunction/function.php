@@ -69,7 +69,12 @@ function retrieveEachDashboardCourse($result,$myCoursePage){
     while($eachCourse = mysqli_fetch_array($result)){
         echo '<div class="class-child">';
             echo '<a href = "'.generateDashboardCourseLink($eachCourse,$myCoursePage).'">';
-                echo '<div class="courseImage"><img src = "'.$eachCourse["course_image_path"].'" alt = "'.$eachCourse["course_title"].'"/></div>';
+                if($eachCourse["course_image_path"]==null){
+                    echo '<div class="courseImage"><img src = "../files/MMU_Logo.png" alt = "'.$eachCourse["course_title"].'"/></div>';
+                }
+                else{
+                    echo '<div class="courseImage"><img src = "'.$eachCourse["course_image_path"].'" alt = "'.$eachCourse["course_title"].'"/></div>';
+                }
                 echo '<h2>';
                     if($myCoursePage){
                         echo $eachCourse["course_section_name"]." ";
@@ -546,7 +551,18 @@ function createCourseDetailPage(){
         <div class="banner">
         <div class="left-panel">
             <div class="image-container">
-                <img src="{$course['course_image_path']}" alt="Course img"/>
+    HTML;
+                if($course['course_image_path'] == null){
+                    echo<<<HTML
+                        <img src="../files/MMU_Logo.png" alt="Course img"/>
+                    HTML;
+                }
+                else{
+                echo<<<HTML
+                    <img src="{$course['course_image_path']}" alt="Course img"/>
+                HTML;
+                }
+    echo<<<HTML
             </div>
 
             <div class="left-right-panel">
@@ -625,7 +641,16 @@ function createCourseDetailPage(){
                 echo<<<HTML
                         <div class="each-student">
                             <div id="leftOnEachStudent">
-                                <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                
+                HTML;
+                                    if ($each_student['profile_image_path'] == null) {
+                                        echo "<img src='../files/defaultProfileImage.jpg' alt='Profile Image'>";
+                                    }
+                                    else {
+                echo<<<HTML
+                                        <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>       
+                HTML;
+                                    }
+                echo<<<HTML
                                 <p>
                                     {$each_student['first_name']} {$each_student['last_name']}
                                 </p>
@@ -797,7 +822,16 @@ function createCourseDetailPage(){
             <div class="each-announcement">
                 <div class="upper">
                     <div class="upper-left">
+    HTML;
+                    if ($profile_image['profile_image_path'] == null) {
+                        echo "<img src='../files/defaultProfileImage.jpg' alt='Profile Image'>";
+                    }
+                    else {
+    echo<<<HTML
                         <img src="{$profile_image['profile_image_path']}" alt="{$author_name['first_name']} {$author_name['last_name']}">
+    HTML;
+                    }
+    echo<<<HTML
                         <h3>
                             {$author_name['first_name']} {$author_name['last_name']}
                         </h3>
@@ -843,7 +877,18 @@ function createRegisterCoursePage(){
     <div class="banner">
         <div class="left-panel">
             <div class="image-container">
+    HTML;
+                if($course['course_image_path'] == null){
+                    echo<<<HTML
+                        <img src="../files/MMU_Logo.png" alt="Course img"/>
+                    HTML;
+                }
+                else{
+    echo<<<HTML
                 <img src="{$course['course_image_path']}" alt="Course img"/>
+    HTML;
+                }
+    echo<<<HTML
             </div>
 
             <div class="left-right-panel">
@@ -883,7 +928,18 @@ function createRegisterCoursePage(){
                 $section = mysqli_fetch_assoc(mysqli_query($connect,$section_sql)); 
     echo<<<HTML
             <div class = "instructor">
-                <img src="{$section['profile_image_path']}" alt = "{$section['first_name']} {$section['last_name']}">
+    HTML;
+                    if($section['profile_image_path'] == null){
+                        echo<<<HTML
+                            <img src="../files/defaultProfileImage.jpg" alt="{$section['first_name']} {$section['last_name']}"/>
+                        HTML;
+                    }
+                    else{
+                    echo<<<HTML
+                        <img src="{$section['profile_image_path']}" alt = "{$section['first_name']} {$section['last_name']}">
+                    HTML;
+                    }
+    echo<<<HTML
                     <p>
                         {$section["first_name"]} {$section["last_name"]}
                     </p>
@@ -934,7 +990,19 @@ function createEnrollmentPage(){
         <div class="banner">
             <div class="left-panel">
                 <div class="image-container">
-                    <img src="{$course['course_image_path']}" alt="Course img"/>
+
+        HTML;
+                    if($course['course_image_path'] == null){
+                        echo<<<HTML
+                            <img src="../files/MMU_Logo.png" alt="Course img"/>
+                        HTML;
+                    }
+                    else{
+                    echo<<<HTML
+                        <img src="{$course['course_image_path']}" alt="Course img"/>
+                    HTML;
+                    }
+        echo<<<HTML
                 </div>
 
                 <div class="left-right-panel">
@@ -958,9 +1026,16 @@ function createEnrollmentPage(){
                 while($each_section = mysqli_fetch_assoc($course_section)){
         echo<<<HTML
             <div class="instructor-list">
-
-                <img src="{$each_section['profile_image_path']}" alt = "{$each_section['first_name']} {$each_section['last_name']}">
-
+        HTML;
+                    if ($each_section['profile_image_path'] == null) {
+                        echo "<img src='../files/defaultProfileImage.jpg' alt='Profile Image'>";
+                    }
+                    else {
+                echo<<<HTML
+                        <img src="{$each_section['profile_image_path']}" alt = "{$each_section['first_name']} {$each_section['last_name']}">
+                HTML;
+                    }
+        echo<<<HTML
                 <h3 id="instructorName">
                     {$each_section['first_name']} {$each_section['last_name']}
                 </h3>
