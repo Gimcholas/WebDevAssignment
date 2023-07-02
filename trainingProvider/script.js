@@ -31,20 +31,16 @@ function addSection() {
 
     sectionDiv.innerHTML = html + html2;
     var form = document.getElementById("additionalSection");
-    //form.innerHTML+=html;
+
     form.appendChild(sectionDiv);
     var first = document.getElementById("originalSelector");
-    if (first.innerHTML != null) {
-        var options = first.innerHTML;
-    }
-    else {
 
-    }
+    var options = first.innerHTML;
+
 
     var clones = document.querySelectorAll(".cloneSelector");
-    clones.forEach((clone)=> {
-        clone.innerHTML = options;
-    }) 
+
+    clones[clones.length -1].innerHTML = options;
 };
 
 function removeSection(counter) {
