@@ -241,6 +241,7 @@ function createProfilePage(){
  
 
         mysqli_query($connect, $edit_profile_sql); 
+        generateJavaScriptAlert("Successfully Edited Profile");
         header("Refresh:0");
         exit;
     }
@@ -501,6 +502,7 @@ function createCourseDetailPage(){
                     max_student_num = '$edited_max_student_num', status = '$edited_status' 
                 WHERE course_section_id = $course_section_id";
         mysqli_query($connect,$sql);
+        generateJavaScriptAlert("Successfully Edited Section Information");
         $_POST = array();
         header("Refresh:0");
         exit;
@@ -511,6 +513,7 @@ function createCourseDetailPage(){
         $insert_sql = "INSERT INTO course_feedback (course_section_id,username,feedback,rating,date)
                         VALUE ('$course_section_id', '".$_SESSION["username"]."','$courseFeedback','$courseRating',CURDATE())";
         mysqli_query($connect,$insert_sql);
+        generateJavaScriptAlert("Successfully Made Feedback to Course");
         $_POST = array();
         header("Refresh:0");
         exit;
@@ -522,6 +525,7 @@ function createCourseDetailPage(){
         $insert_sql = "INSERT INTO instructor_feedback (course_section_id,instructor_username,student_username,feedback,rating,date)
                         VALUE ('$course_section_id','$instructor_username', '".$_SESSION["username"]."','$instructorFeedback','$instructorRating',CURDATE())";
         mysqli_query($connect,$insert_sql);
+        generateJavaScriptAlert("Successfully Made Feedback to Instructor");
         $_POST = array();
         header("Refresh:0");
         exit;
