@@ -114,13 +114,17 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
                 $sql = "SELECT * FROM course where course_id=" . $_GET['course'] . ";";
                 $result = mysqli_query($connect,$sql);
                 $row = mysqli_fetch_assoc($result);
-                //$row = getCourse($_GET['course'],$connect);
                 ?>
                 <div class='course-details'>
                     <h1>Course Details</h1>
                     <div class="course-details-box">
                         <?php
-                            echo "<img src='" . $row['course_image_path']."' width=100% alt='course image'>"; 
+                            if ($row['course_image_path'] == null) {
+                                echo "<img src='../files/tpms.png' width=100% alt='course image'>";     
+                            }
+                            else {
+                                echo "<img src='" . $row['course_image_path']."' width=100% alt='course image'>"; 
+                            }
                             echo "<p>Course ID: ". $row['course_id']."</p>";
                             echo "<p>Course Title: ". $row['course_title']."</p>";
                             echo "<p>Course Description: ". $row['course_description']."</p>";
