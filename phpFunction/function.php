@@ -343,8 +343,14 @@ function createProfilePage(){
         <div class = "left-side">
             <form id="changeProfilePictureForm" method="POST" action="" enctype="multipart/form-data">
                 <label for="uploadPicture">
-                    <img src = "{$profile['profile_image_path']}" alt="Profile Image"/>
-
+    HTML;
+                    if ($profile['profile_image_path'] == null) {
+                        echo "<img src='../files/defaultProfileImage.jpg' alt='Profile Image'>";
+                    }
+                    else {
+                        echo "<img src='".$profile['profile_image_path']."' alt='Profile Image'/>";
+                    }
+    echo<<<HTML
                     <div class="image_overlay image_overlay_blur">
                         <h3>Change</h3>
                         <p>Profile Picture</p>
