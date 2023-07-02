@@ -25,11 +25,11 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
         <header class="header-bar">
             <h1>Courses Overview</h1>
             <?php if($_SESSION["usertype"] == "Admin") { ?>
-                        <button><a onclick='selectProvider()'>Add Course</a></button>
+                        <a onclick='selectProvider()' class='add-courses-btn'><button>Add Course</button></a>
                     <?php
                     }
                     else if($_SESSION["usertype"] == "Provider") { ?>
-                        <button><a href="../trainingProvider/createCourse.php">Add Course</a></button>
+                        <a href="../trainingProvider/createCourse.php" class='add-courses-btn'><button>Add Course</button></a>
                     <?php
                     } ?>
         </header>

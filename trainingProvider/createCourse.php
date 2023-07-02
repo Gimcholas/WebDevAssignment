@@ -101,7 +101,12 @@
                 die('Cannot enter data'.mysqli_error($connect));
             }
             else {
-                header("Location: ../admin/courseOverview.php");
+                if($_SESSION["usertype"] == "Admin") {
+                    header("Location: ../admin/tableCourseOverview.php");
+                }
+                else if ($_SESSION["usertype"] == "Provider"){
+                    header("Location: ../admin/courseOverview.php");
+                }
             }            
         }
 
