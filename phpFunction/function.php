@@ -1028,7 +1028,7 @@ function createEnrollmentPage(){
                     </dialog>
         HTML;
                     }
-                    if($each_section["status"] == "Close"){
+                    if($each_section["status"] == "Closed"){
         echo<<<HTML
                     <h3> Closed </h3>
         HTML;
