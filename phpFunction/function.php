@@ -195,8 +195,8 @@ function generateCertificate($studentName,$courseTitle,$completeDate) {
             print-color-adjust: exact; 
         }
     </script>
-    <div style="width:800px; height:600px;text-align:center;margin:10px;padding:20px; border: 5px solid black;background-color: #618597;">
-        <div style="width:750px; height:550px;padding:20px; text-align:center; border: 3px solid black;background-color:white;">
+    <div style="width:800px; height:auto;text-align:center;margin:10px;padding:20px; border: 5px solid black;background-color: #618597;">
+        <div style="width:750px; height:auto;padding:20px; text-align:center; border: 3px solid black;background-color:white;">
             <span><img style="width:280px;height:auto;"src="../files/tpms.png"></span><br><br>
             <span style="font-size:55px; font-weight:bold;">Certificate of Completion</span>
             <br><br>
