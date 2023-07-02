@@ -28,7 +28,25 @@ function createCourseDashboard($myCoursePage = true,$completed = false){
             $student_training_provider_sql = "SELECT * FROM student WHERE username = '".$_SESSION['username']."'";
             $student_training_provider = mysqli_fetch_assoc(mysqli_query($connect,$student_training_provider_sql));
             
-            $course_sql = "SELECT DISTINCT * FROM course WHERE (provider_username = '".$student_training_provider['provider_username']."') AND (course_id IN (SELECT course_id FROM course_section WHERE status = 'Open' AND (course_section_id NOT IN (SELECT course_section_id FROM course_student WHERE username = '".$_SESSION['username']."')))) ORDER BY course_title";
+            $course_sql = "SELECT DISTINCT * FROM course 
+                            WHERE provider_username = '".$student_training_provider['provider_username']."' 
+                            AND course_id IN (
+                                SELECT course_id 
+                                FROM course_section 
+                                WHERE status = 'Open' 
+                                AND course_section_id NOT IN (
+                                    SELECT course_section_id 
+                                    FROM course_student 
+                                    WHERE username = '".$_SESSION['username']."'
+                                )
+                                GROUP BY course_id
+                                HAVING COUNT(course_section_id) = (
+                                    SELECT COUNT(*) 
+                                    FROM course_section 
+                                    WHERE course_section.course_id = course.course_id
+                                )
+                            )
+                            ORDER BY course_title";
 
 
         }
