@@ -16,7 +16,7 @@
 
         <!-- left part div -->
             <div class="leftdiv">
-                <img src="files/MMU_Logo.png" alt="MMU Logo" >
+                <img src="files/tpms.png" alt="MMU Logo" >
             </div>
 
         <!-- right part div -->
