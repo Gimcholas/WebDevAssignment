@@ -71,6 +71,9 @@ function retrieveEachDashboardCourse($result,$myCoursePage){
             echo '<a href = "'.generateDashboardCourseLink($eachCourse,$myCoursePage).'">';
                 echo '<div class="courseImage"><img src = "'.$eachCourse["course_image_path"].'" alt = "'.$eachCourse["course_title"].'"/></div>';
                 echo '<h2>';
+                    if($myCoursePage){
+                        echo $eachCourse["course_section_name"]." ";
+                    }
                     echo $eachCourse["course_title"];
                 echo '</h2>';
             echo '</a>';
@@ -548,7 +551,7 @@ function createCourseDetailPage(){
 
             <div class="left-right-panel">
                 <h1>
-                    {$course['course_title']}
+                    {$course['course_title']} ({$course['course_section_name']})
                 </h1>
                 <p>
                     {$course['start_date']} - {$course['end_date']}
