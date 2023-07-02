@@ -11,6 +11,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../navBar/navBarStyle.css"/>
     <link rel="stylesheet" href="courses.css"/>
+    <link rel="stylesheet" href="dashboard.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src ="../js/navbar.js"></script>    <script src ="../js/navbar.js"></script>
 </head>
@@ -22,7 +23,15 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
     </div>
     <div class="content" id="content"> 
         <header class="header-bar">
-            <h1>Courses Overview<h1>
+            <h1>Courses Overview</h1>
+            <?php if($_SESSION["usertype"] == "Admin") { ?>
+                        <button><a onclick='selectProvider()'>Add Course</a></button>
+                    <?php
+                    }
+                    else if($_SESSION["usertype"] == "Provider") { ?>
+                        <button><a href="../trainingProvider/createCourse.php">Add Course</a></button>
+                    <?php
+                    } ?>
         </header>
 
         <!-- Dialog for create course select training provider -->
@@ -64,15 +73,8 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
             <div class="ongoing-course">
                 <h1>Ongoing Courses</h1>
                 <div class="display-course-container">
-                    <?php if($_SESSION["usertype"] == "Admin") { ?>
-                        <a onclick='selectProvider()'><button>Add Course</button><a>
+                    
                     <?php
-                    }
-                    else if($_SESSION["usertype"] == "Provider") { ?>
-                        <a href="../trainingProvider/createCourse.php"><button>Add Course</button><a>
-                    <?php
-                    }
-
                     //Get the ongoing course
                     if($_SESSION['usertype'] == "Admin") {
                         $sql = "SELECT * FROM course WHERE end_date > '" . date("Y-m-d") . "';";

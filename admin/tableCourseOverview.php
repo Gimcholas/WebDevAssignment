@@ -23,7 +23,15 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
     </div>
     <div class="content" id="content"> 
         <header class="header-bar">
-            <h1>Courses Overview<h1>
+            <h1>Courses Overview</h1>
+            <?php if($_SESSION["usertype"] == "Admin") { ?>
+                <button><a onclick='selectProvider()'>Add Course</a></button>
+                <?php
+                }
+                else if($_SESSION["usertype"] == "Provider") { ?>
+                    <button><a href="../trainingProvider/createCourse.php">Add Course</a></button>
+                <?php
+                } ?>
         </header>
 
         <!-- Dialog for create course select training provider -->
@@ -60,14 +68,7 @@ if(isset($_SESSION['usertype']) != "Admin" or isset($_SESSION['usertype']) != "P
             } ?>
         </dialog>
 
-        <?php if($_SESSION["usertype"] == "Admin") { ?>
-                    <a onclick='selectProvider()'><button>Add Course</button><a>
-                <?php
-                }
-                else if($_SESSION["usertype"] == "Provider") { ?>
-                    <a href="../trainingProvider/createCourse.php"><button>Add Course</button><a>
-                <?php
-                } ?>
+        
         <!-- Display the list of courses -->
         <div class="ongoing-course">
             <h4>Ongoing Courses</h4>
