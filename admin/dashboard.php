@@ -681,13 +681,24 @@
             $result = mysqli_query($connect,$sql);
             $countAdmin = mysqli_num_rows($result);
 
-            $sql = "SELECT * FROM instructor;";
-            $result = mysqli_query($connect,$sql);
-            $countInstructor = mysqli_num_rows($result);
-
-            $sql = "SELECT * FROM student;";
-            $result = mysqli_query($connect,$sql);
-            $countStudent = mysqli_num_rows($result);
+            if ($_SESSION['usertype'] == "Admin") {
+                $sql = "SELECT * FROM instructor;";
+                $result = mysqli_query($connect,$sql);
+                $countInstructor = mysqli_num_rows($result);
+    
+                $sql = "SELECT * FROM student;";
+                $result = mysqli_query($connect,$sql);
+                $countStudent = mysqli_num_rows($result);
+            }
+            else if ($_SESSION['usertype'] == "Provider") {
+                $sql = "SELECT * FROM instructor WHERE instructor.provider_username='".$_SESSION['username']."';";
+                $result = mysqli_query($connect,$sql);
+                $countInstructor = mysqli_num_rows($result);
+    
+                $sql = "SELECT * FROM student WHERE student.provider_username='".$_SESSION['username']."';";
+                $result = mysqli_query($connect,$sql);
+                $countStudent = mysqli_num_rows($result);
+            }
 
             $sql = "SELECT * FROM training_provider;";
             $result = mysqli_query($connect,$sql);
