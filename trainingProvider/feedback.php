@@ -17,7 +17,6 @@ function viewFeedback() {
         <table>
         <thead>
             <tr>
-            <th>Username</th>
             <th>Feedback</th>
             <th>Course</th>
             <th>Rating</th>
@@ -27,7 +26,6 @@ function viewFeedback() {
         <?php 
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr>";
-            echo "<td>".$row["username"]."</td>";
             echo "<td>".$row["feedback"]."</td>";
             echo "<td>".$row["course_title"]."</td>";
             echo "<td>".$row["rating"];
@@ -51,7 +49,6 @@ function viewFeedback() {
         <table>
             <thead>
             <tr>
-                <th>Username</th>
                 <th>Feedback</th>
                 <th>Instructor</th>
                 <th>Rating</th>
@@ -61,7 +58,6 @@ function viewFeedback() {
             <?php 
             while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr>";
-            echo "<td>".$row["username"]."</td>";
             echo "<td>".$row["feedback"]."</td>";
             echo "<td>".$row["instructor_username"]."</td>";
             echo "<td>".$row["rating"];
