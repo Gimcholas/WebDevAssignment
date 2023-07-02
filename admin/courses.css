@@ -185,10 +185,12 @@ dialog form .next-btn {
     margin-bottom: 5px;
 }
 
-button a {
+.add-courses-btn{
     text-decoration: none;
     color:black;
+    width:fit-content;
+    height:fit-content;
 }
-button a:hover {
+ .add-courses-btn:hover {
     background-color: transparent;
 }
