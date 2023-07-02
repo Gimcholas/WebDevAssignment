@@ -602,53 +602,55 @@ function createCourseDetailPage(){
         if ($_SESSION["usertype"]  == "Instructor"){
             echo<<<HTML
                 <div id="hiddenStudentList" style="display:none;">
-                <h1> Students <h1>
-            HTML;
-                    $student_list_sql = "   SELECT * FROM course_student as a 
-                                            JOIN student as s ON a.username = s.username 
-                                            JOIN user as u ON a.username = u.username 
-                                            WHERE course_section_id = $course_section_id 
-                                            ORDER BY a.course_completed,s.last_name, s.first_name";
-                    $student_list = mysqli_query($connect,$student_list_sql);
-                    $student_count = mysqli_num_rows($student_list);
+                    <h1> Students <h1>
+                HTML;
+                        $student_list_sql = "   SELECT * FROM course_student as a 
+                                                JOIN student as s ON a.username = s.username 
+                                                JOIN user as u ON a.username = u.username 
+                                                WHERE course_section_id = $course_section_id 
+                                                ORDER BY a.course_completed,s.last_name, s.first_name";
+                        $student_list = mysqli_query($connect,$student_list_sql);
+                        $student_count = mysqli_num_rows($student_list);
 
-                    if($student_count == 0){
-            echo<<<HTML
-                        <p>No student found</p>
-            HTML;
+                        if($student_count == 0){
+                echo<<<HTML
+                            <p>No student found</p>
+                HTML;
                         }
-                    else {
-                        while($each_student = mysqli_fetch_array($student_list)){
-            echo<<<HTML
-                    <div class="each-student">
-                        <div id="leftOnEachStudent">
-                            <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                
-                            <p>
-                                {$each_student['first_name']} {$each_student['last_name']}
-                            </p>
+                        else {
+                            while($each_student = mysqli_fetch_array($student_list)){
+                echo<<<HTML
+                        <div class="each-student">
+                            <div id="leftOnEachStudent">
+                                <img src="{$each_student['profile_image_path']}" alt="{$each_student['first_name']} {$each_student['last_name']}"/>                
+                                <p>
+                                    {$each_student['first_name']} {$each_student['last_name']}
+                                </p>
+                            </div>
+                HTML;
+                            if($each_student['course_completed']==1){
+                
+                    echo<<<HTML
+                                <div id="rightOnEachStudent">
+                                    <p> Completed</p>
+                                </div>
+                    HTML;
+                            }
+                            else{
+                    echo<<<HTML
+                                <div id="rightOnEachStudent">
+                                    <form method="post" action="">
+                                        <button type="submit" name="submitStudentCompleteCourse" value="{$each_student['username']}">Complete</button>
+                                    </form>
+                                </div>
+                    HTML;
+                                }
+                    echo<<<HTML
                         </div>
-            HTML;
-                        if($each_student['course_completed']==1){
-            
-            echo<<<HTML
-                        <div id="rightOnEachStudent">
-                            <p> Completed</p>
-                        </div>
-            HTML;
-                        }
-                        else{
-            echo<<<HTML
-                        <div id="rightOnEachStudent">
-                        <form method="post" action="">
-                            <button type="submit" name="submitStudentCompleteCourse" value="{$each_student['username']}">Complete</button>
-                        </form>
-                        </div>
-            HTML;
+                    HTML;
                             }
                         }
-                    }
             echo<<<HTML
-                    </div>
                 </div>
 
             HTML;
