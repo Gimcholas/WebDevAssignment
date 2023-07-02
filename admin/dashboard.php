@@ -434,35 +434,36 @@
             $username = $_GET['username'];
             $sql = "SELECT * FROM user where username='$username';";
             $result = mysqli_query($connect,$sql);
-            $row = mysqli_fetch_assoc($result);
+            $user = mysqli_fetch_assoc($result);
             echo "<dialog view-details-modal class='view-details'>";
             echo "<button id='close-view'>&#10006;</button>";
             echo "<br><b>Profile Image</b><br>";
-            if ($row["profile_image_path"] != NULL) {
+            if ($user["profile_image_path"] != NULL) {
                 ?>
                 <!-- Profile image -->
-                <img src=<?php echo $row["profile_image_path"] ?> alt = "Profile image">
+                <img src=<?php echo $user["profile_image_path"] ?> alt = "Profile image">
 
                 <?php
             }
             else {
                 ?>
-                <img src="../files/name.png" alt = "Profile image">
+                <!-- <img src="../files/name.png" alt = "Profile image"> -->
+                <img src="../files/defaultProfileImage.jpg" alt = "Profile image">
                 <?php
             }
             echo "<br><b>Username</b><br>";
-            echo $row["username"]; 
+            echo $user["username"]; 
             echo "<br><b>Usertype</b><br>";
-            echo $row["usertype"]; 
+            echo $user["usertype"]; 
             echo "<br><b>Joined Date</b><br>";
-            echo $row["joined_date"]; 
+            echo $user["joined_date"]; 
 
-            if($row["usertype"] == "Instructor") {
+            if($user["usertype"] == "Instructor") {
                 
                 $sql = "SELECT AVG(rating) as rating, COUNT(rating) as amount FROM instructor_feedback where instructor_username = '$username'";
                 $result = mysqli_query($connect,$sql);
-                $row = mysqli_fetch_assoc($result);
-                $numOfStars = floor($row["rating"]);
+                $rating = mysqli_fetch_assoc($result);
+                $numOfStars = floor($rating["rating"]);
                 echo "<div class=rating>";
                 echo "<b>Rating</b>";
                 for($i=0; $i<$numOfStars; $i++)
@@ -470,7 +471,7 @@
                 for($i=0; $i<(5-$numOfStars); $i++)
                     echo "<img src='../files/blank-star.png' alt='star'>";
             
-                echo " (" . $row["amount"] . ")";
+                echo " (" . $rating["amount"] . ")";
                 echo "</div>"; 
                 
 
@@ -485,7 +486,12 @@
                 echo "<br><b>Training Provider Username</b><br>";
                 echo $row["provider_username"]; 
                 echo "<br><b>Training Provider Name</b><br>";
-                echo $row["provider_name"]; 
+                echo $row["provider_name"];
+                
+                $sql = "SELECT * FROM instructor where instructor.username='$username';";
+                $result = mysqli_query($connect,$sql);
+                $row = mysqli_fetch_assoc($result);
+
                 echo "<br><b>Contact Number</b><br>";
                 echo $row["contact_number"]; 
                 echo "<br><b>Email</b><br>";
@@ -540,7 +546,7 @@
                 }
 
             }
-            else if($row["usertype"] == "Student") {
+            else if($user["usertype"] == "Student") {
                 $sql = "SELECT * FROM student JOIN training_provider ON 
                         student.provider_username = training_provider.username 
                         where student.username='" . $username ."';";
@@ -561,6 +567,12 @@
                 echo "<br><b>Training Provider Name</b><br>";
                 echo $row["provider_name"];  
                 echo "<br><b>Contact Number</b><br>";
+
+                $sql = "SELECT * FROM student where student.username='" . $username ."';";
+
+                $result = mysqli_query($connect,$sql);
+                $row = mysqli_fetch_assoc($result);
+
                 echo $row["contact_number"]; 
                 echo "<br><b>Email</b><br>";
                 echo $row["email"];
@@ -611,7 +623,7 @@
                     <?php
                 }
             }
-            else if($row["usertype"] == "Provider") {
+            else if($user["usertype"] == "Provider") {
                 $sql = "SELECT * FROM training_provider where username='$username';";
                 $result = mysqli_query($connect,$sql);
                 $row = mysqli_fetch_assoc($result);
