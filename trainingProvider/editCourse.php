@@ -300,7 +300,7 @@
                         <select name="status[]" required>
                             <option disabled hidden value="" selected>Choose a status</option>
                             <option value="Open" <?php if ($row["status"] == 'Open') echo ' selected';?> >Open</option>
-                            <option value="Close" <?php if ($row["status"] == 'Closed') echo ' selected';?> >Closed</option>
+                            <option value="Closed" <?php if ($row["status"] == 'Closed') echo ' selected';?> >Closed</option>
                         </select>    
                         </div>
 

@@ -70,7 +70,7 @@ function retrieveEachDashboardCourse($result,$myCoursePage){
         echo '<div class="class-child">';
             echo '<a href = "'.generateDashboardCourseLink($eachCourse,$myCoursePage).'">';
                 if($eachCourse["course_image_path"]==null){
-                    echo '<div class="courseImage"><img src = "../files/MMU_Logo.png" alt = "'.$eachCourse["course_title"].'"/></div>';
+                    echo '<div class="courseImage"><img src = "../files/tpms.png" alt = "'.$eachCourse["course_title"].'"/></div>';
                 }
                 else{
                     echo '<div class="courseImage"><img src = "'.$eachCourse["course_image_path"].'" alt = "'.$eachCourse["course_title"].'"/></div>';
@@ -197,7 +197,7 @@ function generateCertificate($studentName,$courseTitle,$completeDate) {
     </script>
     <div style="width:800px; height:600px;text-align:center;margin:10px;padding:20px; border: 5px solid black;background-color: #618597;">
         <div style="width:750px; height:550px;padding:20px; text-align:center; border: 3px solid black;background-color:white;">
-            <span><img style="width:280px;height:auto;"src="../files/MMU_Logo.png"></span><br><br>
+            <span><img style="width:280px;height:auto;"src="../files/tpms.png"></span><br><br>
             <span style="font-size:55px; font-weight:bold;">Certificate of Completion</span>
             <br><br>
             <span style="font-size:25px"><i>This is to certify that</i></span>
@@ -554,7 +554,7 @@ function createCourseDetailPage(){
     HTML;
                 if($course['course_image_path'] == null){
                     echo<<<HTML
-                        <img src="../files/MMU_Logo.png" alt="Course img"/>
+                        <img src="../files/tpms.png" alt="Course img"/>
                     HTML;
                 }
                 else{
@@ -880,7 +880,7 @@ function createRegisterCoursePage(){
     HTML;
                 if($course['course_image_path'] == null){
                     echo<<<HTML
-                        <img src="../files/MMU_Logo.png" alt="Course img"/>
+                        <img src="../files/tpms.png" alt="Course img"/>
                     HTML;
                 }
                 else{
@@ -994,7 +994,7 @@ function createEnrollmentPage(){
         HTML;
                     if($course['course_image_path'] == null){
                         echo<<<HTML
-                            <img src="../files/MMU_Logo.png" alt="Course img"/>
+                            <img src="../files/tpms.png" alt="Course img"/>
                         HTML;
                     }
                     else{
@@ -1106,7 +1106,7 @@ function createEnrollmentPage(){
                     </dialog>
         HTML;
                     }
-                    if($each_section["status"] == "Close"){
+                    if($each_section["status"] == "Closed"){
         echo<<<HTML
                     <h3> Closed </h3>
         HTML;
